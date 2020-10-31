@@ -5,6 +5,7 @@ import { Error } from '../interfaces/common/error.class';
 import { User } from '../models/user';
 import { Encrypter } from '../services/encrypter';
 import { TokenProcessor } from '../services/tokenProcessor';
+import { ISigninDto } from '../interfaces/dto/in/signin.dto.interface';
 
 const router = express.Router();
 
@@ -33,6 +34,30 @@ router.post('/signup', async(req, res, next)=>{
 
     res.status(201).json({
         message:'Регистрация прошла успешно!',
+        token:await TokenProcessor.getToken(login)
+    })
+})
+
+router.post('/signin', async(req, res, next)=>{
+    const body = req.body as ISigninDto;
+    if(!body){
+        return next(new Error(400, 'Введены не все данные'));
+    }
+
+    const { login, password } = body;
+
+    const user = await User.findOne({login});
+    if(!user){
+        return next(new Error(404, 'Пользователя с таким логином нет!'))
+    }
+
+    const doPasswordsMatch = await Encrypter.verify(password, user.password)
+    if(!doPasswordsMatch){
+        return next(new Error(400, 'Неверный пароль!'));
+    }
+
+    res.status(200).json({
+        message:'Вход прошел успешно!',
         token:await TokenProcessor.getToken(login)
     })
 })
