@@ -1,4 +1,4 @@
-import { sign, verify } from 'jsonwebtoken'
+import { sign, verify, decode } from 'jsonwebtoken'
 
 import config from '../../config.dev.json'
 
@@ -15,6 +15,15 @@ export class TokenProcessor{
             return true
         }catch{
             return false
+        }
+    }
+
+    static async decodeToken(token:string){
+        try{
+            const userPayload = await decode(token);
+            return userPayload
+        }catch{
+            return null
         }
     }
 }
