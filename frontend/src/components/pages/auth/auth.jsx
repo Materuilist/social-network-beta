@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { bindActionCreators } from "redux";
 
@@ -35,10 +36,12 @@ class Auth extends React.Component {
     }
 
     render() {
+        const { userInfo } = this.props;
         const { isLoginMode, isLoading } = this.state;
 
         return (
             <>
+                {userInfo.login && <Redirect to="/" />}
                 <div className="h-100 d-flex flex-column justify-content-around poistion-relative">
                     <Loader isVisible={isLoading} />
                     <div>
@@ -97,8 +100,12 @@ class Auth extends React.Component {
     }
 }
 
+const mapStateToProps = ({ userInfo }) => ({
+    userInfo,
+});
+
 const mapDispatchToProps = (dispatch) => ({
     userInfoActions: bindActionCreators(userInfoActions, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

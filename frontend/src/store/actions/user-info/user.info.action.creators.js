@@ -11,21 +11,22 @@ export const setUserInfo = (userInfo) => ({
     payload: userInfo,
 });
 
-export const getUser = () => async (dispatch, getState) => {
+export const getUser = (callback) => async (dispatch, getState) => {
     const jwt = localStorage.getItem("jwt");
 
     if (!jwt) {
-        return dispatch(push("/"));
+        dispatch(push("/auth"));
     } else {
         const res = await authService.getUser(jwt);
         if (res.ok) {
             const { userInfo } = await res.json();
-            return dispatch(setUserInfo(userInfo));
+            dispatch(setUserInfo(userInfo));
         } else {
             localStorage.removeItem("jwt");
-            return dispatch(push("/"));
+            dispatch(push("/auth"));
         }
     }
+    typeof callback === "function" && callback();
 };
 
 export const register = (login, password) => async (dispatch, getState) => {
@@ -35,7 +36,7 @@ export const register = (login, password) => async (dispatch, getState) => {
     if (res.ok && token) {
         localStorage.setItem("jwt", token);
         await getUser()(dispatch);
-        dispatch(push("/"));
+        dispatch(push("/profile"));
     } else {
         dispatch(notificationActions.showError(message));
     }

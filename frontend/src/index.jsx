@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 
-import App from "./components/pages/app";
+import { App } from "./components/pages/app";
 import { store, history } from "./store/index";
 
 import "bootstrap/dist/css/bootstrap.min.css";
