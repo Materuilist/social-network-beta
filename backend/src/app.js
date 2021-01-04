@@ -1,23 +1,20 @@
-import express, { Request, Response, NextFunction } from 'express'
-import mongoose from 'mongoose'
-import bodyParser from 'body-parser'
+const express = require('express')
+const mongoose =require('mongoose')
+const bodyParser = require('body-parser')
 
-import getConfig from './utils/getConfig';
+const getConfig = require('./utils/getConfig');
 
-import adminRouter from './routes/admin'
-import authRouter from './routes/auth'
-import friendsRouter from './routes/friends'
-
-import { Error } from './interfaces/common/error.class'
+const adminRouter = require('./routes/admin')
+const authRouter = require('./routes/auth')
+const friendsRouter = require('./routes/friends')
 
 const app = express();
-const dbConnectionString:string = getConfig().database;
+const dbConnectionString = getConfig().database;
 
 app.use('/', (req, res, next)=>{
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
     res.setHeader('Access-Control-Allow-Methods', '*');
-    console.log(req.headers)
     next();
 })
 
@@ -27,7 +24,7 @@ app.use('/auth', authRouter);
 app.use('/admin', adminRouter);
 app.use('/friends', friendsRouter);
 
-app.use('/', (error: Error, req: Request, res: Response, next: NextFunction)=>{
+app.use('/', (error, req, res, next)=>{
     if(error){
         console.log(error)
         return res.status(error.status).json({ message:error.message })

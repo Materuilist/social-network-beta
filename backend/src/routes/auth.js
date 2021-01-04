@@ -1,23 +1,20 @@
-import express from "express";
+const express = require("express");
 
-import { IUser } from "../interfaces/entities/user.interface";
-import { Error } from "../interfaces/common/error.class";
-import { User } from "../models/user";
-import { Encrypter } from "../services/encrypter";
-import { TokenProcessor } from "../services/tokenProcessor";
-import { ISigninDto } from "../interfaces/dto/in/signin.dto.interface";
+const { User } = require("../models/user");
+const Encrypter = require("../services/encrypter");
+const TokenProcessor = require("../services/tokenProcessor");
+const { Error } = require("../models/shared/error.class");
 
 const router = express.Router();
 
 router.post("/signup", async (req, res, next) => {
-    const body = req.body as IUser;
-    if (!body) {
+    const { login, phone, password } = req.body;
+
+    if (!login || !password) {
         return next(new Error(400, "Введены не все данные"));
     }
 
-    const { login, phone, password } = body;
-
-    const sameLoginUsers: IUser[] = await User.find({ login });
+    const sameLoginUsers = await User.find({ login });
     if (sameLoginUsers.length !== 0) {
         return next(
             new Error(400, "Пользователь с таким логином уже существует!")
@@ -25,7 +22,7 @@ router.post("/signup", async (req, res, next) => {
     }
 
     if (phone) {
-        const samePhoneUsers: IUser[] = await User.find({ phone });
+        const samePhoneUsers = await User.find({ phone });
         if (samePhoneUsers.length !== 0) {
             return next(
                 new Error(
@@ -48,12 +45,10 @@ router.post("/signup", async (req, res, next) => {
 });
 
 router.post("/signin", async (req, res, next) => {
-    const body = req.body as ISigninDto;
-    if (!body) {
+    const { login, password } = req.body;
+    if (!login || !password) {
         return next(new Error(400, "Введены не все данные"));
     }
-
-    const { login, password } = body;
 
     const user = await User.findOne({ login });
     if (!user) {
@@ -80,4 +75,4 @@ router.get("/get-user", async (req, res, next) => {
     res.status(200).json({ userInfo: user });
 });
 
-export default router;
+module.exports = router;
