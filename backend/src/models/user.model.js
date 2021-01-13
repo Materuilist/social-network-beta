@@ -17,6 +17,7 @@ const userSchema = new Schema({
         type: String,
         enum: genders,
     },
+    age: Number,
     photos: [String],
     city: { type: Types.ObjectId, ref: "City" },
     phone: {

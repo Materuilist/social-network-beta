@@ -29,7 +29,7 @@ router.get("/initialize", async (req, res, next) => {
                 login: "materuilist",
                 password: await Encrypter.hash("borow123"),
                 sex: "M",
-                phone: '89125817044'
+                age: 20,
             });
 
             res.status(201).json({ message: "Initialized successfully" });

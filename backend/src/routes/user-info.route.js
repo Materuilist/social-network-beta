@@ -23,8 +23,8 @@ router.get("/", async (req, res, next) => {
     if (!userInfo) {
         return next(new Error(400, "Ошибка при получении пользователя!"));
     }
-    const { avatar, sex, phone, city, interests } = userInfo;
-    return res.status(200).json({ login, avatar, sex, phone, city, interests });
+    const { avatar, sex, age, phone, city, interests } = userInfo;
+    return res.status(200).json({ login, avatar, sex, age, phone, city, interests });
 });
 
 router.put("/", async (req, res, next) => {

@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import {
+    ChoiceGroup,
+    ChoiceGroupOption,
+    Dropdown,
+    MaskedTextField,
+    Slider,
+    TextField,
+} from "@fluentui/react";
 
 import { dictionariesActions, userInfoActions } from "../../../store/actions";
 import Loader from "../../Shared/loader/loader";
 import defaultAvatar from "../../../static/images/default-avatar.svg";
 
 import classNames from "./profile.module.scss";
-import { CustomInput } from "../../Shared/custom-input/custom.input";
+import { convertDictionary } from "../../../helpers/convertDictionary";
+import { DropdownList } from "react-widgets";
+import { checkPhoneValidity, getPhone } from "../../../helpers";
 
 const Profile = ({
     userInfo,
@@ -16,7 +26,7 @@ const Profile = ({
     dictionaries,
 }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { login, avatar, sex, city } = userInfo;
+    const { login, avatar, sex, age, city, phone } = userInfo;
 
     useEffect(() => {
         dictionariesActions.getCities(null, null, true, () =>
@@ -46,18 +56,51 @@ const Profile = ({
                         className={classNames.avatar}
                     />
                     <div>
-                        <CustomInput type="text" value={login} label="Логин" />
-                        <CustomInput
-                            type="radio"
-                            name="sex"
-                            value={sex}
-                            options={[
-                                { value: "M", label: "M" },
-                                { value: "F", label: "F" },
-                            ]}
-                            label="Пол"
-                            onChange={(value) => updateUserInfo("sex", value)}
+                        <div className="d-flex justify-content-between">
+                            <TextField
+                                value={login}
+                                readOnly={true}
+                                label="Логин"
+                            />
+                            <ChoiceGroup
+                                name="sex"
+                                selectedKey={sex}
+                                options={[
+                                    { key: "M", text: "Мужской" },
+                                    { key: "F", text: "Женский" },
+                                ]}
+                                onChange={(event, option) =>
+                                    updateUserInfo("sex", option.key)
+                                }
+                            />
+                        </div>
+                        <Slider
+                            value={age}
+                            onChange={(value) => updateUserInfo("age", value)}
+                            label="Возраст"
+                            min={0}
+                            max={100}
                         />
+                        <DropdownList
+                            data={dictionaries.cities}
+                            valueField="id"
+                            textField="name"
+                            filter="contains"
+                            value={city}
+                            onChange={(value) => updateUserInfo("city", value)}
+                        />
+                        <MaskedTextField
+                            label='Телефон'
+                            mask="9(999)-999-99-99"
+                            value={phone}
+                            onChange={(event, value) =>
+                                updateUserInfo("phone", getPhone(value))
+                            }
+                            errorMessage={checkPhoneValidity(phone)?null:'Неверный формат'}
+                        />
+                    </div>
+
+                    {/* 
                         <CustomInput
                             label="Город"
                             type="select"
@@ -65,8 +108,7 @@ const Profile = ({
                             value={city}
                             onChange={(value) => updateUserInfo("city", value)}
                             options={dictionaries.cities}
-                        />
-                    </div>
+                        /> */}
                 </div>
             )}
         </div>

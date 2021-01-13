@@ -7,6 +7,7 @@ import { App } from "./components/pages/app";
 import { store, history } from "./store/index";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-widgets/dist/css/react-widgets.css";
 import "./index.scss";
 
 ReactDOM.render(
