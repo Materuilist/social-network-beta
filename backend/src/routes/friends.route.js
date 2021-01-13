@@ -1,7 +1,7 @@
 const express = require("express");
 
 const TokenProcessor = require("../services/tokenProcessor");
-const { User } = require("../models/user");
+const { User } = require("../models/user.model");
 const { Error } = require("../models/shared/error.class");
 
 const router = express.Router();

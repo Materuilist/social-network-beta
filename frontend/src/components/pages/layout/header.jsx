@@ -9,7 +9,7 @@ export const Header = () => {
     const history = useHistory();
 
     return (
-        <Navbar color="dark" className={classNames.header}>
+        <Navbar className={classNames.header}>
             <NavbarBrand onClick={() => history.push("/")}>
                 <img src={Logo} />
             </NavbarBrand>

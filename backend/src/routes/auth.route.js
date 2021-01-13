@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { User } = require("../models/user");
+const { User } = require("../models/user.model");
 const Encrypter = require("../services/encrypter");
 const TokenProcessor = require("../services/tokenProcessor");
 const { Error } = require("../models/shared/error.class");
@@ -72,7 +72,7 @@ router.get("/get-user", async (req, res, next) => {
     if (!user) {
         return next(new Error(401, "Токен не действителен!"));
     }
-    res.status(200).json({ userInfo: user });
+    res.status(200).json({ userInfo: { login: user.login } });
 });
 
 module.exports = router;

@@ -8,7 +8,11 @@ export default () => {
     return (
         <div className={classNames.sideNav}>
             {routes.map(({ path, name }, index) => (
-                <NavLink to={path} activeClassName={classNames.active}>
+                <NavLink
+                    key={index}
+                    to={path}
+                    activeClassName={classNames.active}
+                >
                     {name}
                 </NavLink>
             ))}

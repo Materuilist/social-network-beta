@@ -5,7 +5,9 @@ body{
     padding: 0;
     box-sizing: border-box;
     font-size: $fs;
+    font-family: $ff;
     height: 100vh;
+    background-color: $light-mint-color;
 }
 
 #root{
