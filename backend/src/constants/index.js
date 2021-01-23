@@ -1,4 +1,4 @@
 module.exports = {
-    genders: ['M', 'F'],
+    genders: ['М', 'Ж'],
     chatTypes: ['Dialogue', 'Conversation']
 }

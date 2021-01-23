@@ -21,15 +21,9 @@ router.get("/initialize", async (req, res, next) => {
             await City.create(cities);
 
             await User.create({
-                login: "Admin",
-                password: await Encrypter.hash("admin123"),
-            });
-
-            await User.create({
                 login: "materuilist",
                 password: await Encrypter.hash("borow123"),
-                sex: "M",
-                age: 20,
+                isOnline: true,
             });
 
             res.status(201).json({ message: "Initialized successfully" });

@@ -2,6 +2,7 @@ const { Schema, model, Types } = require("mongoose");
 const { genders } = require("../constants");
 
 const userSchema = new Schema({
+    //user-info
     login: {
         type: String,
         required: true,
@@ -10,20 +11,20 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    avatar: {
-        type: String,
-    },
+    avatar: String,
     sex: {
         type: String,
         enum: genders,
     },
-    age: Number,
+    birthDate: {
+        type: Date,
+    },
+    isOnline: Boolean,
     photos: [String],
     city: { type: Types.ObjectId, ref: "City" },
-    phone: {
-        type: String,
-    },
     interests: [{ type: Types.ObjectId, ref: "Interest" }],
+
+    //friends
     friends: [
         {
             type: Types.ObjectId,
@@ -42,6 +43,8 @@ const userSchema = new Schema({
             ref: "User",
         },
     ],
+
+    //chats
     chats: [{ type: Types.ObjectId, ref: "Chat" }],
 });
 
