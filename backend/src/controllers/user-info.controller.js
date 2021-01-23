@@ -4,7 +4,9 @@ const filterBody = require("../utils/filterBody");
 
 const getUserInfoById = async (req, res, next) => {
     const { userId } = req.params;
-    const userInfo = await User.findById(userId).populate("city", '_id name').exec();
+    const userInfo = await User.findById(userId)
+        .populate("city", "_id name")
+        .exec();
 
     if (!userInfo) {
         return next(new Error(400, "Такого пользователя нет!"));
@@ -17,7 +19,9 @@ const getUserInfoById = async (req, res, next) => {
 
 const getUserInfo = async (req, res, next) => {
     const { login } = req.body.user;
-    const userInfo = await User.findOne({ login }).populate("city", '_id name').exec();
+    const userInfo = await User.findOne({ login })
+        .populate("city", "_id name")
+        .exec();
 
     if (!userInfo) {
         return next(new Error(400, "Ошибка при получении пользователя!"));
@@ -59,7 +63,52 @@ const updateUserInfo = async (req, res, next) => {
 
         res.status(200).json({ message: "Сохранение прошло успешно!" });
     } catch {
-        res.status(400).json({ message: "Ошибка сохранения..." });
+        return next(new Error(400, "Ошибка сохранения!"));
+    }
+};
+
+const getPhotos = async (req, res, next) => {
+    const { user } = req.body;
+
+    res.status(200).json({ photos: user.photos });
+};
+
+const addPhotos = async (req, res, next) => {
+    const { user, photos = [] } = req.body;
+
+    if (!photos || photos.length === 0) {
+        return next(new Error(400, "Ошибка сохранения!"));
+    }
+
+    try {
+        user.photos = [...user.photos, ...photos];
+        await user.save();
+        return res
+            .status(201)
+            .json({ message: `Добавлено ${photos.length} фото!` });
+    } catch {
+        return next(new Error(500, "Ошибка сохранения!"));
+    }
+};
+
+const deletePhotos = async (req, res, next) => {
+    const { user, photos = [] } = req.body;
+
+    if (!photos || photos.length === 0) {
+        return next(new Error(400, "Ошибка сохранения!"));
+    }
+
+    try {
+        user.photos = user.photos.filter(
+            (photo) =>
+                !photos.find((excessivePhoto) => excessivePhoto === photo)
+        );
+        await user.save();
+        return res
+            .status(201)
+            .json({ message: `Удалено ${photos.length} фото!` });
+    } catch {
+        return next(new Error(500, "Ошибка сохранения!"));
     }
 };
 
@@ -68,4 +117,7 @@ module.exports = {
     getUserInfo,
     checkOnline,
     updateUserInfo,
+    getPhotos,
+    addPhotos,
+    deletePhotos
 };

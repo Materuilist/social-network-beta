@@ -6,7 +6,16 @@ const {
     getUserInfo,
     updateUserInfo,
     checkOnline,
+    getPhotos,
+    addPhotos,
+    deletePhotos,
 } = require("../controllers/user-info.controller");
+
+router.post("/photos/add", parseUser, addPhotos);
+
+router.get("/photos", parseUser, getPhotos);
+
+router.delete("/photos", parseUser, deletePhotos);
 
 router.get("/:userId", parseUser, getUserInfoById);
 
