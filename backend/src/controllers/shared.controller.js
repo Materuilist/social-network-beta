@@ -3,7 +3,7 @@ const { Error } = require("../models/shared/error.class");
 const { User } = require("../models/user.model");
 
 const parseUser = async (req, res, next) => {
-    if(!req.headers.authorization){
+    if (!req.headers.authorization) {
         return next(new Error(401, "Ошибка при получении пользователя!"));
     }
     const token = req.headers.authorization.split(" ")[1];
@@ -19,5 +19,5 @@ const parseUser = async (req, res, next) => {
 };
 
 module.exports = {
-    parseUser,
+    parseUser
 };

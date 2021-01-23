@@ -1,30 +1,31 @@
 const { Error } = require("../models/shared/error.class");
 const { User } = require("../models/user.model");
+const filterBody = require("../utils/filterBody");
 
 const getUserInfoById = async (req, res, next) => {
     const { userId } = req.params;
-    const userInfo = await User.findById(userId);
+    const userInfo = await User.findById(userId).populate("city", '_id name').exec();
 
     if (!userInfo) {
         return next(new Error(400, "Такого пользователя нет!"));
     }
-    const { login, avatar, sex, phone, city, interests, isOnline } = userInfo;
+    const { login, avatar, birthDate, sex, city, isOnline } = userInfo;
     return res
         .status(200)
-        .json({ login, avatar, sex, phone, city, interests, isOnline });
+        .json({ login, avatar, birthDate, sex, city, isOnline });
 };
 
 const getUserInfo = async (req, res, next) => {
     const { login } = req.body.user;
-    const userInfo = await User.findOne({ login }).populate("city").exec();
+    const userInfo = await User.findOne({ login }).populate("city", '_id name').exec();
 
     if (!userInfo) {
         return next(new Error(400, "Ошибка при получении пользователя!"));
     }
-    const { avatar, sex, age, phone, city, interests, isOnline } = userInfo;
+    const { avatar, sex, birthDate, city, isOnline } = userInfo;
     return res
         .status(200)
-        .json({ login, avatar, sex, age, phone, city, interests, isOnline });
+        .json({ login, avatar, sex, birthDate, city, isOnline });
 };
 
 const checkOnline = async (req, res, next) => {
@@ -49,15 +50,12 @@ const checkOnline = async (req, res, next) => {
 };
 
 const updateUserInfo = async (req, res, next) => {
-    const { login } = req.body.user;
-    const user = await User.findOne({ login });
+    const { user, sex, city, birthDate } = req.body;
 
-    if (!user) {
-        return next(new Error(400, "Ошибка при получении пользователя!"));
-    }
+    const filteredInfo = filterBody({ sex, city, birthDate });
 
     try {
-        await user.updateOne({ ...req.body });
+        await user.updateOne(filteredInfo);
 
         res.status(200).json({ message: "Сохранение прошло успешно!" });
     } catch {
