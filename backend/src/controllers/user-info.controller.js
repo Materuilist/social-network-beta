@@ -1,5 +1,6 @@
 const { Error } = require("../models/shared/error.class");
 const { User } = require("../models/user.model");
+const { Interest } = require("../models/interest.model");
 const filterBody = require("../utils/filterBody");
 
 const getUserInfoById = async (req, res, next) => {
@@ -105,10 +106,119 @@ const deletePhotos = async (req, res, next) => {
         );
         await user.save();
         return res
-            .status(201)
+            .status(200)
             .json({ message: `Удалено ${photos.length} фото!` });
     } catch {
         return next(new Error(500, "Ошибка сохранения!"));
+    }
+};
+
+const getInterestsById = async(req, res, next)=>{
+    const {userId} = req.params;
+    
+    const user = await User.findById(userId);
+
+    if(!user){
+        return next(new Error(404, 'Такого пользователя нет!'));
+    }
+
+    const { interests } = await user
+        .populate("interests", "_id naming")
+        .execPopulate();
+    res.status(200).json({ interests });
+}
+
+const getInterests = async (req, res, next) => {
+    const { user } = req.body;
+
+    const { interests } = await user
+        .populate("interests", "_id naming")
+        .execPopulate();
+    res.status(200).json({ interests });
+};
+
+const addInterests = async (req, res, next) => {
+    const {
+        user,
+        newInterests = [], //названия придуманных юзером интересов
+        existingInterests = [], //интересы, существовавшие в перечне дефолтных
+    } = req.body;
+
+    const interestsToAdd = [];
+    const interestsDictionary = await Interest.find();
+
+    if (newInterests && newInterests.length > 0) {
+        if (
+            newInterests.filter(
+                (interestName) =>
+                    !interestsDictionary.find(
+                        ({ naming, owner }) =>
+                            (!owner ||
+                                owner.toString() === user._id.toString()) &&
+                            naming === interestName
+                    )
+            ).length !== newInterests.length
+        ) {
+            return next(new Error(400, "Добавляемые интересы уже есть!"));
+        }
+        interestsToAdd.push(
+            ...(
+                await Interest.create(
+                    newInterests.map((naming) => ({ naming, owner: user._id }))
+                )
+            ).map(({ _id }) => _id)
+        );
+    }
+
+    if (existingInterests && existingInterests.length !== 0) {
+        if (
+            existingInterests.filter(
+                (interestId) =>
+                    !user.interests.find((id) => id.toString() === interestId)
+            ).length !== existingInterests.length
+        ) {
+            return next(new Error(400, "Добавляемые интересы уже есть!"));
+        }
+        interestsToAdd.push(...existingInterests);
+    }
+
+    try {
+        user.interests = [...user.interests, ...interestsToAdd];
+        await user.save();
+        return res.status(201).json({
+            message: `Было добавлено ${interestsToAdd.length} интересов!`,
+        });
+    } catch {
+        return next(new Error(500, "Ошибка при добавлении..."));
+    }
+};
+
+const deleteInterests = async (req, res, next) => {
+    const { user, interests = [] } = req.body;
+
+    if (user.interests.length === 0) {
+        return next(new Error(400, "Пользователь не указал свои интересы"));
+    }
+    if (!interests || !interests.length || interests.length === 0) {
+        return next(new Error(400, "Плохой запрос"));
+    }
+
+    try {
+        user.interests = user.interests.filter(
+            (interestId) => !interests.find((id) => id === interestId.toString())
+        );
+        await user.save();
+        await Interest.deleteMany({
+            owner: user._id,
+            _id: {
+                $in: interests,
+            },
+        });
+        return res
+            .status(200)
+            .json({ message: `Удалено ${interests.length} интересов...` });
+    } catch {
+        return next(new Error(500, "ЧТо-то пошло не так..."));
     }
 };
 
@@ -117,7 +227,13 @@ module.exports = {
     getUserInfo,
     checkOnline,
     updateUserInfo,
+    
     getPhotos,
     addPhotos,
-    deletePhotos
+    deletePhotos,
+
+    getInterests,
+    getInterestsById,
+    addInterests,
+    deleteInterests,
 };

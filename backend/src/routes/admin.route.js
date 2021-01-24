@@ -5,13 +5,14 @@ const Encrypter = require("../services/encrypter");
 
 const { User } = require("../models/user.model");
 const { City } = require("../models/city.model");
-const { Types } = require("mongoose");
+const { Interest } = require("../models/interest.model");
 
 const router = express.Router();
 
 router.get("/initialize", async (req, res, next) => {
     await User.deleteMany({});
     await City.deleteMany({});
+    await Interest.deleteMany({});
 
     fs.readFile(
         __dirname + "/../static/cities.json",
@@ -19,6 +20,24 @@ router.get("/initialize", async (req, res, next) => {
         async (err, data) => {
             const cities = JSON.parse(data);
             await City.create(cities);
+
+            await Interest.create(
+                {
+                    naming: "Плавание",
+                },
+                {
+                    naming: "Программирование",
+                },
+                {
+                    naming: "Футбол",
+                },
+                {
+                    naming: "Баскетбол",
+                },
+                {
+                    naming: "Шахматы",
+                }
+            );
 
             await User.create({
                 login: "materuilist",
