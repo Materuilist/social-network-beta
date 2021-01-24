@@ -20,8 +20,14 @@ const userSchema = new Schema({
         type: Date,
     },
     isOnline: Boolean,
-    photos: [String],
     city: { type: Types.ObjectId, ref: "City" },
+    photos: [
+        {
+            id: Number,
+            data: String,
+            likesFrom: [{ type: Types.ObjectId, ref: "User" }],
+        },
+    ],
     interests: [{ type: Types.ObjectId, ref: "Interest" }],
 
     //friends

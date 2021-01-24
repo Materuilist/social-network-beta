@@ -59,7 +59,9 @@ const setOnline = async (req, res, next) => {
 
     console.log(isOnline);
     await user.updateOne({ isOnline });
-    res.status(200).json({ message: `${user.login} - ${isOnline?'онлайн':'оффлайн'}` });
+    res.status(200).json({
+        message: `${user.login} - ${isOnline ? "онлайн" : "оффлайн"}`,
+    });
 };
 
 const updateUserInfo = async (req, res, next) => {
@@ -79,7 +81,13 @@ const updateUserInfo = async (req, res, next) => {
 const getPhotos = async (req, res, next) => {
     const { user } = req.body;
 
-    res.status(200).json({ photos: user.photos });
+    const mappedPhotos = user.photos.map(({ id, data, likesFrom }) => ({
+        id,
+        data,
+        likesCount: likesFrom && likesFrom.length > 0 ? likesFrom.length : 0,
+    }));
+
+    res.status(200).json({ photos: mappedPhotos });
 };
 
 const addPhotos = async (req, res, next) => {
@@ -89,8 +97,19 @@ const addPhotos = async (req, res, next) => {
         return next(new Error(400, "Ошибка сохранения!"));
     }
 
+    const maxId = user.photos
+        .map(({ id }) => id)
+        .reduce((max, id) => (id > max ? id : max), 0);
+
     try {
-        user.photos = [...user.photos, ...photos];
+        user.photos = [
+            ...user.photos,
+            ...photos.map((photoEncoded, index) => ({
+                id: maxId + index + 1,
+                data: photoEncoded,
+                likesFrom: [],
+            })),
+        ];
         await user.save();
         return res
             .status(201)
@@ -109,8 +128,8 @@ const deletePhotos = async (req, res, next) => {
 
     try {
         user.photos = user.photos.filter(
-            (photo) =>
-                !photos.find((excessivePhoto) => excessivePhoto === photo)
+            ({ id }) =>
+                !photos.find((excessivePhoto) => excessivePhoto === id)
         );
         await user.save();
         return res
