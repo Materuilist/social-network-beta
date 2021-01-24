@@ -13,6 +13,7 @@ const {
     addInterests,
     deleteInterests,
     getInterestsById,
+    setOnline,
 } = require("../controllers/user-info.controller");
 
 router.post("/photos/add", parseUser, addPhotos);
@@ -34,6 +35,8 @@ router.get("/:userId", parseUser, getUserInfoById);
 router.get("/", parseUser, getUserInfo);
 
 router.post("/check-online", parseUser, checkOnline);
+
+router.post("/set-online", parseUser, setOnline);
 
 router.put("/", parseUser, updateUserInfo);
 

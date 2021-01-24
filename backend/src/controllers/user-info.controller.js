@@ -54,6 +54,14 @@ const checkOnline = async (req, res, next) => {
     });
 };
 
+const setOnline = async (req, res, next) => {
+    const { user, isOnline } = req.body;
+
+    console.log(isOnline);
+    await user.updateOne({ isOnline });
+    res.status(200).json({ message: `${user.login} - ${isOnline?'онлайн':'оффлайн'}` });
+};
+
 const updateUserInfo = async (req, res, next) => {
     const { user, sex, city, birthDate } = req.body;
 
@@ -113,20 +121,20 @@ const deletePhotos = async (req, res, next) => {
     }
 };
 
-const getInterestsById = async(req, res, next)=>{
-    const {userId} = req.params;
-    
+const getInterestsById = async (req, res, next) => {
+    const { userId } = req.params;
+
     const user = await User.findById(userId);
 
-    if(!user){
-        return next(new Error(404, 'Такого пользователя нет!'));
+    if (!user) {
+        return next(new Error(404, "Такого пользователя нет!"));
     }
 
     const { interests } = await user
         .populate("interests", "_id naming")
         .execPopulate();
     res.status(200).json({ interests });
-}
+};
 
 const getInterests = async (req, res, next) => {
     const { user } = req.body;
@@ -205,7 +213,8 @@ const deleteInterests = async (req, res, next) => {
 
     try {
         user.interests = user.interests.filter(
-            (interestId) => !interests.find((id) => id === interestId.toString())
+            (interestId) =>
+                !interests.find((id) => id === interestId.toString())
         );
         await user.save();
         await Interest.deleteMany({
@@ -225,9 +234,10 @@ const deleteInterests = async (req, res, next) => {
 module.exports = {
     getUserInfoById,
     getUserInfo,
-    checkOnline,
     updateUserInfo,
-    
+    checkOnline,
+    setOnline,
+
     getPhotos,
     addPhotos,
     deletePhotos,
