@@ -78,11 +78,32 @@ const updateUserInfo = async (req, res, next) => {
     }
 };
 
+const getPhotosById = async (req, res, next) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return next(new Error(400, "Ошибка получения пользователя"));
+        }
+        const mappedPhotos = user.photos.map(({ _id, data, likesFrom }) => ({
+            _id,
+            data,
+            likesCount:
+                likesFrom && likesFrom.length > 0 ? likesFrom.length : 0,
+        }));
+
+        res.status(200).json({ photos: mappedPhotos });
+    } catch {
+        return next(new Error(400, "Ошибка получения пользователя"));
+    }
+};
+
 const getPhotos = async (req, res, next) => {
     const { user } = req.body;
 
-    const mappedPhotos = user.photos.map(({ id, data, likesFrom }) => ({
-        id,
+    const mappedPhotos = user.photos.map(({ _id, data, likesFrom }) => ({
+        _id,
         data,
         likesCount: likesFrom && likesFrom.length > 0 ? likesFrom.length : 0,
     }));
@@ -97,15 +118,10 @@ const addPhotos = async (req, res, next) => {
         return next(new Error(400, "Ошибка сохранения!"));
     }
 
-    const maxId = user.photos
-        .map(({ id }) => id)
-        .reduce((max, id) => (id > max ? id : max), 0);
-
     try {
         user.photos = [
             ...user.photos,
-            ...photos.map((photoEncoded, index) => ({
-                id: maxId + index + 1,
+            ...photos.map((photoEncoded) => ({
                 data: photoEncoded,
                 likesFrom: [],
             })),
@@ -128,8 +144,7 @@ const deletePhotos = async (req, res, next) => {
 
     try {
         user.photos = user.photos.filter(
-            ({ id }) =>
-                !photos.find((excessivePhoto) => excessivePhoto === id)
+            ({ _id }) => !photos.find((excessivePhoto) => excessivePhoto === _id.toString())
         );
         await user.save();
         return res
@@ -258,6 +273,7 @@ module.exports = {
     setOnline,
 
     getPhotos,
+    getPhotosById,
     addPhotos,
     deletePhotos,
 

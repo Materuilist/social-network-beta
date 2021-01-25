@@ -14,9 +14,12 @@ const {
     deleteInterests,
     getInterestsById,
     setOnline,
+    getPhotosById,
 } = require("../controllers/user-info.controller");
 
 router.post("/photos/add", parseUser, addPhotos);
+
+router.get("/photos/:userId", parseUser, getPhotosById);
 
 router.get("/photos", parseUser, getPhotos);
 

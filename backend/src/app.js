@@ -9,6 +9,7 @@ const authRouter = require("./routes/auth.route");
 const friendsRouter = require("./routes/friends.route");
 const userInfoRouter = require("./routes/user-info.route");
 const dictionariesRouter = require("./routes/dictionaries.route");
+const likeRouter = require('./routes/like.route');
 
 const app = express();
 const dbConnectionString = getConfig().database;
@@ -28,6 +29,7 @@ app.use("/admin", adminRouter);
 app.use("/friends", friendsRouter);
 app.use("/userinfo", userInfoRouter);
 app.use("/dictionaries", dictionariesRouter);
+app.use('/like', likeRouter);
 
 app.use("/", (error, req, res, next) => {
     if (error) {
