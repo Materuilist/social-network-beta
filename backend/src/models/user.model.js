@@ -1,5 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
-const { genders } = require("../constants");
+const { genders, statuses } = require("../constants");
 
 const userSchema = new Schema({
     //user-info
@@ -33,8 +33,16 @@ const userSchema = new Schema({
     //friends
     friends: [
         {
-            type: Types.ObjectId,
-            ref: "User",
+            data: {
+                type: Types.ObjectId,
+                ref: "User",
+            },
+            statuses: [
+                {
+                    type: Types.ObjectId,
+                    ref: 'Status',
+                },
+            ],
         },
     ],
     incomingRequests: [

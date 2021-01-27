@@ -1,9 +1,11 @@
 const express = require("express");
 
-const { getFriendsById, addFriend, deleteFriend, getFriends } = require("../controllers/friends.controller");
+const { getFriendsById, addFriend, deleteFriend, getFriends, toggleStatus } = require("../controllers/friends.controller");
 const { parseUser } = require("../controllers/shared.controller");
 
 const router = express.Router();
+
+router.post("/toggle-status", parseUser, toggleStatus);
 
 router.get("/add/:userId", parseUser, addFriend);
 

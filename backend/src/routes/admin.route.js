@@ -7,6 +7,7 @@ const Encrypter = require("../services/encrypter");
 const { User } = require("../models/user.model");
 const { City } = require("../models/city.model");
 const { Interest } = require("../models/interest.model");
+const { Status } = require("../models/status.model");
 
 const router = express.Router();
 
@@ -36,6 +37,20 @@ router.get("/initialize", async (req, res, next) => {
             },
             {
                 naming: "Шахматы",
+            }
+        ),
+        Status.create(
+            {
+                name: "Важный",
+            },
+            {
+                name: "Соучащийся",
+            },
+            {
+                name: "Коллега",
+            },
+            {
+                name: "Родственник",
             }
         ),
     ]);
