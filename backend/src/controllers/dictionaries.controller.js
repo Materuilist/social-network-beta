@@ -1,6 +1,6 @@
 const { Error } = require("../models/shared/error.class");
 const { City } = require("../models/city.model");
-const { statuses } = require("../constants");
+const { Status } = require("../models/status.model");
 
 const ITEMS_PER_PAGE_DEFAULT = 20;
 
@@ -36,6 +36,8 @@ const getCities = async (req, res, next) => {
 };
 
 const getFriendsStatuses = async (req, res, next) => {
+    const statuses = await Status.find({});
+
     res.status(200).json({
         data: statuses,
     });
