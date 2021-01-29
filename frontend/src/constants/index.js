@@ -1,3 +1,10 @@
-export { notificationTypes } from './notification.types';
-export const notificationDuration = 100; //secs
-export const simultaneouslyDisplayedNotificationsCount = 4 //число одноврменно отображаемых уведомлений
+export const tokenId = "sn_jwt";
+
+export const notificationTypes = {
+    warning: "warning",
+    error: "error",
+    success: "success",
+    message: "message",
+};
+export const notificationDismissDelay = 100000;
+export const maxNotifications = 3;

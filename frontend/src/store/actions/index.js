@@ -1,4 +1,3 @@
-export * as notificationActions from "./shared/notification.action.creators";
-export * as dictionariesActions from "./shared/dictionaries.action.creators";
+export * as authActions from "./auth.actions";
 
-export * as userInfoActions from "./user-info/user.info.action.creators";
+export * as notificationsActions from "./notifications.actions";

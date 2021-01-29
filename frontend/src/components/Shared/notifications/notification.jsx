@@ -1,77 +1,65 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import concatClasses from "classnames";
 
+import { notificationsActions } from "../../../store/actions";
 import { notificationTypes } from "../../../constants";
-import { notificationActions } from "../../../store/actions";
 
-import ErrorIcon from "../../../static/images/icons/error.svg";
+import ErrorSVG from "images/error.svg";
+import TogglerSVG from "images/toggler.svg";
 
 import classNames from "./notifications.module.scss";
 
-const Notification = ({
-    id,
-    content,
-    headerText,
-    type,
-    notificationActions,
-}) => {
-    const getAlignmentClassName = () =>
-        id % 2 === 0 ? classNames.right : classNames.left;
-
-    const getIcon = () => {
-        switch (type) {
-            case notificationTypes.success: {
-                return null;
-            }
-            case notificationTypes.warning: {
-                return null;
-            }
-            case notificationTypes.error: {
-                return ErrorIcon;
-            }
-            default:
-                return null;
-        }
-    };
-
-    const renderByType = () => {
-        switch (type) {
-            case notificationTypes.success:
-            case notificationTypes.warning:
-            case notificationTypes.error: {
-                return (
-                    <div
-                        className={[
-                            classNames.notification,
-                            classNames[type],
-                            getAlignmentClassName(),
-                        ].join(" ")}
-                        onClick={() =>
-                            notificationActions.dismissNotification(id)
-                        }
-                    >
-                        <div className={classNames.icon}>
-                            <img src={getIcon()} />
-                        </div>
-                        <div className={classNames.preview}>
-                            <p>
-                                <span>{content}</span>
-                            </p>
-                        </div>
-                    </div>
-                );
-            }
-            default:
-                return null;
-        }
-    };
-
-    return <>{renderByType()}</>;
-};
-
 const mapDispatchToProps = (dispatch) => ({
-    notificationActions: bindActionCreators(notificationActions, dispatch),
+    notificationsActions: bindActionCreators(notificationsActions, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(Notification);
+export const Notification = connect(
+    null,
+    mapDispatchToProps
+)(
+    ({
+        id,
+        type,
+        title,
+        text,
+        dismissTimeout,
+        showDetails = false,
+        toggleDetails,
+    }) => {
+        const getIcon = () => {
+            switch (type) {
+                case notificationTypes.error:
+                    return ErrorSVG;
+                default:
+                    return null;
+            }
+        };
+
+        return (
+            <div
+                className={concatClasses(
+                    classNames.notification,
+                    classNames[type],
+                    {
+                        [classNames.open]: showDetails,
+                    }
+                )}
+            >
+                <div className={classNames.title}>
+                    <img src={getIcon()} />
+                    <span>{title}</span>
+                    <img
+                        src={TogglerSVG}
+                        style={
+                            showDetails ? { transform: "rotate(180deg)" } : null
+                        }
+                        onClick={toggleDetails}
+                    />
+                </div>
+                <div className={classNames.details}>{text}</div>
+            </div>
+        );
+    }
+);

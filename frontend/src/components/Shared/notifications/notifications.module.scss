@@ -1,38 +1,18 @@
-$preview-height: 70%;
-$animation-duration: .5s;
+@import "variables";
 
-@keyframes appear-icon {
+@keyframes appear-sign {
     0% {
-        opacity: 0;
         transform: translateX(-100%);
+        width: 54px;
     }
-    100% {
-        opacity: 100%;
+
+    50% {
         transform: translateX(0);
+        width: 54px;
     }
-}
 
-@keyframes appear-preview {
-    0% {
-        flex-basis: 0;
-    }
-    51%{
-        flex-basis: 0;
-    }
     100% {
-        flex-basis: 100%;
-    }
-}
-
-@keyframes appear-preview-beginning{
-    0%{
-        width: 0;
-    }
-    50%{
-        width: 0;
-    }
-    100%{
-        width:50%;
+        width: 100%;
     }
 }
 
@@ -41,90 +21,78 @@ $animation-duration: .5s;
     bottom: 0;
     left: 0;
     width: 30%;
-    padding-bottom: 5rem;
-    padding-left: 0.7rem;
-}
+    padding-left: 3rem;
+    padding-bottom: 3rem;
 
-.notification {
-    z-index: 100;
-    cursor: pointer;
-    display: flex;
-    height: 4rem;
-    margin-bottom: 1.5rem;
-
-    &.error .preview p,
-    &.error .icon {
-        background-color: red;
-    }
-
-    &.warning .preview p,
-    &.warning .icon {
-        background-color: yellow;
-    }
-
-    &.message .preview p,
-    &.message .icon {
-        background-color: cyan;
-    }
-
-    &.success .preview p,
-    &.success .icon {
-        background-color: green;
-    }
-
-    .icon {
-        position: relative;
-        border: 1px solid;
-        border-radius: 50%;
-        height: 100%;
-        background-color: inherit;
-        animation: appear-icon $animation-duration ease;
-
-        img {
-            height: 100%;
-        }
-
-        &:after {
-            display: block;
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: -5%;
-            z-index: -100;
-            margin-top: auto;
-            margin-bottom: auto;
-            height: $preview-height;
-            background-color: inherit;
-            width: 50%;
-            animation: appear-preview-beginning $animation-duration * 2 ease;
-        }
-    }
-
-    div.preview {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
+    .notification {
+        border-radius: 25px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        max-width: 300px;
+        margin-top: 1.5rem;
         overflow: hidden;
-        flex-basis: 100%;
-        animation: appear-preview $animation-duration * 2 ease;
+        animation: 0.8s appear-sign;
 
-        p {
+        &.error {
+            background-color: $red;
+            color: $semi-heavy-mint-color;
+        }
+        &.warning {
+            background-color: $yellow;
+        }
+        &.success {
+            background-color: $green;
+        }
+        &.message {
+            background-color: $blue;
+        }
+
+        .title {
             display: flex;
-
-            overflow: hidden;
             align-items: center;
+            padding-left: 8px;
+            padding-right: 19px;
 
-            height: $preview-height;
-            margin-bottom: 0;
-            padding: 0 1rem 0 1rem;
-            border-radius: 0 1rem 1rem 0;
-
-            span {
+            > span {
+                display: block;
+                flex-basis: 100%;
+                padding-left: 19px;
+                padding-right: 9px;
                 overflow: hidden;
-                white-space: nowrap;
                 text-overflow: ellipsis;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 14px;
+                line-height: 17px;
+            }
+
+            > img:last-of-type {
+                cursor: pointer;
+                transition: all 0.1s linear;
+                &:hover {
+                    opacity: 0.7;
+                }
+            }
+        }
+
+        .details {
+            max-height: 0px;
+            overflow: hidden;
+            text-align: left;
+            padding-right: 10px;
+            transition: max-height 0.3s ease-out;
+        }
+
+        &.open {
+            .title {
+                padding-bottom: 8px;
+                border-bottom: 1px solid $semi-heavy-mint-color;
+            }
+
+            .details {
+                max-height: 140px;
+                overflow-y: scroll;
+                margin: 8px 19px 15px 18px;
             }
         }
     }

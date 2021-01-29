@@ -1,38 +1,25 @@
-import { push } from 'connected-react-router';
+import { push } from "connected-react-router";
 
-import Config from 'Config';
-import { store } from '../store/index';
+import { tokenId } from '../constants';
 
-export const BaseService = class{
-    constructor(authRequired = true){
-        this._apiUrl = Config.serverUrl;
-        this.authRequired = authRequired;
+export class BaseService {
+    constructor() {
+        this.baseUrl = "http://localhost:8000/";
     }
 
-    async request(url, options){
-        let headers = {};
-
-        //прикрепляем токен или отправляем пользователя авторизовываться
-        if(this.authRequired){
-            const jwt = localStorage.getItem('jwt');
-
-            if(!jwt){
-                //главный компонент сам решит, куда направить неавторизованного юзера
-                store.dispatch(push('/'))
-                return;
-            }else{
-                headers = {...headers, 'Authorization':`Bearer:${jwt}`}
-            }
+    async request(url = "", body, headers, needsAuth = true, resType = "json") {
+        const authToken = localStorage.getItem(tokenId);
+        if (needsAuth && !authToken) {
+            push("/auth");
+            return null;
         }
 
-        const response = await fetch(`${this._apiUrl}/${url}`, {
-            ...options,
-            headers:{
-                ...options&&options.headers,
-                ...headers
-            }
-        });
+        headers = needsAuth
+            ? { Authorization: `Bearer ${authToken}`, ...headers }
+            : headers;
 
-        return response;
+        const res = await fetch(`${this.baseUrl}${url}`, { body, headers });
+        const parsedRes = await res[resType]();
+        return parsedRes;
     }
 }

@@ -1,15 +1,97 @@
-@import './variables';
+@import "./variables";
 
-body{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: $fs;
-    font-family: $ff;
-    height: 100vh;
-    background-color: $light-mint-color;
+@mixin dark-button {
+    border-color: $light-mint-color;
+    background-color: $semi-heavy-mint-color;
+    color: $light-mint-color;
 }
 
-#root{
-    height: 100%;
+@mixin light-button {
+    border-color: $semi-heavy-mint-color;
+    background-color: $light-mint-color;
+    color: $semi-heavy-mint-color;
+}
+
+body {
+    font-family: $ff;
+    background-color: $light-mint-color;
+    box-sizing: border-box;
+    font-size: $fs;
+}
+
+input.form-control {
+    background-color: #ebfcf7;
+    border: 1px solid #7fd4bc;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 25px;
+    padding-left: 10px;
+    color: #5c9a88;
+    transition: transform 0.3s ease-out;
+
+    &:focus {
+        background-color: #ebfcf7;
+        color: #5c9a88;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        transform: scale(1.05) perspective(1px);
+        backface-visibility: hidden;
+    }
+}
+
+button.btn {
+    padding: 8px 20px;
+    background: #7fd4bc;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    box-shadow: none;
+
+    transition: all 0.3s ease-out;
+
+    &:active,
+    &:focus {
+        box-shadow: none !important;
+        outline: none;
+    }
+
+    &.dark {
+        @include dark-button();
+
+        &:hover,
+        &:active:focus {
+            @include light-button();
+        }
+    }
+}
+
+::-webkit-scrollbar-button {
+    background-image: url("");
+    background-repeat: no-repeat;
+    width: 6px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: $light-mint-color;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-color: $semi-heavy-mint-color;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
 }

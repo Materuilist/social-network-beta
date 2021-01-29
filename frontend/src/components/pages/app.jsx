@@ -1,14 +1,24 @@
 import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 
-import Layout from "./layout/layout";
-import CheckUser from "./check.user";
-
-// import classNames from "./app.module.scss";
+import { CheckUser } from "./check-user";
+import { Layout } from "./layout";
+import { Auth } from "./auth/auth";
+import { Notifications } from "../shared/notifications/notifications";
 
 export const App = () => {
     return (
-        <CheckUser>
-            <Layout />
-        </CheckUser>
+        <CheckUser
+            renderLayout={() => <Layout />}
+            renderAuth={() => (
+                <Switch>
+                    <Route path="/auth">
+                        <Auth />
+                        <Notifications />
+                    </Route>
+                    <Redirect to="/auth" />
+                </Switch>
+            )}
+        />
     );
 };

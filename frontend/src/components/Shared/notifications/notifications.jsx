@@ -1,40 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 
-import Notification from "./notification";
-import { notificationActions } from "../../../store/actions";
+import { Notification } from "./notification";
+import { maxNotifications } from "../../../constants";
 
 import classNames from "./notifications.module.scss";
-import { simultaneouslyDisplayedNotificationsCount } from "../../../constants";
 
-const Notifications = ({ notifications, notificationActions }) => {
+const mapStateToProps = (state) => ({
+    notifications: state.notifications,
+});
+
+export const Notifications = connect(mapStateToProps)(({ notifications }) => {
+    const [detailedNotificationId, setDetailedNotificationId] = useState(null);
+
     return (
-        <>
-            {notifications && notifications.length !== 0 && (
-                <div className={classNames.notifications}>
-                    {notifications
-                        // сначала показываем более поздние уведомления
-                        .sort((a, b) => b.id - a.id)
-                        .slice(0, simultaneouslyDisplayedNotificationsCount)
-                        .map((notification) => (
-                            <Notification
-                                key={notification.id}
-                                {...notification}
-                            />
-                        ))}
-                </div>
-            )}
-        </>
+        <div className={classNames.notifications}>
+            {notifications.data
+                .sort(
+                    ({ id: timestampA }, { id: timestampB }) =>
+                        timestampB - timestampA
+                )
+                .slice(0, maxNotifications)
+                .map((item) => (
+                    <Notification
+                        key={item.id}
+                        showDetails={detailedNotificationId === item.id}
+                        toggleDetails={() =>
+                            setDetailedNotificationId(
+                                detailedNotificationId === item.id
+                                    ? null
+                                    : item.id
+                            )
+                        }
+                        {...item}
+                    />
+                ))}
+        </div>
     );
-};
-
-const mapStateToProps = ({ notifications: { items } }) => ({
-    notifications: items,
 });
-
-const mapDispatchToProps = (dispatch) => ({
-    notificationActions: bindActionCreators(notificationActions, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

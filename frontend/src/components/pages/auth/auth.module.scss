@@ -1,0 +1,55 @@
+@import "variables";
+
+.authPage {
+    height: 100vh;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.authForm {
+    width: 25%;
+    max-width: 470px;
+    border-radius: 10px;
+    background-color: $semi-heavy-mint-color;
+    box-shadow: 0 0 6px $heavy-mint-color;
+    padding: 76px 86px 30px 86px;
+
+    input:first-of-type {
+        margin-bottom: 35px;
+    }
+
+    button {
+        display: block;
+        margin: auto;
+        width: 140px;
+        margin-bottom: 8px;
+    }
+
+    p {
+        cursor: pointer;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+
+    p.resetPassword {
+        margin-top: 10px;
+        margin-bottom: 35px;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        text-align: right;
+        color: #ebfcf7;
+    }
+
+    p:last-of-type {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        text-align: center;
+        color: #ebfcf7;
+    }
+}

@@ -18,6 +18,10 @@ module.exports = (env = {}) => {
         },
         resolve: {
             extensions: [".js", ".jsx"],
+            alias:{
+                variables: path.resolve(__dirname + '/src/_variables.scss'),
+                images: path.resolve(__dirname + '/src/static/images/')
+            }
         },
         module: {
             rules: [

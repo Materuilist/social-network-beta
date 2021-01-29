@@ -1,14 +1,11 @@
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import { userInfoReducer } from "./user-info/user-info.reducer";
-
-import { notificationReducer } from "./Shared/notification.reducer";
-import { dictionariesReducer } from "./Shared/dictionaries.reducer";
+import { userInfoReducer } from "./user-info.reducer";
+import { notificationsReducer } from "./notifications.reducer";
 
 const reducers = {
-    notifications: notificationReducer,
-    dictionaries: dictionariesReducer,
+    notifications: notificationsReducer,
 
     userInfo: userInfoReducer,
 };
