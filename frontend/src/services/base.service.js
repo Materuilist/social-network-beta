@@ -11,20 +11,22 @@ export class BaseService {
 
     async request(url = "", init, needsAuth = true, resType = "json") {
         const authToken = localStorage.getItem(tokenId);
-        if (needsAuth && !authToken) {
-            push("/auth");
+        if (needsAuth && (!authToken || authToken === "undefined")) {
+            // store.dispatch(push("/auth"));
+            localStorage.removeItem(tokenId);
             return null;
         }
 
-        if(!init){
-            init = {}
+        if (!init) {
+            init = {};
         }
 
         init.headers = needsAuth
             ? { Authorization: `Bearer ${authToken}`, ...init.headers }
             : init.headers;
 
-        let res, parsedRes = null;
+        let res,
+            parsedRes = null;
         try {
             res = await fetch(`${this.baseUrl}${url}`, init);
             parsedRes = await res[resType]();

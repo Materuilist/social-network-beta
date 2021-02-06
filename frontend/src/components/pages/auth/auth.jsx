@@ -4,7 +4,7 @@ import { Button, Form, Input } from "reactstrap";
 import { bindActionCreators } from "redux";
 
 import { authActions, notificationsActions } from "../../../store/actions";
-import { Loader } from "../../shared/loader/loader";
+import { CustomLoader } from "../../shared/custom-loader/custom-loader";
 
 import classNames from "./auth.module.scss";
 
@@ -37,7 +37,7 @@ export const Auth = connect(
     return (
         <div className={classNames.authPage}>
             <Form className={classNames.authForm} onSubmit={submit}>
-                <Loader isLoading={isLoading} />
+                <CustomLoader isLoading={isLoading} />
                 <Input
                     name="login"
                     required={true}

@@ -5,7 +5,7 @@ import { calcRem } from "../../../helpers";
 
 import classNames from "./loader.module.scss";
 
-export const Loader = ({
+export const CustomLoader = ({
     isLoading,
     isLight = true,
     size = 150,

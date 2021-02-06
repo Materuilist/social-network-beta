@@ -1,2 +1,8 @@
 @import "functions";
+@import "variables";
 
+.profile{
+    position: relative;
+    flex-basis: 100%;
+    background-color: $semi-heavy-mint-color;
+}

@@ -2,30 +2,30 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { authActions } from "../../store/actions";
-import { Loader } from "../shared/loader/loader";
+import { userInfoActions } from "../../store/actions";
+import { CustomLoader } from "../shared/custom-loader/custom-loader";
 
 const mapStateToProps = (state) => ({
     login: state.userInfo.login,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    authActions: bindActionCreators(authActions, dispatch),
+    userInfoActions: bindActionCreators(userInfoActions, dispatch),
 });
 
 export const CheckUser = connect(
     mapStateToProps,
     mapDispatchToProps
-)(({ renderLayout, renderAuth, login, authActions }) => {
+)(({ renderLayout, renderAuth, login, userInfoActions }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        authActions.getUser(() => setIsLoading(false));
+        userInfoActions.getInfo(() => setIsLoading(false));
     }, []);
 
     return isLoading ? (
         <div className="position-relative vw-100 vh-100">
-            <Loader isLoading={true} />
+            <CustomLoader isLoading={true} />
         </div>
     ) : login ? (
         renderLayout()
