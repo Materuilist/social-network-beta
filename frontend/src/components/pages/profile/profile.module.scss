@@ -2,7 +2,7 @@
 @import "variables";
 
 .profile {
-    flex-basis: 100%;
+    flex-basis: 73.5%;
     position: relative;
     display: flex;
     flex-wrap: wrap;
@@ -34,7 +34,7 @@
                 height: 100%;
 
                 &.avatarContainer {
-                    flex: 1 0 45%;
+                    flex: 1 0 30%;
                     position: relative;
                     display: flex;
                     justify-content: center;
@@ -87,7 +87,7 @@
                 }
 
                 &:last-of-type {
-                    flex: 1 0 45%;
+                    flex: 1 0 65%;
                     overflow: auto;
                     padding-right: calc-rem(14px);
 

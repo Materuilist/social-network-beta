@@ -1,22 +1,10 @@
-@import "bootstrap/scss/bootstrap.scss";
-
 @import "variables";
 @import "functions";
+@import "./mixins";
 
 //medias
 html {
-    @include media-breakpoint-up(sm) {
-        font-size: 6px;
-    }
-    @include media-breakpoint-up(md) {
-        font-size: 9px;
-    }
-    @include media-breakpoint-up(lg) {
-        font-size: 13px;
-    }
-    @include media-breakpoint-up(xl) {
-        font-size: $fs;
-    }
+    @include medias();
 }
 
 body {
@@ -44,7 +32,7 @@ body {
     font-family: $ff;
     background-color: $light-mint-color;
     box-sizing: border-box;
-    font-size: $fs;
+    @include medias()
 }
 
 input.form-control {

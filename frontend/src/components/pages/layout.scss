@@ -65,16 +65,15 @@
     margin-right: $content-side-margin;
 
     .side-nav {
-        flex: 1 0 calc-rem(338px);
-        max-width: calc-rem(338px);
+        flex: 1 0 24.5%;
         height: $side-nav-height;
         display: flex;
         flex-direction: column;
         padding-bottom: calc-rem(20px);
-        margin-right: calc-rem(31px);
+        margin-right: 2%;
         background-color: $semi-heavy-mint-color;
         border: 1px solid $light-mint-color;
-        border-radius: 10px;
+        border-radius: calc-rem(10px);
 
         *:first-child {
             border-radius: calc-rem(10px) calc-rem(10px) 0 0;

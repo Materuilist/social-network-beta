@@ -1,3 +1,3 @@
-@function calc-rem($pixels){
+@function calc-rem($pixels) {
     @return #{$pixels / $fs}rem;
 }

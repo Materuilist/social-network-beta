@@ -1,0 +1,15 @@
+@import "./variables";
+
+// $mediasStartFs: $fs - 8;
+
+@mixin medias($fontSize: 2px) {
+    @for $breakpoint-bottom from 400 through 6000 {
+        @if $breakpoint-bottom % 100 == 0 {
+            $breakpoint-top: $breakpoint-bottom + 100;
+            @media (min-width:#{$breakpoint-bottom}px) and (max-width:#{$breakpoint-top}px) {
+                font-size: $fontSize;
+            }
+            $fontSize: $fontSize + 1;
+        }
+    }
+}
