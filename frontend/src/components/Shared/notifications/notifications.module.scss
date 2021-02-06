@@ -32,6 +32,7 @@
         margin-top: 1.5rem;
         overflow: hidden;
         animation: 0.8s appear-sign;
+        cursor: pointer;
 
         &.error {
             background-color: $red;
@@ -59,6 +60,7 @@
                 padding-left: 19px;
                 padding-right: 9px;
                 overflow: hidden;
+                white-space: nowrap;
                 text-overflow: ellipsis;
                 font-style: normal;
                 font-weight: bold;
@@ -80,7 +82,7 @@
             overflow: hidden;
             text-align: left;
             padding-right: 10px;
-            transition: max-height 0.3s ease-out;
+            transition: all 0.3s ease-out;
         }
 
         &.open {
@@ -91,7 +93,7 @@
 
             .details {
                 max-height: 140px;
-                overflow-y: scroll;
+                overflow-y: auto;
                 margin: 8px 19px 15px 18px;
             }
         }

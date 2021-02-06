@@ -20,6 +20,7 @@ module.exports = (env = {}) => {
             extensions: [".js", ".jsx"],
             alias:{
                 variables: path.resolve(__dirname + '/src/_variables.scss'),
+                functions: path.resolve(__dirname + '/src/_functions.scss'),
                 images: path.resolve(__dirname + '/src/static/images/')
             }
         },

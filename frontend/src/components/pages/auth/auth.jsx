@@ -1,43 +1,63 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Button, Input } from "reactstrap";
+import { Button, Form, Input } from "reactstrap";
 import { bindActionCreators } from "redux";
 
-import { notificationsActions } from "../../../store/actions";
+import { authActions, notificationsActions } from "../../../store/actions";
+import { Loader } from "../../shared/loader/loader";
 
 import classNames from "./auth.module.scss";
 
 const mapDispatchToProps = (dispatch) => ({
     notificationsActions: bindActionCreators(notificationsActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch),
 });
 
 export const Auth = connect(
     null,
     mapDispatchToProps
-)(({ notificationsActions }) => {
+)(({ notificationsActions, authActions }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
+
+    const submit = (event) => {
+        event.preventDefault();
+        const {
+            target: { login, password },
+        } = event;
+
+        setIsLoading(true);
+        authActions[isLogin ? "login" : "register"](
+            login.value,
+            password.value,
+            () => setIsLoading(false)
+        );
+    };
 
     return (
         <div className={classNames.authPage}>
-            <div className={classNames.authForm}>
-                <Input value="Бубблс" type="text" />
-                <Input value="Пароль" type="password" />
+            <Form className={classNames.authForm} onSubmit={submit}>
+                <Loader isLoading={isLoading} />
+                <Input
+                    name="login"
+                    required={true}
+                    placeholder="Логин"
+                    type="text"
+                />
+                <Input
+                    name="password"
+                    required={true}
+                    placeholder="Пароль"
+                    type="password"
+                />
                 <p className={classNames.resetPassword}>Сбросить пароль</p>
-                <Button
-                    className="dark"
-                    onClick={() =>
-                        notificationsActions.notifyError(
-                            "opadsdasdsadasdsadsadadadasdad",
-                            "Стоящий у доски Петухов задумчиво посмотрел на концы своих ботинок и почесал нос. Ученики в классе от скуки начали тихо шушукаться. Уже пару минут Петухов молчал как партизан. Учительница биологии и классная руководительница восьмого Б Агнесса Ивановна прервала тишину:"
-                        )
-                    }
-                >
+                <Button type="submit" className="dark">
                     {isLogin ? "Вход" : "Регистрация"}
                 </Button>
                 <p className="text-center" onClick={() => setIsLogin(!isLogin)}>
                     {isLogin ? "Регистрация" : "Вход"}
                 </p>
-            </div>
+            </Form>
         </div>
     );
 });

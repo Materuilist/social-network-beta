@@ -27,6 +27,7 @@ export const Notification = connect(
         dismissTimeout,
         showDetails = false,
         toggleDetails,
+        notificationsActions,
     }) => {
         const getIcon = () => {
             switch (type) {
@@ -46,6 +47,7 @@ export const Notification = connect(
                         [classNames.open]: showDetails,
                     }
                 )}
+                onClick={() => notificationsActions.dismissNotification(id)}
             >
                 <div className={classNames.title}>
                     <img src={getIcon()} />
@@ -55,7 +57,10 @@ export const Notification = connect(
                         style={
                             showDetails ? { transform: "rotate(180deg)" } : null
                         }
-                        onClick={toggleDetails}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            toggleDetails();
+                        }}
                     />
                 </div>
                 <div className={classNames.details}>{text}</div>

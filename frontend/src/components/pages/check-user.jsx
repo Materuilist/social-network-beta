@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { authActions } from "../../store/actions";
+import { Loader } from "../shared/loader/loader";
 
 const mapStateToProps = (state) => ({
     login: state.userInfo.login,
@@ -23,7 +24,9 @@ export const CheckUser = connect(
     }, []);
 
     return isLoading ? (
-        <div>Loading...</div>
+        <div className="position-relative vw-100 vh-100">
+            <Loader isLoading={true} />
+        </div>
     ) : login ? (
         renderLayout()
     ) : (

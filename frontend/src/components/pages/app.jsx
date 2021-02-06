@@ -8,17 +8,19 @@ import { Notifications } from "../shared/notifications/notifications";
 
 export const App = () => {
     return (
-        <CheckUser
-            renderLayout={() => <Layout />}
-            renderAuth={() => (
-                <Switch>
-                    <Route path="/auth">
-                        <Auth />
-                        <Notifications />
-                    </Route>
-                    <Redirect to="/auth" />
-                </Switch>
-            )}
-        />
+        <>
+            <CheckUser
+                renderLayout={() => <Layout />}
+                renderAuth={() => (
+                    <Switch>
+                        <Route path="/auth">
+                            <Auth />
+                        </Route>
+                        <Redirect to="/auth" />
+                    </Switch>
+                )}
+            />
+            <Notifications />
+        </>
     );
 };

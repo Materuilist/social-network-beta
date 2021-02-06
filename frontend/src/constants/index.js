@@ -1,3 +1,5 @@
+export const BASE_FONT_SIZE = 16;
+
 export const tokenId = "sn_jwt";
 
 export const notificationTypes = {

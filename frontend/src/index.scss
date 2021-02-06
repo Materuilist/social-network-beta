@@ -1,4 +1,23 @@
-@import "./variables";
+@import "bootstrap/scss/bootstrap.scss";
+
+@import "variables";
+@import "functions";
+
+//medias
+html {
+    @include media-breakpoint-up(sm) {
+        font-size: 6px;
+    }
+    @include media-breakpoint-up(md) {
+        font-size: 9px;
+    }
+    @include media-breakpoint-up(lg) {
+        font-size: 13px;
+    }
+    @include media-breakpoint-up(xl) {
+        font-size: $fs;
+    }
+}
 
 @mixin dark-button {
     border-color: $light-mint-color;
@@ -21,37 +40,38 @@ body {
 
 input.form-control {
     background-color: #ebfcf7;
-    border: 1px solid #7fd4bc;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
+    border: calc-rem(1px) solid #7fd4bc;
+    box-shadow: calc-rem(0px) calc-rem(4px) calc-rem(4px) rgba(0, 0, 0, 0.25);
+    border-radius: calc-rem(5px);
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
-    line-height: 25px;
-    padding-left: 10px;
+    font-size: calc-rem(20px);
+    line-height: calc-rem(25px);
+    padding-left: calc-rem(10px);
     color: #5c9a88;
     transition: transform 0.3s ease-out;
 
     &:focus {
         background-color: #ebfcf7;
         color: #5c9a88;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        transform: scale(1.05) perspective(1px);
+        box-shadow: calc-rem(0px) calc-rem(4px) calc-rem(4px)
+            rgba(0, 0, 0, 0.25);
+        transform: scale(1.05) perspective(#{alc-rem(1px)});
         backface-visibility: hidden;
     }
 }
 
 button.btn {
-    padding: 8px 20px;
+    padding: calc-rem(8px) calc-rem(20px);
     background: #7fd4bc;
-    border-width: 1px;
+    border-width: calc-rem(1px);
     border-style: solid;
-    border-radius: 5px;
+    border-radius: calc-rem(5px);
 
     font-style: normal;
     font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: calc-rem(16px);
+    line-height: calc-rem(20px);
     text-align: center;
     box-shadow: none;
 
@@ -76,22 +96,22 @@ button.btn {
 ::-webkit-scrollbar-button {
     background-image: url("");
     background-repeat: no-repeat;
-    width: 6px;
-    height: 0px;
+    width: calc-rem(6px);
+    height: calc-rem(0px);
 }
 
 ::-webkit-scrollbar-track {
     background-color: $light-mint-color;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: calc-rem(5px);
+    border-radius: calc-rem(5px);
 }
 
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: calc-rem(5px);
+    border-radius: calc-rem(5px);
     background-color: $semi-heavy-mint-color;
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+    width: calc-rem(8px);
 }

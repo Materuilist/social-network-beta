@@ -3,7 +3,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import { Profile } from "./profile/profile";
 import { Friends } from "./friends/friends";
-import { Notifications } from "../shared/notifications/notifications";
 
 export const Layout = () => {
     return (
@@ -17,7 +16,6 @@ export const Layout = () => {
                 </Route>
                 <Redirect to="/profile" />
             </Switch>
-            <Notifications />
         </>
     );
 };
