@@ -26,7 +26,7 @@ export const Header = connect(
     return (
         <div className="header">
             <div>
-                <img src={LogoIMG} />
+                <img src={LogoIMG} onClick={() => store.dispatch(push("/profile"))} />
                 <div>
                     <img
                         src={avatar || defaultAvatarIMG}

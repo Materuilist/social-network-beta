@@ -65,9 +65,9 @@ const setOnline = async (req, res, next) => {
 };
 
 const updateUserInfo = async (req, res, next) => {
-    const { user, sex, city, birthDate } = req.body;
+    const { user, sex, city, birthDate, avatar } = req.body;
 
-    const filteredInfo = filterBody({ sex, city, birthDate });
+    const filteredInfo = filterBody({ sex, city, birthDate, avatar });
 
     try {
         await user.updateOne(filteredInfo);

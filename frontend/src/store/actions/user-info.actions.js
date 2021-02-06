@@ -1,5 +1,5 @@
 import { userInfoActionTypes } from "../actionTypes";
-import { UserInfoService } from '../../services/user-info.service';
+import { UserInfoService } from "../../services/user-info.service";
 import { tokenId } from "../../constants";
 
 const userInfoService = new UserInfoService();
@@ -13,15 +13,23 @@ export const clearUserInfo = () => ({
     type: userInfoActionTypes.CLEAR_USER_INFO,
 });
 
-export const getInfo = (cb) => async(dispatch, getState) => {
+export const getInfo = (cb) => async (dispatch, getState) => {
     const info = await userInfoService.getInfo();
 
-    if(info){
+    if (info) {
         dispatch(setUserInfo(info));
-    }else{
-        localStorage.removeItem(tokenId)
+    } else {
+        localStorage.removeItem(tokenId);
         dispatch(clearUserInfo());
     }
 
-    cb && typeof(cb) === 'function' && cb();
+    cb && typeof cb === "function" && cb();
+};
+
+export const updateAvatar = (avatarBinary, cb) => async (dispatch) => {
+    const res = await userInfoService.updateAvatar(avatarBinary);
+    if (res) {
+        dispatch(setUserInfo({ avatar: avatarBinary }));
+    }
+    cb && typeof cb === "function" && cb();
 };

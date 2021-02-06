@@ -1,8 +1,111 @@
 @import "functions";
 @import "variables";
 
-.profile{
-    position: relative;
+.profile {
     flex-basis: 100%;
-    background-color: $semi-heavy-mint-color;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+
+    > div {
+        position: relative;
+        background-color: $semi-heavy-mint-color;
+        border-radius: 10px;
+    }
+
+    .mainInfo,
+    .userHobbies {
+        height: $side-nav-height;
+    }
+
+    .mainInfo {
+        flex: 1 0 57%;
+        margin-right: 4%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > div {
+            display: flex;
+            height: 90%;
+            width: 90%;
+
+            > div {
+                height: 100%;
+
+                &.avatarContainer {
+                    flex: 1 0 45%;
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 80%;
+                    margin-right: 5%;
+                    padding: calc-rem(16px);
+                    border: 1px solid $light-mint-color;
+                    border-radius: 5px;
+
+                    > img {
+                        width: 100%;
+                        max-height: 100%;
+                        border-radius: inherit;
+                    }
+
+                    > div:last-of-type {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        z-index: -1;
+                        opacity: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        height: 20%;
+                        background-color: rgba(0, 0, 0, 0.3);
+                        border-radius: 0 0 5px 5px;
+                        cursor: pointer;
+                        transition: all 0.1s linear;
+
+                        > span {
+                            font-size: calc-rem(18px);
+                            line-height: calc-rem(22.5px);
+                        }
+
+                        &:hover {
+                            > img,
+                            > span {
+                                opacity: 0.7;
+                            }
+                        }
+                    }
+
+                    &:hover > div:last-of-type {
+                        z-index: 1;
+                        opacity: 1;
+                    }
+                }
+
+                &:last-of-type {
+                    flex: 1 0 45%;
+                    overflow: auto;
+                    padding-right: calc-rem(14px);
+
+                    &::-webkit-scrollbar-thumb {
+                        background-color: $heavy-mint-color;
+                    }
+                }
+            }
+        }
+    }
+
+    .userHobbies {
+        flex: 1 0 39%;
+    }
+
+    .userPhotos {
+        flex: 1 0 100%;
+        height: calc-rem(294px);
+        margin-top: calc-rem(25px);
+    }
 }

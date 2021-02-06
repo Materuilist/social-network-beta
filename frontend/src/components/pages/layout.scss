@@ -20,6 +20,14 @@
         height: 60%;
         width: 100%;
 
+        > img {
+            cursor: pointer;
+            
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+
         > div {
             height: 100%;
             font-size: calc-rem(24px);
@@ -27,6 +35,7 @@
 
             > img {
                 height: 100%;
+                max-width: calc-rem(70px);
 
                 &:first-of-type {
                     border-radius: 50%;
@@ -58,7 +67,7 @@
     .side-nav {
         flex: 1 0 calc-rem(338px);
         max-width: calc-rem(338px);
-        box-sizing: content-box;
+        height: $side-nav-height;
         display: flex;
         flex-direction: column;
         padding-bottom: calc-rem(20px);
@@ -67,12 +76,13 @@
         border: 1px solid $light-mint-color;
         border-radius: 10px;
 
-        *:first-child{
+        *:first-child {
             border-radius: calc-rem(10px) calc-rem(10px) 0 0;
         }
 
-        >a, .brief-statistics-row{
-            flex-basis: calc-rem(60px);
+        > a,
+        .brief-statistics-row {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -83,12 +93,12 @@
             line-height: calc-rem(30px);
             text-decoration: none;
             color: $light-mint-color;
-            transition: all .12s ease-out;
+            transition: all 0.12s ease-out;
 
-            &.active{
+            &.active {
                 background-color: $heavy-mint-color;
             }
-            &:not(.active):hover{
+            &:not(.active):hover {
                 background-color: $light-mint-color;
                 color: $semi-heavy-mint-color;
             }
