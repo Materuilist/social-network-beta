@@ -40,3 +40,7 @@ export const register = (login, password, cb) => async (dispatch, getState) => {
     cb && typeof cb === "function" && cb();
 };
 
+export const signOut = () => (dispatch) => {
+    localStorage.removeItem(tokenId);
+    dispatch(userInfoActions.clearUserInfo());
+};

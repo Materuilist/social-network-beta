@@ -21,6 +21,7 @@ module.exports = (env = {}) => {
             alias:{
                 variables: path.resolve(__dirname + '/src/_variables.scss'),
                 functions: path.resolve(__dirname + '/src/_functions.scss'),
+                actions: path.resolve(__dirname + '/src/store/actions/'),
                 images: path.resolve(__dirname + '/src/static/images/')
             }
         },

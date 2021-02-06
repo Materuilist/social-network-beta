@@ -19,6 +19,15 @@ html {
     }
 }
 
+body {
+    height: 100vh;
+    color: $light-mint-color;
+    
+    #root {
+        height: 100%;
+    }
+}
+
 @mixin dark-button {
     border-color: $light-mint-color;
     background-color: $semi-heavy-mint-color;
