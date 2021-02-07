@@ -34,70 +34,80 @@
                 height: 90%;
                 width: 90%;
 
-                > div {
-                    height: 100%;
+                div.avatarContainer {
+                    flex: 1 0 45%;
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 80%;
+                    margin-right: 5%;
+                    padding: calc-rem(16px);
+                    border: calc-rem(1px) solid $light-mint-color;
+                    border-radius: calc-rem(5px);
 
-                    &.avatarContainer {
-                        flex: 1 0 40%;
-                        position: relative;
+                    > img {
+                        height: 100%;
+                        width: 100%;
+                        border-radius: inherit;
+                        object-fit: cover;
+                        object-position: center;
+                    }
+
+                    > div:last-of-type {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        z-index: -1;
+                        opacity: 0;
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        height: 80%;
-                        margin-right: 5%;
-                        padding: calc-rem(16px);
-                        border: 1px solid $light-mint-color;
-                        border-radius: 5px;
+                        width: 100%;
+                        height: 20%;
+                        background-color: rgba(0, 0, 0, 0.3);
+                        border-radius: 0 0 5px 5px;
+                        cursor: pointer;
+                        transition: all 0.1s linear;
 
-                        > img {
-                            height: 100%;
-                            max-width: 100%;
-                            border-radius: inherit;
+                        > span {
+                            font-size: calc-rem(18px);
+                            line-height: calc-rem(22.5px);
                         }
 
-                        > div:last-of-type {
-                            position: absolute;
-                            bottom: 0;
-                            left: 0;
-                            z-index: -1;
-                            opacity: 0;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            width: 100%;
-                            height: 20%;
-                            background-color: rgba(0, 0, 0, 0.3);
-                            border-radius: 0 0 5px 5px;
-                            cursor: pointer;
-                            transition: all 0.1s linear;
-
+                        &:hover {
+                            > img,
                             > span {
-                                font-size: calc-rem(18px);
-                                line-height: calc-rem(22.5px);
+                                opacity: 0.7;
                             }
-
-                            &:hover {
-                                > img,
-                                > span {
-                                    opacity: 0.7;
-                                }
-                            }
-                        }
-
-                        &:hover > div:last-of-type {
-                            z-index: 1;
-                            opacity: 1;
                         }
                     }
 
-                    &:last-of-type {
-                        flex: 1 0 65%;
-                        overflow: auto;
-                        padding-right: calc-rem(14px);
+                    &:hover > div:last-of-type {
+                        z-index: 1;
+                        opacity: 1;
+                    }
+                }
 
-                        &::-webkit-scrollbar-thumb {
-                            background-color: $heavy-mint-color;
-                        }
+                form {
+                    flex: 1 0 50%;
+                    height: 100%;
+                    overflow: auto;
+                    padding-right: calc-rem(14px);
+
+                    &::-webkit-scrollbar-thumb {
+                        background-color: $heavy-mint-color;
+                    }
+
+                    label{
+                        font-size: calc-rem(18px);
+                        line-height: calc-rem(22.5px);
+                    }
+
+                    input{
+                        font-size: calc-rem(16px);
+                        line-height: calc-rem(20px);
+                        height: calc-rem(38px);
                     }
                 }
             }

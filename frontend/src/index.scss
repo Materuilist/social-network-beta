@@ -48,6 +48,14 @@ input.form-control {
     color: #5c9a88;
     transition: transform 0.3s ease-out;
 
+    &[type='date']{
+        &::-webkit-calendar-picker-indicator{
+            background-image: url('images/calendar.svg');
+            // background-size: cover;
+            cursor: pointer;
+        }
+    }
+
     &:focus {
         background-color: #ebfcf7;
         color: #5c9a88;

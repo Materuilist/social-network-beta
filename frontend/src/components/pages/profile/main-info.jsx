@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Form, FormGroup, Input, Label } from "reactstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { userInfoActions } from "actions";
 import { CustomLoader } from "../../shared/custom-loader/custom-loader";
+import { getFileBinary } from "../../../helpers";
+
 import DefaultAvatarIMG from "images/default-avatar.svg";
 import UploadIMG from "images/upload.svg";
 
 import classNames from "./profile.module.scss";
-import { getFileBinary } from "../../../helpers";
+import { CustomRadioButton } from "../../shared/custom-radiobutton/custom-radiobutton";
 
 const mapStateToProps = ({ userInfo }) => ({ userInfo });
 
@@ -67,7 +70,28 @@ export const MainInfo = connect(
                         />
                     </div>
                 </div>
-                <div></div>
+                <Form>
+                    <FormGroup>
+                        <Label for="login">Логин</Label>
+                        <Input
+                            type="text"
+                            name="login"
+                            disabled
+                            value={login}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="birthDate">Дата рождения</Label>
+                        <Input type="date" name="birthDate" />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Пол</Label>
+                        <div className='d-flex'>
+                            <CustomRadioButton name='sex' value='М' labelText='М' className='mr-3' />
+                            <CustomRadioButton name='sex' value='М' labelText='Ж' />
+                        </div>
+                    </FormGroup>
+                </Form>
             </div>
         </div>
     );
