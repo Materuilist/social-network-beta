@@ -6,3 +6,7 @@ export const userInfoActionTypes = {
 export const notificationsActionTypes = {
     SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
 };
+
+export const dictionariesActionTypes = {
+    SET_CITIES: 'SET_CITIES'
+}

@@ -26,6 +26,7 @@ export const CustomRadioButton = ({
                 checked={checked}
                 defaultChecked={defaultChecked}
                 ref={inputRef}
+                onChange={() => onChange(value)}
             />
             {labelText && <label>{labelText}</label>}
         </div>
