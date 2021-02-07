@@ -15,18 +15,20 @@ export const Layout = () => {
             <Header />
             <div className="content">
                 <SideNav />
-                <Switch>
-                    <Route path="/profile">
-                        <Profile />
-                    </Route>
-                    <Route path="/friends">
-                        <Friends />
-                    </Route>
-                    <Route path="/chat">
-                        <Chat />
-                    </Route>
-                    <Redirect to="/profile" />
-                </Switch>
+                <main>
+                    <Switch>
+                        <Route path="/profile">
+                            <Profile />
+                        </Route>
+                        <Route path="/friends">
+                            <Friends />
+                        </Route>
+                        <Route path="/chat">
+                            <Chat />
+                        </Route>
+                        <Redirect to="/profile" />
+                    </Switch>
+                </main>
             </div>
         </div>
     );

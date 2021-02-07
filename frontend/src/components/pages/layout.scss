@@ -3,6 +3,9 @@
 
 .layout {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .header {
@@ -10,8 +13,7 @@
     align-items: center;
     padding-left: $content-side-margin;
     padding-right: $content-side-margin;
-    height: calc-rem(101px);
-    margin-bottom: calc-rem(48px);
+    height: 10%;
     background-color: $semi-heavy-mint-color;
 
     > div {
@@ -61,6 +63,7 @@
 
 .content {
     display: flex;
+    height: 85.5%;
     margin-left: $content-side-margin;
     margin-right: $content-side-margin;
 
@@ -70,9 +73,8 @@
         display: flex;
         flex-direction: column;
         padding-bottom: calc-rem(20px);
-        margin-right: 2%;
         background-color: $semi-heavy-mint-color;
-        border: 1px solid $light-mint-color;
+        border: calc-rem(1px) solid $light-mint-color;
         border-radius: calc-rem(10px);
 
         *:first-child {
@@ -106,8 +108,14 @@
         .brief-statistics-row {
             font-size: calc-rem(14px);
             line-height: calc-rem(17.5px);
-            border-top: 1px solid $light-mint-color;
-            border-bottom: 1px solid $light-mint-color;
+            border-top: calc-rem(1px) solid $light-mint-color;
+            border-bottom: calc-rem(1px) solid $light-mint-color;
         }
+    }
+
+    main{
+        flex: 1 0 75.5%;
+        padding-left: $content-side-margin;
+        height: 100%;
     }
 }

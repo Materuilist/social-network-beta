@@ -2,110 +2,114 @@
 @import "variables";
 
 .profile {
-    flex-basis: 73.5%;
+    height: 100%;
+    width: 100%;
     position: relative;
     display: flex;
-    flex-wrap: wrap;
-
-    > div {
-        position: relative;
-        background-color: $semi-heavy-mint-color;
-        border-radius: 10px;
-    }
+    flex-direction: column;
 
     .mainInfo,
-    .userHobbies {
-        height: $side-nav-height;
+    .userHobbies,
+    .userPhotos {
+        position: relative;
+        background-color: $semi-heavy-mint-color;
+        border-radius: calc-rem(10px);
     }
 
-    .mainInfo {
-        flex: 1 0 57%;
-        margin-right: 4%;
+    > div:first-child {
+        flex-basis: $side-nav-height;
+        max-height: 43.5%;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        margin-bottom: 2.8%;
 
-        > div {
+        .mainInfo {
+            flex: 1 0 57%;
+            margin-right: 3%;
             display: flex;
-            height: 90%;
-            width: 90%;
+            justify-content: center;
+            align-items: center;
 
             > div {
-                height: 100%;
+                display: flex;
+                height: 90%;
+                width: 90%;
 
-                &.avatarContainer {
-                    flex: 1 0 30%;
-                    position: relative;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 80%;
-                    margin-right: 5%;
-                    padding: calc-rem(16px);
-                    border: 1px solid $light-mint-color;
-                    border-radius: 5px;
+                > div {
+                    height: 100%;
 
-                    > img {
-                        width: 100%;
-                        max-height: 100%;
-                        border-radius: inherit;
-                    }
-
-                    > div:last-of-type {
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        z-index: -1;
-                        opacity: 0;
+                    &.avatarContainer {
+                        flex: 1 0 40%;
+                        position: relative;
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        width: 100%;
-                        height: 20%;
-                        background-color: rgba(0, 0, 0, 0.3);
-                        border-radius: 0 0 5px 5px;
-                        cursor: pointer;
-                        transition: all 0.1s linear;
+                        height: 80%;
+                        margin-right: 5%;
+                        padding: calc-rem(16px);
+                        border: 1px solid $light-mint-color;
+                        border-radius: 5px;
 
-                        > span {
-                            font-size: calc-rem(18px);
-                            line-height: calc-rem(22.5px);
+                        > img {
+                            height: 100%;
+                            max-width: 100%;
+                            border-radius: inherit;
                         }
 
-                        &:hover {
-                            > img,
+                        > div:last-of-type {
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            z-index: -1;
+                            opacity: 0;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+                            height: 20%;
+                            background-color: rgba(0, 0, 0, 0.3);
+                            border-radius: 0 0 5px 5px;
+                            cursor: pointer;
+                            transition: all 0.1s linear;
+
                             > span {
-                                opacity: 0.7;
+                                font-size: calc-rem(18px);
+                                line-height: calc-rem(22.5px);
+                            }
+
+                            &:hover {
+                                > img,
+                                > span {
+                                    opacity: 0.7;
+                                }
                             }
                         }
+
+                        &:hover > div:last-of-type {
+                            z-index: 1;
+                            opacity: 1;
+                        }
                     }
 
-                    &:hover > div:last-of-type {
-                        z-index: 1;
-                        opacity: 1;
-                    }
-                }
+                    &:last-of-type {
+                        flex: 1 0 65%;
+                        overflow: auto;
+                        padding-right: calc-rem(14px);
 
-                &:last-of-type {
-                    flex: 1 0 65%;
-                    overflow: auto;
-                    padding-right: calc-rem(14px);
-
-                    &::-webkit-scrollbar-thumb {
-                        background-color: $heavy-mint-color;
+                        &::-webkit-scrollbar-thumb {
+                            background-color: $heavy-mint-color;
+                        }
                     }
                 }
             }
         }
-    }
 
-    .userHobbies {
-        flex: 1 0 39%;
+        .userHobbies {
+            flex: 1 0 39%;
+        }
     }
 
     .userPhotos {
-        flex: 1 0 100%;
-        height: calc-rem(294px);
-        margin-top: calc-rem(25px);
+        flex-basis: 39%;
+        max-height: 39%;
     }
 }

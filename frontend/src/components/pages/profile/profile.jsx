@@ -9,8 +9,10 @@ import classNames from "./profile.module.scss";
 export const Profile = () => {
     return (
         <div className={classNames.profile}>
-            <MainInfo />
-            <UserHobbies />
+            <div>
+                <MainInfo />
+                <UserHobbies />
+            </div>
             <UserPhotos />
         </div>
     );
