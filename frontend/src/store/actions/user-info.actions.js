@@ -33,3 +33,11 @@ export const updateAvatar = (avatarBinary, cb) => async (dispatch) => {
     }
     cb && typeof cb === "function" && cb();
 };
+
+export const updateInfo = (data, cb) => async (dispatch) => {
+    const res = await userInfoService.updateInfo(data);
+    if (res) {
+        dispatch(setUserInfo({ ...data }));
+    }
+    cb && typeof cb === "function" && cb();
+};

@@ -48,12 +48,13 @@ div.custom-select-with-search.dropdown{
             overflow: auto;
 
             button[role='menuitem']{
+                position: relative;
                 color:$heavy-mint-color;
                 padding-left: calc-rem(16px);
                 transition: all .15s ease-out;
 
                 &:hover{
-                    background-color: $heavy-mint-color;
+                    background-color: $semi-heavy-mint-color;
                     color: $light-mint-color;
                 }
 
@@ -63,9 +64,18 @@ div.custom-select-with-search.dropdown{
                     color: $heavy-mint-color;
 
                     &:hover{
-                        background-color: $heavy-mint-color;
+                        background-color: $semi-heavy-mint-color;
                         color: $light-mint-color;
                     }
+                }
+
+                img.tick-pic{
+                    position: absolute;
+                    right: 2%;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                    height: 80%;
                 }
             }
         }

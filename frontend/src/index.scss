@@ -96,6 +96,15 @@ button.btn {
             @include light-button();
         }
     }
+
+    &.light {
+        @include light-button();
+
+        &:hover,
+        &:active:focus {
+            @include dark-button();
+        }
+    }
 }
 
 ::-webkit-scrollbar-button {

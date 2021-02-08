@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -56,8 +56,14 @@ export const MainInfo = connect(
             }
         }, []);
 
+        const saveChanges = (event) => {
+            event.preventDefault();
+            setIsLoading(true);
+            userInfoActions.updateInfo(data, () => setIsLoading(false));
+        };
+
         const updateInfoField = (name, value) => {
-            console.log(name, value)
+            console.log(name, value);
             setData({ ...data, [name]: value });
         };
 
@@ -96,62 +102,67 @@ export const MainInfo = connect(
                             />
                         </div>
                     </div>
-                    <Form>
-                        <FormGroup>
-                            <Label for="login">Логин</Label>
-                            <Input
-                                type="text"
-                                name="login"
-                                disabled
-                                value={login}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="birthDate">Дата рождения</Label>
-                            <Input
-                                type="date"
-                                name="birthDate"
-                                value={data.birthDate || ""}
-                                onChange={({ target: { value } }) =>
-                                    updateInfoField("birthDate", value)
-                                }
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Пол</Label>
-                            <div className="d-flex">
-                                <CustomRadioButton
-                                    name="sex"
-                                    value="М"
-                                    labelText="М"
-                                    className="mr-3"
-                                    onChange={(value) =>
-                                        updateInfoField("sex", value)
-                                    }
-                                    checked={data.sex === "М"}
+                    <Form onSubmit={saveChanges}>
+                        <div>
+                            <FormGroup>
+                                <Label for="login">Логин</Label>
+                                <Input
+                                    type="text"
+                                    name="login"
+                                    disabled
+                                    value={login}
                                 />
-                                <CustomRadioButton
-                                    name="sex"
-                                    value="Ж"
-                                    labelText="Ж"
-                                    onChange={(value) =>
-                                        updateInfoField("sex", value)
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="birthDate">Дата рождения</Label>
+                                <Input
+                                    type="date"
+                                    name="birthDate"
+                                    value={data.birthDate || ""}
+                                    onChange={({ target: { value } }) =>
+                                        updateInfoField("birthDate", value)
                                     }
-                                    checked={data.sex === "Ж"}
                                 />
-                            </div>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Город</Label>
-                            <CustomSelect
-                                busy={isLoadingCities}
-                                options={dictionaries.cities}
-                                value={data.city}
-                                onChange={(value) =>
-                                    updateInfoField("city", value)
-                                }
-                            />
-                        </FormGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Пол</Label>
+                                <div className="d-flex">
+                                    <CustomRadioButton
+                                        name="sex"
+                                        value="М"
+                                        labelText="М"
+                                        className="mr-3"
+                                        onChange={(value) =>
+                                            updateInfoField("sex", value)
+                                        }
+                                        checked={data.sex === "М"}
+                                    />
+                                    <CustomRadioButton
+                                        name="sex"
+                                        value="Ж"
+                                        labelText="Ж"
+                                        onChange={(value) =>
+                                            updateInfoField("sex", value)
+                                        }
+                                        checked={data.sex === "Ж"}
+                                    />
+                                </div>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Город</Label>
+                                <CustomSelect
+                                    busy={isLoadingCities}
+                                    options={dictionaries.cities}
+                                    value={data.city}
+                                    onChange={(value) =>
+                                        updateInfoField("city", value)
+                                    }
+                                />
+                            </FormGroup>
+                        </div>
+                        <Button type="submit" className="light">
+                            Сохранить изменения
+                        </Button>
                     </Form>
                 </div>
             </div>

@@ -20,4 +20,13 @@ export class UserInfoService extends BaseService {
         });
         return res;
     }
+
+    async updateInfo(info){
+        const res = this.request("", {
+            method: "PUT",
+            body: JSON.stringify(info),
+            headers: { "Content-Type": "application/json" },
+        });
+        return res;
+    }
 }

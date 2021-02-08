@@ -5,14 +5,16 @@ import {
     DropdownMenu,
     DropdownToggle,
 } from "reactstrap";
+import concatClasses from "classnames";
 
 import { CustomLoader } from "../custom-loader/custom-loader";
 import { CustomSearch } from "../custom-search/custom-search";
+import { calcRem } from "../../../helpers";
 
 import TogglerIMG from "images/toggler-filled.svg";
+import TickIMG from "images/tick.svg";
 
 import "./custom-select.scss";
-import { calcRem } from "../../../helpers";
 
 export const CustomSelect = ({
     multiple = false,
@@ -44,14 +46,8 @@ export const CustomSelect = ({
         setSearchedOptions(newOptions);
     };
 
-    const clickOption = (event, optionVal) => {
+    const clickOption = (event, optionVal, isSelected) => {
         event.preventDefault();
-        const isSelected =
-            value || (value && value.length && value.length > 0)
-                ? multiple
-                    ? value.find((val) => val === optionVal)
-                    : value === optionVal
-                : false;
 
         onChange(
             multiple
@@ -65,13 +61,22 @@ export const CustomSelect = ({
     };
 
     const renderOption = (option) => {
+        const optionVal = option[valueField];
+        const isSelected =
+            value || (value && value.length && value.length > 0)
+                ? multiple
+                    ? value.find((val) => val === optionVal)
+                    : value === optionVal
+                : false;
+
         return (
             <DropdownItem
                 toggle={false}
-                key={option[valueField]}
-                onClick={(event) => clickOption(event, option[valueField])}
+                key={optionVal}
+                onClick={(event) => clickOption(event, optionVal, isSelected)}
             >
                 {option[textField]}
+                {isSelected && <img className="tick-pic" src={TickIMG} />}
             </DropdownItem>
         );
     };
@@ -106,47 +111,56 @@ export const CustomSelect = ({
         >
             <CustomLoader isLoading={busy} size={36} />
             {/* <img className="toggle-icon" src={TogglerIMG} /> */}
-            <DropdownToggle>
-                {multiple
-                    ? value.length === 0
-                        ? placeholder
-                        : `Выбрано ${value.length} элементов`
-                    : (options.find((option) => option[valueField] === value) &&
-                          options.find(
-                              (option) => option[valueField] === value
-                          )[textField]) ||
-                      placeholder}
-            </DropdownToggle>
-            <DropdownMenu
-                positionFixed
-                modifiers={{
-                    setMaxHeight: {
-                        enabled: true,
-                        order: 890,
-                        fn: (data) => {
-                            return {
-                                ...data,
-                                styles: {
-                                    ...data.styles,
-                                    overflow: "hidden",
-                                    height: calcRem(200),
+            {busy ||
+            !options ||
+            !options.length ||
+            options.length === 0 ? null : (
+                <>
+                    <DropdownToggle>
+                        {multiple
+                            ? value.length === 0
+                                ? placeholder
+                                : `Выбрано ${value.length} элементов`
+                            : (options.find(
+                                  (option) => option[valueField] === value
+                              ) &&
+                                  options.find(
+                                      (option) => option[valueField] === value
+                                  )[textField]) ||
+                              placeholder}
+                    </DropdownToggle>
+                    <DropdownMenu
+                        positionFixed
+                        modifiers={{
+                            setMaxHeight: {
+                                enabled: true,
+                                order: 890,
+                                fn: (data) => {
+                                    return {
+                                        ...data,
+                                        styles: {
+                                            ...data.styles,
+                                            overflow: "hidden",
+                                            height: calcRem(200),
+                                        },
+                                    };
                                 },
-                            };
-                        },
-                    },
-                }}
-            >
-                {search && (
-                    <div className="search-container">
-                        <CustomSearch
-                            options={options}
-                            searchField={textField}
-                            onChange={onSearch}
-                        />
-                    </div>
-                )}
-                {renderOptionsList()}
-            </DropdownMenu>
+                            },
+                        }}
+                    >
+                        {search && (
+                            <div className="search-container">
+                                <CustomSearch
+                                    options={options}
+                                    searchField={textField}
+                                    onChange={onSearch}
+                                />
+                            </div>
+                        )}
+                        {renderOptionsList()}
+                    </DropdownMenu>
+                </>
+            )}
         </Dropdown>
     );
 };

@@ -20,9 +20,7 @@ const getUserInfoById = async (req, res, next) => {
 
 const getUserInfo = async (req, res, next) => {
     const { login } = req.body.user;
-    const userInfo = await User.findOne({ login })
-        .populate("city", "_id name")
-        .exec();
+    const userInfo = await User.findOne({ login });
 
     if (!userInfo) {
         return next(new Error(400, "Ошибка при получении пользователя!"));
@@ -30,7 +28,14 @@ const getUserInfo = async (req, res, next) => {
     const { avatar, sex, birthDate, city, isOnline } = userInfo;
     return res
         .status(200)
-        .json({ login, avatar, sex, birthDate, city, isOnline });
+        .json({
+            login,
+            avatar,
+            sex,
+            birthDate: birthDate && birthDate.toISOString().split("T")[0],
+            city,
+            isOnline,
+        });
 };
 
 const checkOnline = async (req, res, next) => {
@@ -144,7 +149,10 @@ const deletePhotos = async (req, res, next) => {
 
     try {
         user.photos = user.photos.filter(
-            ({ _id }) => !photos.find((excessivePhoto) => excessivePhoto === _id.toString())
+            ({ _id }) =>
+                !photos.find(
+                    (excessivePhoto) => excessivePhoto === _id.toString()
+                )
         );
         await user.save();
         return res
