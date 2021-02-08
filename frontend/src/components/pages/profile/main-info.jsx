@@ -57,6 +57,7 @@ export const MainInfo = connect(
         }, []);
 
         const updateInfoField = (name, value) => {
+            console.log(name, value)
             setData({ ...data, [name]: value });
         };
 
@@ -107,7 +108,14 @@ export const MainInfo = connect(
                         </FormGroup>
                         <FormGroup>
                             <Label for="birthDate">Дата рождения</Label>
-                            <Input type="date" name="birthDate" />
+                            <Input
+                                type="date"
+                                name="birthDate"
+                                value={data.birthDate || ""}
+                                onChange={({ target: { value } }) =>
+                                    updateInfoField("birthDate", value)
+                                }
+                            />
                         </FormGroup>
                         <FormGroup>
                             <Label>Пол</Label>
@@ -120,6 +128,7 @@ export const MainInfo = connect(
                                     onChange={(value) =>
                                         updateInfoField("sex", value)
                                     }
+                                    checked={data.sex === "М"}
                                 />
                                 <CustomRadioButton
                                     name="sex"
@@ -128,6 +137,7 @@ export const MainInfo = connect(
                                     onChange={(value) =>
                                         updateInfoField("sex", value)
                                     }
+                                    checked={data.sex === "Ж"}
                                 />
                             </div>
                         </FormGroup>
@@ -137,7 +147,9 @@ export const MainInfo = connect(
                                 busy={isLoadingCities}
                                 options={dictionaries.cities}
                                 value={data.city}
-                                onChange={(value) => updateInfoField('city', value)}
+                                onChange={(value) =>
+                                    updateInfoField("city", value)
+                                }
                             />
                         </FormGroup>
                     </Form>
