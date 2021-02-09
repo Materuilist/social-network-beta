@@ -7,6 +7,7 @@ export class UserInfoService extends BaseService {
             super.request(`userinfo/${url}`, init, needsAuth);
     }
 
+    // ************************ common info ************************
     async getInfo() {
         const res = this.request();
         return res;
@@ -29,4 +30,12 @@ export class UserInfoService extends BaseService {
         });
         return res;
     }
+    // ************************ end common info ************************
+
+    // ************************ hobbies ************************
+    async getHobbies(userId = ''){
+        const res = this.request(`interests/${userId}`);
+        return res;
+    }
+    // ************************ end hobbies ************************
 }
