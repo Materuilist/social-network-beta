@@ -1,8 +1,8 @@
 import React from "react";
 
-import { MainInfo } from "./main-info";
-import { UserHobbies } from "./user-hobbies";
-import { UserPhotos } from "./user-photos";
+import { MainInfo } from "./main-info/main-info";
+import { UserHobbies } from "./user-hobbies/user-hobbies";
+import { UserPhotos } from "./user-photos/user-photos";
 
 import classNames from "./profile.module.scss";
 

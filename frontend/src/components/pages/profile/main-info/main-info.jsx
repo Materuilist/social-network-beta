@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { userInfoActions, dictionariesActions } from "actions";
-import { CustomLoader } from "../../shared/custom-loader/custom-loader";
-import { getFileBinary } from "../../../helpers";
-import { CustomRadioButton } from "../../shared/custom-radiobutton/custom-radiobutton";
-import { CustomSelect } from "../../shared/custom-select/custom-select";
+import { CustomLoader } from "../../../shared/custom-loader/custom-loader";
+import { getFileBinary } from "../../../../helpers";
+import { CustomRadioButton } from "../../../shared/custom-radiobutton/custom-radiobutton";
+import { CustomSelect } from "../../../shared/custom-select/custom-select";
 
 import DefaultAvatarIMG from "images/default-avatar.svg";
 import UploadIMG from "images/upload.svg";
 
-import classNames from "./profile.module.scss";
+import classNames from "./main-info.module.scss";
 
 const mapStateToProps = ({ userInfo, dictionaries }) => ({
     userInfo,

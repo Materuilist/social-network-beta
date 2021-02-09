@@ -1,0 +1,9 @@
+@import "functions";
+@import "variables";
+
+.userHobbies{
+    position: relative;
+    background-color: $semi-heavy-mint-color;
+    border-radius: calc-rem(10px);    
+    flex: 1 0 39%;
+}

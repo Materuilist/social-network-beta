@@ -1,0 +1,10 @@
+@import "functions";
+@import "variables";
+
+.userPhotos{
+    flex-basis: 39%;
+    max-height: 39%;
+    position: relative;
+    background-color: $semi-heavy-mint-color;
+    border-radius: calc-rem(10px);
+}
