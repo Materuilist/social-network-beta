@@ -12,4 +12,5 @@ export const notificationsActionTypes = {
 
 export const dictionariesActionTypes = {
     SET_CITIES: "SET_CITIES",
+    SET_INTERESTS: 'SET_INTERESTS',
 };

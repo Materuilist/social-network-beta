@@ -21,8 +21,16 @@ export const getCities = (cb) => async (dispatch, getState) => {
     cb && typeof cb === "function" && cb();
 };
 
-export const getAvailableInterests = (cb) => async(dispatch) => {
+export const getAvailableInterests = (cb) => async (dispatch) => {
     const res = await dictionariesService.getAvailableInterests();
-    console.log(res);
-    cb && typeof(cb) === 'function' && cb();
-}
+    if (res && res.data) {
+        dispatch({
+            type: dictionariesActionTypes.SET_INTERESTS,
+            payload: res.data.map(({ _id, naming }) => ({
+                id: _id,
+                name: naming,
+            })),
+        });
+    }
+    cb && typeof cb === "function" && cb();
+};
