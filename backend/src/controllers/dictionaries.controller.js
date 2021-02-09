@@ -1,6 +1,7 @@
 const { Error } = require("../models/shared/error.class");
 const { City } = require("../models/city.model");
 const { Status } = require("../models/status.model");
+const { Interest } = require("../models/interest.model");
 
 const ITEMS_PER_PAGE_DEFAULT = 20;
 
@@ -43,7 +44,18 @@ const getFriendsStatuses = async (req, res, next) => {
     });
 };
 
+const getInterests = async (req, res, next) => {
+    const { user } = req.body;
+
+    const availableInterests = await Interest.find({
+        $or: [{ owner: user._id }, { owner: undefined }],
+    });
+
+    res.status(200).json({ data: availableInterests });
+};
+
 module.exports = {
     getCities,
     getFriendsStatuses,
+    getInterests,
 };

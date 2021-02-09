@@ -11,4 +11,9 @@ export class DictionariesService extends BaseService {
         const res = this.request("cities?all=true");
         return res;
     }
+
+    async getAvailableInterests() {
+        const res = this.request("interests", null, true);
+        return res;
+    }
 }

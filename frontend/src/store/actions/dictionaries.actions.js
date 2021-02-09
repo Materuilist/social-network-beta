@@ -20,3 +20,9 @@ export const getCities = (cb) => async (dispatch, getState) => {
 
     cb && typeof cb === "function" && cb();
 };
+
+export const getAvailableInterests = (cb) => async(dispatch) => {
+    const res = await dictionariesService.getAvailableInterests();
+    console.log(res);
+    cb && typeof(cb) === 'function' && cb();
+}
