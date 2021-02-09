@@ -1,0 +1,59 @@
+@import "functions";
+@import "variables";
+
+.user-hobby {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: calc-rem(36px);
+    min-width: calc-rem(151px);
+    max-width: calc-rem(200px);
+    width: fit-content;
+    padding: calc-rem(9px) calc-rem(10px) calc-rem(9px) 0;
+    background-color: #f9f9f9;
+
+    > span,
+    > input.form-control {
+        padding-left: calc-rem(10px);
+        font-size: calc-rem(16px);
+        line-height: calc-rem(20px);
+        color: $heavy-mint-color;
+        margin-right: calc-rem(16px);
+        background-color: inherit;
+        border: none;
+        box-shadow: none;
+
+        &:focus {
+            background-color: inherit;
+            color: $heavy-mint-color;
+            box-shadow: none;
+            transform: none;
+        }
+    }
+
+    >span{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    
+    &__btn-group {
+        height: 100%;
+        flex-shrink: 0;
+
+        > img {
+            height: 100%;
+            vertical-align: baseline;
+            cursor: pointer;
+            transition: opacity 0.1s linear;
+
+            &:not(:last-child) {
+                margin-right: calc-rem(5px);
+            }
+
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+    }
+}

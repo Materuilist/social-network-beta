@@ -49,11 +49,13 @@ export const CustomSelect = ({
     const clickOption = (event, optionVal, isSelected) => {
         event.preventDefault();
 
-        onChange(
+        onChange && onChange(
             multiple
                 ? isSelected
                     ? value.filter((val) => val !== optionVal)
-                    : [...value, optionVal]
+                    : value && value.length
+                    ? [...value, optionVal]
+                    : [optionVal]
                 : isSelected
                 ? null
                 : optionVal
@@ -118,7 +120,7 @@ export const CustomSelect = ({
                 <>
                     <DropdownToggle>
                         {multiple
-                            ? value.length === 0
+                            ? !value || value.length === 0
                                 ? placeholder
                                 : `Выбрано ${value.length} элементов`
                             : (options.find(
