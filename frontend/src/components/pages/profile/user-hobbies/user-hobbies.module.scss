@@ -17,8 +17,22 @@
         flex-direction: column;
 
         .hobbiesContainer {
-            margin-top: calc-rem(36px);
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc-rem(20px);
             overflow: auto;
+
+            :global(.user-hobby) {
+                margin-top: calc-rem(16px);
+
+                &:not(:last-child) {
+                    margin-right: calc-rem(16px);
+                }
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $heavy-mint-color;
+            }
         }
     }
 }

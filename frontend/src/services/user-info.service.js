@@ -22,7 +22,7 @@ export class UserInfoService extends BaseService {
         return res;
     }
 
-    async updateInfo(info){
+    async updateInfo(info) {
         const res = this.request("", {
             method: "PUT",
             body: JSON.stringify(info),
@@ -33,8 +33,22 @@ export class UserInfoService extends BaseService {
     // ************************ end common info ************************
 
     // ************************ hobbies ************************
-    async getHobbies(userId = ''){
+    async getHobbies(userId = "") {
         const res = this.request(`interests/${userId}`);
+        return res;
+    }
+
+    async addHobbies(newHobbies = [], existingHobbies = []) {
+        const res = this.request("interests/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                newInterests: newHobbies,
+                existingInterests: existingHobbies,
+            }),
+        });
         return res;
     }
     // ************************ end hobbies ************************

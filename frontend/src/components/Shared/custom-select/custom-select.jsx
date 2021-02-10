@@ -26,6 +26,7 @@ export const CustomSelect = ({
     textField = "name",
     placeholder = "Выбрать",
     busy = false,
+    onToggle,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchedOptions, setSearchedOptions] = useState(options);
@@ -42,6 +43,10 @@ export const CustomSelect = ({
         setSearchedOptions(notSelectedOptions);
     }, [value, options]);
 
+    useEffect(() => {
+        onToggle && onToggle(isOpen);
+    }, [isOpen]);
+
     const onSearch = (newOptions) => {
         setSearchedOptions(newOptions);
     };
@@ -49,17 +54,18 @@ export const CustomSelect = ({
     const clickOption = (event, optionVal, isSelected) => {
         event.preventDefault();
 
-        onChange && onChange(
-            multiple
-                ? isSelected
-                    ? value.filter((val) => val !== optionVal)
-                    : value && value.length
-                    ? [...value, optionVal]
-                    : [optionVal]
-                : isSelected
-                ? null
-                : optionVal
-        );
+        onChange &&
+            onChange(
+                multiple
+                    ? isSelected
+                        ? value.filter((val) => val !== optionVal)
+                        : value && value.length
+                        ? [...value, optionVal]
+                        : [optionVal]
+                    : isSelected
+                    ? null
+                    : optionVal
+            );
     };
 
     const renderOption = (option) => {

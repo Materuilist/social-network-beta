@@ -36,8 +36,27 @@ export const UserHobbies = connect(
         );
     }, []);
 
+    const addHobbies = (customHobbyNaming, existingHobbyIds = []) => {
+        setIsLoading(true);
+        setIsDictionaryLoading(true);
+        hobbiesActions.addHobbies(
+            customHobbyNaming ? [customHobbyNaming] : [],
+            existingHobbyIds,
+            () => {
+                setIsLoading(false);
+                setIsDictionaryLoading(false);
+            }
+        );
+    };
+
     const renderCustomHobby = () => {
-        return <Hobby text="Свое хобби" isEditable={true} />;
+        return (
+            <Hobby
+                text="Свое хобби"
+                isEditable={true}
+                onAddHobby={(naming) => addHobbies(naming)}
+            />
+        );
     };
 
     return (
@@ -48,13 +67,21 @@ export const UserHobbies = connect(
                     busy={isDictionaryLoading || isLoading}
                     options={dictionaries.interests}
                     multiple={true}
+                    onToggle={console.log}
+                    value={hobbies.data.map(({ id }) => id)}
                 />
                 <div className={classNames.hobbiesContainer}>
                     {renderCustomHobby()}
                     {!isLoading &&
                         hobbies.data &&
                         hobbies.data.length > 0 &&
-                        hobbies.data.map((hobby) => <Hobby text={"Hobby"} />)}
+                        hobbies.data.map((hobby) => (
+                            <Hobby
+                                key={hobby.id}
+                                text={hobby.name}
+                                isDeleteable={true}
+                            />
+                        ))}
                 </div>
             </div>
         </div>
