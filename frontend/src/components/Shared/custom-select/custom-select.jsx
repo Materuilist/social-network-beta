@@ -43,9 +43,10 @@ export const CustomSelect = ({
         setSearchedOptions(notSelectedOptions);
     }, [value, options]);
 
-    useEffect(() => {
-        onToggle && onToggle(isOpen);
-    }, [isOpen]);
+    const toggleDropdown = () => {
+        onToggle && onToggle(!isOpen);
+        setIsOpen(!isOpen);
+    };
 
     const onSearch = (newOptions) => {
         setSearchedOptions(newOptions);
@@ -115,7 +116,7 @@ export const CustomSelect = ({
         <Dropdown
             className="custom-select-with-search"
             isOpen={isOpen}
-            toggle={() => setIsOpen(!isOpen)}
+            toggle={toggleDropdown}
         >
             <CustomLoader isLoading={busy} size={36} />
             {/* <img className="toggle-icon" src={TogglerIMG} /> */}

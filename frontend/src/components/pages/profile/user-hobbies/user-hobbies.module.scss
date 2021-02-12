@@ -23,11 +23,9 @@
             overflow: auto;
 
             :global(.user-hobby) {
+                flex: 1;
                 margin-top: calc-rem(16px);
-
-                &:not(:last-child) {
-                    margin-right: calc-rem(16px);
-                }
+                margin-right: calc-rem(16px);
             }
 
             &::-webkit-scrollbar-thumb {

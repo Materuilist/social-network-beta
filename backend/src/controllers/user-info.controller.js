@@ -191,7 +191,7 @@ const addInterests = async (req, res, next) => {
     const {
         user,
         newInterests = [], //названия придуманных юзером интересов
-        existingInterests = [], //интересы, существовавшие в перечне дефолтных
+        existingInterests = [], //id интересов, существовавших в перечне дефолтных
     } = req.body;
 
     const interestsToAdd = [];

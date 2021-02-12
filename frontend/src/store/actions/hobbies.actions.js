@@ -27,14 +27,11 @@ export const getOwnHobbies = (cb) => async (dispatch) => {
 export const addHobbies = (newHobbies = [], existingHobbies = [], cb) => async (
     dispatch
 ) => {
-    const res = await userInfoService.addHobbies(newHobbies, existingHobbies);
-    if (res) {
-        dispatch(
-            dictionariesActions.getAvailableInterests(() =>
-                dispatch(getOwnHobbies(cb && typeof cb === "function" && cb()))
-            )
-        );
-    } else {
-        cb && typeof cb === "function" && cb();
-    }
+    await userInfoService.addHobbies(newHobbies, existingHobbies);
+    cb && typeof cb === "function" && cb();
+};
+
+export const deleteHobbies = (hobbyIds = [], cb) => async (dispatch) => {
+    const res = await userInfoService.deleteHobbies(hobbyIds);
+    cb && typeof cb === "function" && cb();    
 };

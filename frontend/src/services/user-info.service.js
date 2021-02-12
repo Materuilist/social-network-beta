@@ -51,5 +51,18 @@ export class UserInfoService extends BaseService {
         });
         return res;
     }
+
+    async deleteHobbies(hobbyIds = []) {
+        const res = this.request("interests", {
+            method: "DELETE",
+            body: JSON.stringify({
+                interests: hobbyIds,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return res;
+    }
     // ************************ end hobbies ************************
 }

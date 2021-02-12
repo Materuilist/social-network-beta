@@ -25,6 +25,7 @@ export const UserHobbies = connect(
 )(({ hobbies, dictionaries, hobbiesActions, dictionariesActions }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isDictionaryLoading, setIsDictionaryLoading] = useState(false);
+    const [currentHobbies, setCurrentHobbies] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -36,17 +37,64 @@ export const UserHobbies = connect(
         );
     }, []);
 
-    const addHobbies = (customHobbyNaming, existingHobbyIds = []) => {
-        setIsLoading(true);
-        setIsDictionaryLoading(true);
-        hobbiesActions.addHobbies(
-            customHobbyNaming ? [customHobbyNaming] : [],
-            existingHobbyIds,
-            () => {
+    useEffect(() => setCurrentHobbies(hobbies.data.map(({ id }) => id)), [
+        hobbies.data,
+    ]);
+
+    const reloadHobbies = () =>
+        hobbiesActions.getOwnHobbies(() => {
+            dictionariesActions.getAvailableInterests(() => {
                 setIsLoading(false);
                 setIsDictionaryLoading(false);
-            }
+            });
+        });
+
+    const deleteHobby = (id) => {
+        setIsLoading(true);
+        setIsDictionaryLoading(true);
+        id && hobbiesActions.deleteHobbies([id], reloadHobbies);
+    };
+
+    const onSelectToggle = (isOpen) => {
+        if (isOpen) return;
+
+        const hobbiesToAdd = currentHobbies.filter(
+            (selectedHobbyId) =>
+                !hobbies.data.find((hobby) => selectedHobbyId === hobby.id)
         );
+        const hobbiesToDelete = hobbies.data
+            .filter(
+                (hobby) =>
+                    !currentHobbies.find(
+                        (selectedHobbyId) => hobby.id === selectedHobbyId
+                    )
+            )
+            .map(({ id }) => id);
+
+        if (hobbiesToAdd.length === 0 && hobbiesToDelete.length === 0) return;
+
+        setIsLoading(true);
+        setIsDictionaryLoading(true);
+        hobbiesToAdd.length > 0
+            ? hobbiesActions.addHobbies(
+                  [],
+                  hobbiesToAdd,
+                  hobbiesToDelete.length > 0
+                      ? () =>
+                            hobbiesActions.deleteHobbies(
+                                hobbiesToDelete,
+                                reloadHobbies
+                            )
+                      : reloadHobbies
+              )
+            : hobbiesActions.deleteHobbies(hobbiesToDelete, reloadHobbies);
+    };
+
+    const addCustomHobby = (customHobbyNaming) => {
+        if (!customHobbyNaming) return;
+        setIsLoading(true);
+        setIsDictionaryLoading(true);
+        hobbiesActions.addHobbies([customHobbyNaming], [], reloadHobbies);
     };
 
     const renderCustomHobby = () => {
@@ -54,7 +102,7 @@ export const UserHobbies = connect(
             <Hobby
                 text="Свое хобби"
                 isEditable={true}
-                onAddHobby={(naming) => addHobbies(naming)}
+                onAddHobby={(naming) => addCustomHobby(naming)}
             />
         );
     };
@@ -67,8 +115,9 @@ export const UserHobbies = connect(
                     busy={isDictionaryLoading || isLoading}
                     options={dictionaries.interests}
                     multiple={true}
-                    onToggle={console.log}
-                    value={hobbies.data.map(({ id }) => id)}
+                    onToggle={onSelectToggle}
+                    value={currentHobbies}
+                    onChange={(value) => setCurrentHobbies(value)}
                 />
                 <div className={classNames.hobbiesContainer}>
                     {renderCustomHobby()}
@@ -80,6 +129,7 @@ export const UserHobbies = connect(
                                 key={hobby.id}
                                 text={hobby.name}
                                 isDeleteable={true}
+                                onDeleteHobby={() => deleteHobby(hobby.id)}
                             />
                         ))}
                 </div>
