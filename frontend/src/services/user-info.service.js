@@ -65,10 +65,19 @@ export class UserInfoService extends BaseService {
         return res;
     }
     // ************************ end hobbies ************************
-    
+
     // ************************ photos ************************
-    async getPhotos(){
-        const res = await this.request('photos');
+    async getPhotos() {
+        const res = this.request("photos");
+        return res;
+    }
+
+    async addPhotos(photos = []) {
+        const res = this.request("photos/add", {
+            method: "POST",
+            body: JSON.stringify({ photos }),
+            headers: { "Content-Type": "application/json" },
+        });
         return res;
     }
     // ************************ end photos ************************

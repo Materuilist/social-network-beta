@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { CustomLoader } from "../../../shared/custom-loader/custom-loader";
 import { CustomCarousel } from "../../../shared/custom-carousel/custom-carousel";
 import { photosActions } from "../../../../store/actions";
+import { getFileBinary } from "../../../../helpers";
 
 import GridIMG from "images/grid.svg";
 import GridaActiveIMG from "images/grid-active.svg";
@@ -29,35 +30,58 @@ export const UserPhotos = connect(
     const [isLoading, setIsLoading] = useState(true);
     const [isCarouselMode, setIsCarouselMode] = useState(true);
 
+    const photoInputRef = useRef();
+
     useEffect(() => {
         photosActions.getPhotos(() => setIsLoading(false));
     }, []);
 
+    const uploadPhotos = (event) => {
+        const {
+            target: { files },
+        } = event;
+
+        if (files.length === 0) return;
+
+        setIsLoading(true);
+        Promise.all([...files].map(getFileBinary)).then((photosEncoded) =>
+            photosActions.addPhotos(photosEncoded, () => setIsLoading(false))
+        );
+    };
+
     const photoItems = [
         {
             render: () => (
-                <div>
-                    <img src={UploadIMG} />
+                <div className={classNames.uploadPhoto}>
+                    <img
+                        src={UploadIMG}
+                        onClick={() => photoInputRef.current.click()}
+                    />
                 </div>
             ),
             isFixed: true,
+            key: "upload",
         },
-        {
-            render: () => <img src={GridIMG} />,
-        },
-        {
-            render: () => <img src={GridaActiveIMG} />,
-        },
-        {
-            render: () => <img src={CarouselIMG} />,
-        },
-        {
-            render: () => <img src={CarouselActiveIMG} />,
-        },
+        ...photos.data.map(({ data, id, likesCount }) => ({
+            render: () => (
+                <div className={classNames.singlePhotoContainer}>
+                    <img src={data} />
+                </div>
+            ),
+            key: id,
+        })),
     ];
 
     return (
         <div className={classNames.userPhotos}>
+            <input
+                hidden
+                ref={photoInputRef}
+                type="file"
+                accept="image/*"
+                onInput={uploadPhotos}
+                multiple
+            />
             <CustomLoader isLoading={isLoading} />
             <div className={classNames.modesContainer}>
                 <img
@@ -72,7 +96,9 @@ export const UserPhotos = connect(
                 />
             </div>
             <div className={classNames.photosContainer}>
-                {isCarouselMode ? <CustomCarousel items={photoItems} /> : null}
+                {isCarouselMode ? (
+                    <CustomCarousel items={photoItems} visibleCount={5} />
+                ) : null}
             </div>
         </div>
     );
