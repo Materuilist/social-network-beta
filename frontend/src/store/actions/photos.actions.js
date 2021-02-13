@@ -28,3 +28,8 @@ export const addPhotos = (photos = [], cb) => async (dispatch) => {
     const res = await userInfoService.addPhotos(photos);
     dispatch(getPhotos(cb));
 };
+
+export const deletePhotos = (photosIds = [], cb) => async (dispatch) => {
+    const res = await userInfoService.deletePhotos(photosIds);
+    dispatch(getPhotos(cb));
+};

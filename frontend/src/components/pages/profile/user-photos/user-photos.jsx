@@ -12,6 +12,8 @@ import GridaActiveIMG from "images/grid-active.svg";
 import CarouselIMG from "images/carousel.svg";
 import CarouselActiveIMG from "images/carousel-active.svg";
 import UploadIMG from "images/upload.svg";
+import LikeFilledIMG from "images/like-filled.svg";
+import GarbageIMG from "images/garbage.svg";
 
 import classNames from "./user-photos.module.scss";
 
@@ -35,6 +37,12 @@ export const UserPhotos = connect(
     useEffect(() => {
         photosActions.getPhotos(() => setIsLoading(false));
     }, []);
+
+    const deletePhoto = (photoId) => {
+        if (!photoId) return;
+        setIsLoading(true);
+        photosActions.deletePhotos([photoId], () => setIsLoading(false));
+    };
 
     const uploadPhotos = (event) => {
         const {
@@ -66,6 +74,13 @@ export const UserPhotos = connect(
             render: () => (
                 <div className={classNames.singlePhotoContainer}>
                     <img src={data} />
+                    <div className={classNames.likesContainer}>
+                        <span>{likesCount}</span>
+                        <img src={LikeFilledIMG} />
+                    </div>
+                    <div className={classNames.garbageIcon}>
+                        <img src={GarbageIMG} onClick={() => deletePhoto(id)} />
+                    </div>
                 </div>
             ),
             key: id,

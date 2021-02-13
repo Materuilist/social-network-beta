@@ -80,5 +80,18 @@ export class UserInfoService extends BaseService {
         });
         return res;
     }
+    
+    async deletePhotos(photosIds = []) {
+        const res = this.request("photos", {
+            method: "DELETE",
+            body: JSON.stringify({
+                photos: photosIds,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return res;
+    }
     // ************************ end photos ************************
 }
