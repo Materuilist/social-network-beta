@@ -14,5 +14,25 @@
         flex: 0 0 calc(100% / 3);
         height: 50%;
         overflow: hidden;
+        cursor: pointer;
+    }
+
+    &__solo-photo{
+        height: 100%;
+        width: 80%;
+        margin: auto;
+    }
+}
+
+.custom-modal-header{
+    >div{
+        img{
+            cursor: pointer;
+            transition: opacity .1s ease-out;
+
+            &:hover{
+                opacity: .7;
+            }
+        }
     }
 }

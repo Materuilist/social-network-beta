@@ -75,12 +75,21 @@ export const UserPhotos = connect(
             render: () => (
                 <div className={classNames.singlePhotoContainer}>
                     <img src={data} />
-                    <div className={classNames.likesContainer}>
+                    <div
+                        className={classNames.likesContainer}
+                        onClick={(event) => event.stopPropagation()}
+                    >
                         <span>{likesCount}</span>
                         <img src={LikeFilledIMG} />
                     </div>
                     <div className={classNames.garbageIcon}>
-                        <img src={GarbageIMG} onClick={() => deletePhoto(id)} />
+                        <img
+                            src={GarbageIMG}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                deletePhoto(id);
+                            }}
+                        />
                     </div>
                 </div>
             ),

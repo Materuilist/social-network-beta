@@ -125,10 +125,23 @@
         padding: calc-rem(30px) 0;
         border-radius: 0 0 calc-rem(10px) calc-rem(10px);
 
-        @include photos()
+        @include photos();
     }
 }
 
-:global(.photos-grid){
-    @include photos()
+:global(.photos-grid) {
+    @include photos();
+
+    :global(.photos-grid__solo-photo) {
+        .singlePhotoContainer {
+            > div {
+                &.garbageIcon {
+                    display: none;
+                }
+                &.likesContainer {
+                    height: 20%;
+                }
+            }
+        }
+    }
 }

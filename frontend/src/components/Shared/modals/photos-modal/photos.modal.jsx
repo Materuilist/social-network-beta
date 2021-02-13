@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { CustomModal } from "../../custom-modal/custom-modal";
+
+import ReturnArrowIMG from "images/curvy-back-arrow.svg";
 
 import "./photos.modal.scss";
 
@@ -11,20 +13,46 @@ export const PhotosModal = ({
     onClosed,
     isLoading = false,
 }) => {
+    const [solelyShownPhoto, setSolelyShownPhoto] = useState(null);
+
+    const renderBackToGridButton = () => {
+        if (!solelyShownPhoto) return null;
+
+        return (
+            <img
+                src={ReturnArrowIMG}
+                onClick={() => setSolelyShownPhoto(null)}
+            />
+        );
+    };
+
     return (
         <CustomModal
             isLoading={isLoading}
             isOpen={isOpen}
             onClosed={onClosed}
+            renderHeaderBtns={renderBackToGridButton}
             vh={80}
             vw={70}
         >
             <div className="photos-grid">
-                {photos.map(({ render, key }, index) => (
-                    <div key={key ?? index} className="photos-grid__item">
-                        {render()}
+                {solelyShownPhoto ? (
+                    <div className="photos-grid__solo-photo">
+                        {solelyShownPhoto.render()}
                     </div>
-                ))}
+                ) : (
+                    photos.map((photo, index) => (
+                        <div
+                            key={photo.key ?? index}
+                            className="photos-grid__item"
+                            onClick={() =>
+                                !photo.isFixed && setSolelyShownPhoto(photo)
+                            }
+                        >
+                            {photo.render()}
+                        </div>
+                    ))
+                )}
             </div>
         </CustomModal>
     );
