@@ -1,10 +1,36 @@
 @import "functions";
 @import "variables";
 
-.userPhotos{
+.userPhotos {
     flex-basis: 39%;
     max-height: 39%;
     position: relative;
+    display: flex;
+    flex-direction: column;
     background-color: $semi-heavy-mint-color;
     border-radius: calc-rem(10px);
+
+    .modesContainer {
+        flex: 0 0 16%;
+        display: flex;
+        align-items: center;
+        padding-left: calc-rem(60px);
+        border-bottom: calc-rem(1px) solid $light-mint-color;
+
+        >img{
+            height: 60%;
+            margin-right: calc-rem(22px);
+            cursor: pointer;
+            transition: opacity .1s ease-out;
+
+            &:hover{
+                opacity: .7;
+            }
+        }
+    }
+
+    .photosContainer {
+        flex: 1 0;
+        background-color: inherit;
+    }
 }

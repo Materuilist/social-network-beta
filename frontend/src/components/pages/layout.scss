@@ -42,6 +42,10 @@
                 &:first-of-type {
                     border-radius: 50%;
                     margin-right: calc-rem(17px);
+                    height: calc-rem(60px);
+                    max-height: 100%;
+                    width: calc-rem(60px);
+                    object-fit: cover;
                 }
 
                 &:last-of-type {

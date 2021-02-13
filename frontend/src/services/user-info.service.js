@@ -65,4 +65,11 @@ export class UserInfoService extends BaseService {
         return res;
     }
     // ************************ end hobbies ************************
+    
+    // ************************ photos ************************
+    async getPhotos(){
+        const res = await this.request('photos');
+        return res;
+    }
+    // ************************ end photos ************************
 }

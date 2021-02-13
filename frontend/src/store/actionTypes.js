@@ -5,6 +5,9 @@ export const userInfoActionTypes = {
 export const hobbiesActionTypes = {
     SET_HOBBIES: "SET_HOBBIES",
 };
+export const photosActionTypes = {
+    SET_PHOTOS: "SET_PHOTOS",
+};
 
 export const notificationsActionTypes = {
     SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
@@ -12,5 +15,5 @@ export const notificationsActionTypes = {
 
 export const dictionariesActionTypes = {
     SET_CITIES: "SET_CITIES",
-    SET_INTERESTS: 'SET_INTERESTS',
+    SET_INTERESTS: "SET_INTERESTS",
 };

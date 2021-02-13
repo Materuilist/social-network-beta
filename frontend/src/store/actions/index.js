@@ -1,5 +1,6 @@
 export * as userInfoActions from "./user-info.actions";
-export * as hobbiesActions from './hobbies.actions';
+export * as hobbiesActions from "./hobbies.actions";
+export * as photosActions from "./photos.actions";
 
 export * as authActions from "./auth.actions";
 
