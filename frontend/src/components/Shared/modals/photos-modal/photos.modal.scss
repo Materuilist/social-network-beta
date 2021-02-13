@@ -1,0 +1,18 @@
+@import "functions";
+@import "variables";
+
+.photos-grid{
+    width: 82%;
+    height: 80%;
+    padding-right: 2%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+
+    &__item{
+        flex: 0 0 calc(100% / 3);
+        height: 50%;
+        overflow: hidden;
+    }
+}

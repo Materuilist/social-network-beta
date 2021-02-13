@@ -16,6 +16,7 @@ import LikeFilledIMG from "images/like-filled.svg";
 import GarbageIMG from "images/garbage.svg";
 
 import classNames from "./user-photos.module.scss";
+import { PhotosModal } from "../../../shared/modals/photos-modal/photos.modal";
 
 const mapStateToProps = ({ photos }) => ({
     photos,
@@ -111,9 +112,15 @@ export const UserPhotos = connect(
                 />
             </div>
             <div className={classNames.photosContainer}>
-                {isCarouselMode ? (
-                    <CustomCarousel items={photoItems} visibleCount={5} />
-                ) : null}
+                <CustomCarousel items={photoItems} visibleCount={5} />
+                {!isCarouselMode && (
+                    <PhotosModal
+                        isOpen={!isCarouselMode}
+                        photos={photoItems}
+                        onClosed={() => setIsCarouselMode(true)}
+                        isLoading={isLoading}
+                    />
+                )}
             </div>
         </div>
     );

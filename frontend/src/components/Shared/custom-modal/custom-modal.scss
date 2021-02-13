@@ -1,0 +1,37 @@
+@import "functions";
+@import "variables";
+
+.modal-dialog.custom-modal {
+    max-width: unset;
+
+    .modal-content {
+        height: 100%;
+
+        .modal-header {
+            background-color: $semi-heavy-mint-color;
+            .modal-title {
+                width: 100%;
+                .custom-modal-header {
+                    display: flex;
+                    justify-content: space-between;
+
+                    >div:last-of-type{
+                        img{
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+
+        .modal-body{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            background-color: $light-mint-color;
+            padding: 0;
+        }
+    }
+}
