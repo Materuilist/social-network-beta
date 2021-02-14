@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
     Dropdown,
     DropdownItem,
@@ -31,17 +31,29 @@ export const CustomSelect = ({
     const [isOpen, setIsOpen] = useState(false);
     const [searchedOptions, setSearchedOptions] = useState(options);
 
-    useEffect(() => {
-        const notSelectedOptions =
-            value || (value && value.length && value.length > 0)
-                ? options.filter((option) =>
-                      multiple
-                          ? !value.find((val) => val === option[valueField])
-                          : option[valueField] !== value
+    const selectedOptions = useMemo(() => {
+        if (!value || (multiple && !(value && value.length))) return [];
+
+        return multiple
+            ? options.filter((option) =>
+                  value.find(
+                      (selectedOption) => selectedOption === option[valueField]
                   )
-                : options;
-        setSearchedOptions(notSelectedOptions);
-    }, [value, options]);
+              )
+            : [options.find((option) => option[valueField] === value)];
+    }, [options, value]);
+
+    const notSelectedOptions = useMemo(() => {
+        if (!selectedOptions.length) return options;
+
+        return options.filter(
+            (option) =>
+                !selectedOptions.find(
+                    (selectedOption) =>
+                        selectedOption[valueField] === option[valueField]
+                )
+        );
+    }, [selectedOptions]);
 
     const toggleDropdown = () => {
         onToggle && onToggle(!isOpen);
@@ -69,14 +81,8 @@ export const CustomSelect = ({
             );
     };
 
-    const renderOption = (option) => {
+    const renderOption = (option, isSelected = false) => {
         const optionVal = option[valueField];
-        const isSelected =
-            value || (value && value.length && value.length > 0)
-                ? multiple
-                    ? value.find((val) => val === optionVal)
-                    : value === optionVal
-                : false;
 
         return (
             <DropdownItem
@@ -93,21 +99,8 @@ export const CustomSelect = ({
     const renderOptionsList = () => {
         return (
             <div className="options-container">
-                {(value || (value && value.length && value.length > 0)) &&
-                    (multiple
-                        ? value.map((val) =>
-                              renderOption(
-                                  options.find(
-                                      (option) => option[valueField] === val
-                                  )
-                              )
-                          )
-                        : renderOption(
-                              options.find(
-                                  (option) => option[valueField] === value
-                              )
-                          ))}
-                {searchedOptions.map((option) => renderOption(option))}
+                {selectedOptions.map((option) => renderOption(option, true))}
+                {searchedOptions.map((option) => renderOption(option, false))}
             </div>
         );
     };
@@ -120,23 +113,14 @@ export const CustomSelect = ({
         >
             <CustomLoader isLoading={busy} size={36} />
             {/* <img className="toggle-icon" src={TogglerIMG} /> */}
-            {busy ||
-            !options ||
-            !options.length ||
-            options.length === 0 ? null : (
+            {busy || !options || !options.length ? null : (
                 <>
                     <DropdownToggle>
-                        {multiple
-                            ? !value || value.length === 0
-                                ? placeholder
-                                : `Выбрано ${value.length} элементов`
-                            : (options.find(
-                                  (option) => option[valueField] === value
-                              ) &&
-                                  options.find(
-                                      (option) => option[valueField] === value
-                                  )[textField]) ||
-                              placeholder}
+                        {selectedOptions.length
+                            ? selectedOptions.length > 1
+                                ? `Выбрано ${value.length} элементов`
+                                : selectedOptions[0][textField]
+                            : placeholder}
                     </DropdownToggle>
                     <DropdownMenu
                         positionFixed
@@ -160,7 +144,7 @@ export const CustomSelect = ({
                         {search && (
                             <div className="search-container">
                                 <CustomSearch
-                                    options={options}
+                                    options={notSelectedOptions}
                                     searchField={textField}
                                     onChange={onSearch}
                                 />
