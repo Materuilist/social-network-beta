@@ -10,7 +10,7 @@ html {
 body {
     height: 100vh;
     color: $light-mint-color;
-    
+
     #root {
         height: 100%;
     }
@@ -32,7 +32,7 @@ body {
     font-family: $ff;
     background-color: $light-mint-color;
     box-sizing: border-box;
-    @include medias()
+    @include medias();
 }
 
 input.form-control {
@@ -45,12 +45,13 @@ input.form-control {
     font-size: calc-rem(20px);
     line-height: calc-rem(25px);
     padding-left: calc-rem(10px);
+    height: initial;
     color: #5c9a88;
     transition: transform 0.3s ease-out;
 
-    &[type='date']{
-        &::-webkit-calendar-picker-indicator{
-            background-image: url('images/calendar.svg');
+    &[type="date"] {
+        &::-webkit-calendar-picker-indicator {
+            background-image: url("images/calendar.svg");
             // background-size: cover;
             cursor: pointer;
         }

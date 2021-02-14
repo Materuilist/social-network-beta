@@ -1,6 +1,10 @@
 import React from "react";
 import { Input } from "reactstrap";
 
+import MagnifierIMG from 'images/magnifier.svg';
+
+import './custom-search.scss';
+
 export const CustomSearch = ({
     options,
     searchField = "name",
@@ -21,12 +25,13 @@ export const CustomSearch = ({
     };
 
     return (
-        <>
+        <div className='custom-search'>
             <Input
                 type="text"
                 onChange={({ target: { value } }) => search(value)}
                 placeholder={placeholder}
             />
-        </>
+            <img src={MagnifierIMG} />
+        </div>
     );
 };

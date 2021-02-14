@@ -1,0 +1,19 @@
+@import "functions";
+@import "variables";
+
+.custom-search {
+    position: relative;
+
+    >input{
+        padding-right: calc-rem(32px);
+    }
+
+    >img{
+        position: absolute;
+        right: calc-rem(8px);
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        width: calc-rem(16px);
+    }
+}
