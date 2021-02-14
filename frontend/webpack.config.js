@@ -18,12 +18,12 @@ module.exports = (env = {}) => {
         },
         resolve: {
             extensions: [".js", ".jsx"],
-            alias:{
-                variables: path.resolve(__dirname + '/src/_variables.scss'),
-                functions: path.resolve(__dirname + '/src/_functions.scss'),
-                actions: path.resolve(__dirname + '/src/store/actions/'),
-                images: path.resolve(__dirname + '/src/static/images/')
-            }
+            alias: {
+                variables: path.resolve(__dirname + "/src/_variables.scss"),
+                functions: path.resolve(__dirname + "/src/_functions.scss"),
+                actions: path.resolve(__dirname + "/src/store/actions/"),
+                images: path.resolve(__dirname + "/src/static/images/"),
+            },
         },
         module: {
             rules: [
@@ -72,6 +72,7 @@ module.exports = (env = {}) => {
                 template: __dirname + "/src/index.html",
                 filename: "index.html",
                 inject: "body",
+                publicPath: "/",
             }),
         ],
         devServer: {
