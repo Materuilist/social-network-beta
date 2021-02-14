@@ -20,7 +20,7 @@ export const CustomSearch = ({
         if (!options || !options.length) return [];
 
         return options.filter((option) =>
-            option[searchField].includes(searchText)
+            option[searchField].toLowerCase().includes(searchText.toLowerCase())
         );
     }, [searchText, options]);
 
