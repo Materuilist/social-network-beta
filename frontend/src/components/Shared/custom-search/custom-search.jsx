@@ -8,7 +8,7 @@ import "./custom-search.scss";
 export const CustomSearch = ({
     options,
     searchField = "name",
-    onChange,
+    onChange = () => {},
     placeholder = "Поиск",
 }) => {
     const DELAY = 700;
@@ -17,6 +17,8 @@ export const CustomSearch = ({
     const [searchText, setSearchText] = useState("");
 
     const filteredOptions = useMemo(() => {
+        if (!options || !options.length) return [];
+
         return options.filter((option) =>
             option[searchField].includes(searchText)
         );

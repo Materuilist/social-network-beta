@@ -10,6 +10,36 @@ div.custom-select-with-search.dropdown{
     border-radius: calc-rem(5px);
     box-shadow: calc-rem(0px) calc-rem(4px) calc-rem(4px) rgba(0, 0, 0, 0.25);
 
+    .custom-dropdown__preview-container{
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+
+        >div{
+            height: 100%;
+
+            >img{
+                height: 100%;
+                transition: all .1s ease-out;
+
+                &.toggle-icon{
+                    height: 65%;
+                    margin-left: calc-rem(12px);
+                }
+
+                &:hover{
+                    opacity: .7;
+                }
+            }
+        }
+    }
+
+    &.show{
+        .toggle-icon{
+            transform: rotate(180deg);
+        }
+    }
+
     >button{
         width: 100%;
         height: 100%;
@@ -23,10 +53,6 @@ div.custom-select-with-search.dropdown{
             background-color: transparent;
             color: $heavy-mint-color;
         }
-
-        &:hover{
-            opacity: .7;
-        }
     }
 
     .dropdown-menu.show{
@@ -36,7 +62,7 @@ div.custom-select-with-search.dropdown{
         padding-bottom: calc-rem(30px);
         border-radius: calc-rem(5px);
         background-color: $light-mint-color;
-        
+
         .search-container{
             flex: 0 0 20%;
             padding: calc-rem(8px) calc-rem(6px);

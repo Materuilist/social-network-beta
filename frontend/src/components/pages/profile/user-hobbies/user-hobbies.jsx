@@ -55,8 +55,22 @@ export const UserHobbies = connect(
         id && hobbiesActions.deleteHobbies([id], reloadHobbies);
     };
 
+    const onCheckAll = () => {
+        setIsLoading(true);
+        setIsDictionaryLoading(true);
+        const hobbiesToAdd = dictionaries.interests.map(({ id }) => id);
+        hobbiesActions.addHobbies([], hobbiesToAdd, reloadHobbies);
+    };
+
+    const dismissAll = () => {
+        setIsLoading(true);
+        setIsDictionaryLoading(true);
+        const hobbiesToDelete = hobbies.data.map(({ id }) => id);
+        hobbiesActions.deleteHobbies(hobbiesToDelete, reloadHobbies);
+    };
+
     const onSelectToggle = (isOpen) => {
-        if (isOpen) return;
+        if (isOpen || isLoading) return;
 
         const hobbiesToAdd = currentHobbies.filter(
             (selectedHobbyId) =>
@@ -118,6 +132,8 @@ export const UserHobbies = connect(
                     onToggle={onSelectToggle}
                     value={currentHobbies}
                     onChange={(value) => setCurrentHobbies(value)}
+                    onDismissAll={dismissAll}
+                    onCheckAll={onCheckAll}
                 />
                 <div className={classNames.hobbiesContainer}>
                     {renderCustomHobby()}
