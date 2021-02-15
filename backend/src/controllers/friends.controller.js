@@ -28,6 +28,8 @@ const getFriends = async (req, res, next) => {
         friends: friends.map((friend) => ({
             id: friend.data._id,
             login: friend.data.login,
+            birthDate: friend.data.birthDate,
+            avatar: friend.data.avatar,
             isOnline: friend.data.isOnline,
             statuses: friend.statuses,
         })),

@@ -32,7 +32,6 @@
                 font-size: calc-rem(22px);
                 line-height: inherit;
                 text-align: center;
-                border: calc-rem(1px) solid $heavy-mint-color;
                 color: $heavy-mint-color;
                 background-color: $light-mint-color;
                 transition: all 0.1s ease-out;
@@ -61,6 +60,7 @@
 
         &__tab {
             flex: 1 0 92.3%;
+            overflow: hidden;
         }
     }
 

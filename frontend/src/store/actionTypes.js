@@ -9,6 +9,11 @@ export const photosActionTypes = {
     SET_PHOTOS: "SET_PHOTOS",
 };
 
+export const friendsActionTypes = {
+    SET_FRIENDS: "SET_FRIENDS",
+    SET_FRIENDS_FILTER: "SET_FRIENDS_FILTER",
+};
+
 export const notificationsActionTypes = {
     SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
 };

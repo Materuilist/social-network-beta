@@ -8,7 +8,7 @@ export class FriendsService extends BaseService {
     }
 
     // ************************ common info ************************
-    async getInfo() {
+    async getCurrentFriends() {
         const res = this.request();
         return res;
     }

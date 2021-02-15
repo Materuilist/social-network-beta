@@ -1,0 +1,57 @@
+@import "functions";
+@import "variables";
+
+.currentFriends {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    //нет друзей
+    > p {
+        margin-top: calc-rem(19px);
+        text-align: center;
+        font-size: calc-rem(22px);
+
+        > a {
+            color: $light-mint-color;
+            transition: color 0.1s ease-out;
+
+            &:hover {
+                text-decoration: none;
+                color: $heavy-mint-color;
+            }
+        }
+    }
+
+    .ownFriends {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        margin-top: calc-rem(19px);
+        border-radius: calc-rem(5px);
+
+        > h4 {
+            height: calc-rem(50px);
+            margin-bottom: 0;
+            padding-left: calc-rem(10px);
+            color: $heavy-mint-color;
+            background-color: $light-mint-color;
+            border-bottom: calc-rem(1px) solid $heavy-mint-color;
+            font-size: calc-rem(20px);
+            font-weight: 500;
+            line-height: calc-rem(50px);
+        }
+
+        .friendsContainer {
+            flex: 1;
+            overflow: auto;
+            background-color: $light-mint-color;
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $heavy-mint-color;
+            }
+        }
+    }
+}
