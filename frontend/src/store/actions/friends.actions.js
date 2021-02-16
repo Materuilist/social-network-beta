@@ -9,6 +9,11 @@ const setFriends = (friends = []) => ({
     payload: friends,
 });
 
+const setStrangers = (strangers = []) => ({
+    type: friendsActionTypes.SET_STRANGERS,
+    payload: strangers,
+});
+
 export const getFriends = (cb) => async (dispatch) => {
     const res = await friendsService.getCurrentFriends();
     if (res && res.friends) {
@@ -17,4 +22,42 @@ export const getFriends = (cb) => async (dispatch) => {
     } else {
         cb && typeof cb === "function" && cb();
     }
+};
+
+export const getStrangers = (pageIndex = 1, cb) => async (
+    dispatch,
+    getState
+) => {
+    const {
+        friends: {
+            filters: {
+                strangers: {
+                    searchText,
+                    remember,
+                    city,
+                    interests,
+                    ageBottom,
+                    ageTop,
+                    sex,
+                },
+            },
+        },
+    } = getState();
+
+    const res = await friendsService.getStrangers(
+        searchText,
+        {
+            city,
+            interests: interests && interests.length ? interests : null,
+            ageBottom,
+            ageTop,
+            sex,
+        },
+        pageIndex
+    );
+
+    if (res && res.data) {
+        dispatch(setStrangers(res.data));
+    }
+    cb && typeof cb === "function" && cb();
 };

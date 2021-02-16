@@ -12,7 +12,7 @@ const { parseUser } = require("../controllers/shared.controller");
 
 const router = express.Router();
 
-router.post("/search-strangers", findStrangers);
+router.post("/search-strangers", parseUser, findStrangers);
 
 router.post("/toggle-status", parseUser, toggleStatus);
 

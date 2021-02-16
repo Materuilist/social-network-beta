@@ -11,7 +11,10 @@ export const photosActionTypes = {
 
 export const friendsActionTypes = {
     SET_FRIENDS: "SET_FRIENDS",
+    SET_STRANGERS: "SET_STRANGERS",
+
     SET_FRIENDS_FILTER: "SET_FRIENDS_FILTER",
+    SET_STRANGERS_FILTER: "SET_STRANGERS_FILTER",
 };
 
 export const notificationsActionTypes = {

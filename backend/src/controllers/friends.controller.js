@@ -4,11 +4,18 @@ const { User } = require("../models/user.model");
 
 const findStrangers = async (req, res, next) => {
     const {
-        // user,
+        user,
+        searchText = "",
         searchParams: { city, interests, ageBottom, ageTop, sex } = {},
+        page: { index: pageIndex = 1, itemsCount = 20 } = {},
     } = req.body;
 
-    let query = {};
+    let query = {
+        _id: { $ne: user._id },
+        login: {
+            $regex: new RegExp(searchText),
+        },
+    };
     city && (query = { ...query, city });
     interests &&
         interests.length &&
@@ -32,9 +39,15 @@ const findStrangers = async (req, res, next) => {
         };
     }
 
-    const users = await User.find(query);
+    const users = await User.find(query, null, {
+        skip: (pageIndex - 1) * itemsCount,
+        limit: itemsCount + 1, //для параметра nextPageExists
+    });
 
-    return res.status(200).json({ data: users });
+    return res.status(200).json({
+        data: users.slice(0, itemsCount),
+        nextPageExists: users.length > itemsCount,
+    });
 };
 
 const getFriendsById = async (req, res, next) => {
