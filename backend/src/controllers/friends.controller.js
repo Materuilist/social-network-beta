@@ -1,5 +1,41 @@
+const { Types } = require("mongoose");
 const { Error } = require("../models/shared/error.class");
 const { User } = require("../models/user.model");
+
+const findStrangers = async (req, res, next) => {
+    const {
+        // user,
+        searchParams: { city, interests, ageBottom, ageTop, sex } = {},
+    } = req.body;
+
+    let query = {};
+    city && (query = { ...query, city });
+    interests &&
+        interests.length &&
+        (query = { ...query, interests: { $all: interests } });
+    sex && (query = { ...query, sex });
+    if (ageBottom || ageTop) {
+        const today = new Date();
+        const birthBottom = new Date(
+            today.getFullYear() - (ageBottom ?? 0),
+            today.getMonth(),
+            today.getDate()
+        );
+        const birthTop = new Date(
+            today.getFullYear() - (ageTop ?? 140),
+            today.getMonth(),
+            today.getDate()
+        );
+        query = {
+            ...query,
+            birthDate: { $gte: birthTop, $lte: birthBottom },
+        };
+    }
+
+    const users = await User.find(query);
+
+    return res.status(200).json({ data: users });
+};
 
 const getFriendsById = async (req, res, next) => {
     const userId = req.params.userId;
@@ -124,6 +160,7 @@ const toggleStatus = async (req, res, next) => {
 };
 
 module.exports = {
+    findStrangers,
     getFriendsById,
     getFriends,
     addFriend,
