@@ -37,8 +37,8 @@ export const SearchUsers = connect(
                         <div className={classNames.strangers}>
                             <h4>Поиск</h4>
                             <div className={classNames.strangersContainer}>
-                                {strangers.map(({ id, login }) => (
-                                    <UserItem key={id} id={id} login={login} />
+                                {strangers.map(({ _id, login }) => (
+                                    <UserItem key={_id} id={_id} login={login} />
                                 ))}
                             </div>
                         </div>

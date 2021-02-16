@@ -26,9 +26,10 @@ export const getAvailableInterests = (cb) => async (dispatch) => {
     if (res && res.data) {
         dispatch({
             type: dictionariesActionTypes.SET_INTERESTS,
-            payload: res.data.map(({ _id, naming }) => ({
+            payload: res.data.map(({ _id, naming, owner }) => ({
                 id: _id,
                 name: naming,
+                isCustom: Boolean(owner),
             })),
         });
     }

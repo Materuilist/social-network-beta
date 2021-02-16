@@ -34,7 +34,7 @@ export const getStrangers = (pageIndex = 1, cb) => async (
                 strangers: {
                     searchText,
                     remember,
-                    city,
+                    cities,
                     interests,
                     ageBottom,
                     ageTop,
@@ -47,7 +47,7 @@ export const getStrangers = (pageIndex = 1, cb) => async (
     const res = await friendsService.getStrangers(
         searchText,
         {
-            city,
+            cities: cities && cities.length ? cities : null,
             interests: interests && interests.length ? interests : null,
             ageBottom,
             ageTop,

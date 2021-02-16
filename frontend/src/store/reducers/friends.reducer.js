@@ -16,7 +16,7 @@ const initialState = {
         strangers: {
             searchText: "",
             remember: false,
-            city: null,
+            cities: [],
             interests: [],
             ageBottom: null,
             ageTop: null,
