@@ -12,13 +12,15 @@ const { Status } = require("../models/status.model");
 const router = express.Router();
 
 router.get("/initialize", async (req, res, next) => {
-    await User.deleteMany({});
-    await City.deleteMany({});
-    await Interest.deleteMany({});
-
-    const cities = await fsPromises
-        .readFile(__dirname + "/../static/cities.json", "utf-8")
-        .then((data) => JSON.parse(data));
+    const [, , , , cities] = await Promise.all([
+        User.deleteMany({}),
+        City.deleteMany({}),
+        Interest.deleteMany({}),
+        Status.deleteMany({}),
+        fsPromises
+            .readFile(__dirname + "/../static/cities.json", "utf-8")
+            .then((data) => JSON.parse(data)),
+    ]);
 
     await Promise.all([
         City.create(cities),
@@ -42,24 +44,27 @@ router.get("/initialize", async (req, res, next) => {
         Status.create(
             {
                 name: "Важный",
+                imageName: "important.svg",
             },
             {
                 name: "Соучащийся",
+                imageName: "classmate.svg",
             },
             {
                 name: "Коллега",
+                imageName: "colleague.svg",
             },
             {
                 name: "Родственник",
+                imageName: "relative.svg",
             }
         ),
+        User.create({
+            login: "materuilist",
+            password: await Encrypter.hash("borow123"),
+            isOnline: true,
+        })
     ]);
-
-    await User.create({
-        login: "materuilist",
-        password: await Encrypter.hash("borow123"),
-        isOnline: true,
-    });
 
     res.status(201).json({ message: "Initialized successfully" });
 });

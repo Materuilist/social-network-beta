@@ -1,3 +1,4 @@
+import { dictionariesActions } from ".";
 import { FriendsService } from "../../services/friends.service";
 import { friendsActionTypes } from "../actionTypes";
 
@@ -12,6 +13,8 @@ export const getFriends = (cb) => async (dispatch) => {
     const res = await friendsService.getCurrentFriends();
     if (res && res.friends) {
         dispatch(setFriends(res.friends));
+        dispatch(dictionariesActions.getFriendsStatuses(cb));
+    } else {
+        cb && typeof cb === "function" && cb();
     }
-    cb && typeof cb === "function" && cb();
 };

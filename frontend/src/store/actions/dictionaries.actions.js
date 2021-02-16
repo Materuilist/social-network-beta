@@ -34,3 +34,21 @@ export const getAvailableInterests = (cb) => async (dispatch) => {
     }
     cb && typeof cb === "function" && cb();
 };
+
+export const getFriendsStatuses = (cb) => async (dispatch, getState) => {
+    const {
+        dictionaries: { friendsStatuses },
+    } = getState();
+
+    if (friendsStatuses.length === 0) {
+        const res = await dictionariesService.getFriendsStatuses();
+        if (res && res.data) {
+            dispatch({
+                type: dictionariesActionTypes.SET_FRIENDS_STATUSES,
+                payload: res.data,
+            });
+        }
+    }
+
+    cb && typeof cb === "function" && cb();
+};

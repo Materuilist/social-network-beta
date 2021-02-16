@@ -19,6 +19,7 @@ export const notificationsActionTypes = {
 };
 
 export const dictionariesActionTypes = {
-    SET_CITIES: "SET_CITIES",
-    SET_INTERESTS: "SET_INTERESTS",
+    SET_CITIES: "SET_CITIES_DICTIONARY",
+    SET_INTERESTS: "SET_INTERESTS_DICTIONARY",
+    SET_FRIENDS_STATUSES: "SET_FRIENDS_STATUSES_DICTIONARY",
 };

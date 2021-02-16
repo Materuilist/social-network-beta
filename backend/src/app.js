@@ -21,7 +21,7 @@ app.use("/", (req, res, next) => {
     next();
 });
 
-app.use("/static", express.static("src/static"));
+app.use(express.static("src/static/"));
 app.use("/", bodyParser.json({ limit: "5mb" }));
 
 app.use("/auth", authRouter);

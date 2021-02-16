@@ -21,3 +21,13 @@ export const sortDirections = {
     DECREASE: "DECREASE",
     INCREASE: "INCREASE",
 };
+
+export const otherUserTypes = {
+    STRANGER: "STRANGER",
+    INCOMING_REQUEST: "INCOMING_REQUEST",
+    OUTCOMING_REQUEST: "OUTCOMING_REQUEST",
+    FRIEND: "FRIENDS",
+};
+export const friendsStatusesIcons = {
+    
+}

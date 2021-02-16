@@ -3,6 +3,7 @@ import { dictionariesActionTypes } from "../actionTypes";
 const initialState = {
     cities: [],
     interests: [],
+    friendsStatuses: [],
 };
 
 export const dictionariesReducer = (
@@ -15,6 +16,9 @@ export const dictionariesReducer = (
         }
         case dictionariesActionTypes.SET_INTERESTS: {
             return { ...state, interests: payload };
+        }
+        case dictionariesActionTypes.SET_FRIENDS_STATUSES: {
+            return { ...state, friendsStatuses: payload };
         }
         default:
             return state;
