@@ -9,3 +9,15 @@ export const getFileBinary = (file) =>
         fileReader.onerror = (event) => reject(fileReader.error);
         fileReader.readAsDataURL(file);
     });
+
+export const adjustPixels = (pixels) => {
+    const fs = +window
+        .getComputedStyle(document.querySelector("html"))
+        .getPropertyValue("font-size")
+        .slice(0, -2);
+    //высчитываем исходную пропорцию, calcRem return \drem - от 'rem' избавляемся
+    const pixelsInRems = +calcRem(pixels).slice(0, -3);
+
+    //текущий fs отличается от базового fs, используемого до просчета пропорций элементов в функции calcRem
+    return pixelsInRems * fs;
+};

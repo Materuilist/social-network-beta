@@ -3,7 +3,7 @@ import { friendsActionTypes } from "../actionTypes";
 
 const initialState = {
     current: [],
-    strangers: { data: [], isLoading: true },
+    strangers: { data: [], isLoading: true, nextPageExists: true },
     filters: {
         currentFriends: {
             searchText: "",
@@ -32,7 +32,14 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
             return { ...state, current: payload };
         }
         case friendsActionTypes.SET_STRANGERS: {
-            return { ...state, strangers: { ...state.strangers, data: payload } };
+            return {
+                ...state,
+                strangers: {
+                    ...state.strangers,
+                    data: payload.data,
+                    nextPageExists: payload.nextPageExists,
+                },
+            };
         }
 
         case friendsActionTypes.TOGGLE_STRANGERS_LOADING: {

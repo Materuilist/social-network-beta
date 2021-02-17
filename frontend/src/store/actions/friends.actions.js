@@ -9,9 +9,9 @@ const setFriends = (friends = []) => ({
     payload: friends,
 });
 
-const setStrangers = (strangers = []) => ({
+const setStrangers = (strangers = [], nextPageExists = true) => ({
     type: friendsActionTypes.SET_STRANGERS,
-    payload: strangers,
+    payload: { data: strangers, nextPageExists },
 });
 
 const toggleStrangersLoading = (isLoading = true) => ({
@@ -32,6 +32,7 @@ export const getFriends = (cb) => async (dispatch) => {
 export const getStrangers = (pageIndex = 1) => async (dispatch, getState) => {
     const {
         friends: {
+            strangers,
             filters: {
                 strangers: {
                     searchText,
@@ -57,11 +58,17 @@ export const getStrangers = (pageIndex = 1) => async (dispatch, getState) => {
             ageTop: anyAge ? null : ageTop,
             sex,
         },
-        pageIndex
+        pageIndex,
+        6
     );
 
     if (res && res.data) {
-        dispatch(setStrangers(res.data));
+        dispatch(
+            setStrangers(
+                pageIndex === 1 ? res.data : [...strangers.data, ...res.data],
+                res.nextPageExists || false
+            )
+        );
     }
     dispatch(toggleStrangersLoading(false));
 };
@@ -71,6 +78,7 @@ export const changeStrangersFilter = (filter) => (dispatch, getState) => {
         friends: { filters },
     } = getState();
 
+    dispatch(setStrangers([])); //чтобы инфинит скролл сбросил страницу
     dispatch({
         type: friendsActionTypes.SET_STRANGERS_FILTER,
         payload: { ...filters.strangers, ...filter },
@@ -86,6 +94,7 @@ export const changeStrangersSearchText = (searchText = "") => (
         friends: { filters },
     } = getState();
 
+    dispatch(setStrangers([])); //чтобы инфинит скролл сбросил страницу
     dispatch({
         type: friendsActionTypes.SET_STRANGERS_FILTER,
         payload: { ...filters.strangers, searchText },
