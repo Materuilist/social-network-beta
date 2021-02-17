@@ -20,7 +20,7 @@ const initialState = {
             interests: [],
             ageBottom: 0,
             ageTop: 140,
-            anyAge: true,
+            anyAge: false,
             sex: null,
         },
     },

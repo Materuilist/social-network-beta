@@ -8,6 +8,8 @@ import { CustomRadioButton } from "../../../shared/custom-radiobutton/custom-rad
 import { dictionariesActions, friendsActions } from "../../../../store/actions";
 import { CustomSwitch } from "../../../shared/custom-switch/custom-switch";
 
+import classNames from "./filters.module.scss";
+
 const mapStateToProps = ({ friends: { filters }, dictionaries }) => ({
     filter: filters.strangers,
     dictionaries,
@@ -83,8 +85,8 @@ export const StrangersFilter = connect(
     };
 
     return (
-        <div>
-            <FormGroup>
+        <div className={classNames.strangersFilter}>
+            <FormGroup className={classNames.citiesFormGroup}>
                 <Label>Город</Label>
                 <CustomSelect
                     busy={areCitiesLoading}
@@ -94,7 +96,7 @@ export const StrangersFilter = connect(
                     onChange={(value) => changeFilter("cities", value)}
                 />
             </FormGroup>
-            <FormGroup>
+            <FormGroup className={classNames.interestsFormGroup}>
                 <Label>Интересы</Label>
                 <CustomSelect
                     busy={areInterestsLoading}
@@ -104,22 +106,8 @@ export const StrangersFilter = connect(
                     onChange={(value) => changeFilter("interests", value)}
                 />
             </FormGroup>
-            <FormGroup>
+            <FormGroup className={classNames.ageFormGroup}>
                 <Label>Возраст</Label>
-                <Input
-                    type="number"
-                    value={filterState.ageBottom}
-                    onChange={({ target: { value } }) => changeAge(true, value)}
-                    disabled={filterState.anyAge}
-                />
-                <Input
-                    type="number"
-                    value={filterState.ageTop}
-                    onChange={({ target: { value } }) =>
-                        changeAge(false, value)
-                    }
-                    disabled={filterState.anyAge}
-                />
                 <CustomSwitch
                     checked={filterState.anyAge}
                     onChange={(isSwitched) =>
@@ -127,29 +115,50 @@ export const StrangersFilter = connect(
                     }
                     labelText="Любой"
                 />
+                {!filterState.anyAge && (
+                    <div>
+                        <Input
+                            type="number"
+                            value={filterState.ageBottom}
+                            onChange={({ target: { value } }) =>
+                                changeAge(true, value)
+                            }
+                        />
+                        <hr />
+                        <Input
+                            type="number"
+                            value={filterState.ageTop}
+                            onChange={({ target: { value } }) =>
+                                changeAge(false, value)
+                            }
+                        />
+                    </div>
+                )}
             </FormGroup>
-            <FormGroup>
+            <FormGroup className={classNames.sexFormGroup}>
                 <Label>Пол</Label>
-                <CustomRadioButton
-                    name="sex"
-                    labelText="М"
-                    value="М"
-                    onChange={(value) => changeFilter("sex", value)}
-                    checked={filterState.sex === "М"}
-                />
-                <CustomRadioButton
-                    name="sex"
-                    labelText="Ж"
-                    value="Ж"
-                    onChange={(value) => changeFilter("sex", value)}
-                    checked={filterState.sex === "Ж"}
-                />
-                <CustomRadioButton
-                    name="sex"
-                    labelText="Любой"
-                    onChange={(value) => changeFilter("sex", null)}
-                    checked={!filterState.sex}
-                />
+                <div>
+                    <CustomRadioButton
+                        name="sex"
+                        labelText="М"
+                        value="М"
+                        onChange={(value) => changeFilter("sex", value)}
+                        checked={filterState.sex === "М"}
+                    />
+                    <CustomRadioButton
+                        name="sex"
+                        labelText="Ж"
+                        value="Ж"
+                        onChange={(value) => changeFilter("sex", value)}
+                        checked={filterState.sex === "Ж"}
+                    />
+                    <CustomRadioButton
+                        name="sex"
+                        labelText="Любой"
+                        onChange={(value) => changeFilter("sex", null)}
+                        checked={!filterState.sex}
+                    />
+                </div>
             </FormGroup>
         </div>
     );

@@ -66,6 +66,7 @@
 
     &__filter {
         flex: 1 0 37%;
-        height: $side-nav-height;
+        height: min-content;
+        max-height: 80%;
     }
 }

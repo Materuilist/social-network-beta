@@ -1,0 +1,70 @@
+@import "functions";
+@import "variables";
+
+.strangersFilter {
+    height: 100%;
+    overflow: auto;
+    padding-right: calc-rem(10px);
+
+    .citiesFormGroup {
+        width: 60%;
+    }
+
+    .interestsFormGroup {
+        width: 70%;
+    }
+
+    .ageFormGroup {
+        > label,
+        :global(.custom-switch-button) {
+            float: left;
+            margin: calc-rem(8px) calc-rem(14px) 0 0;
+        }
+
+        :global(.custom-switch-button) {
+            margin-top: calc-rem(10px);
+        }
+
+        > div:last-of-type:not(:global(.custom-switch-button)) {
+            display: flex;
+            float: left;
+            margin-top: calc-rem(16px);
+
+            > hr {
+                width: calc-rem(30px);
+                border-top: calc-rem(4px) solid $light-mint-color;
+                margin: auto calc-rem(16px);
+            }
+
+            > input {
+                width: calc-rem(100px);
+            }
+        }
+
+        &::after {
+            display: block;
+            content: "";
+            clear: both;
+        }
+    }
+
+    .sexFormGroup {
+        > div {
+            display: flex;
+
+            > :global(.custom-rbn) {
+                margin-right: calc-rem(20px);
+            }
+        }
+    }
+
+    label {
+        color: $light-mint-color;
+        font-size: calc-rem(18px);
+        line-height: calc-rem(22px);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $heavy-mint-color;
+    }
+}

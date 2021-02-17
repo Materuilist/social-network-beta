@@ -19,8 +19,8 @@ export const CustomSwitch = ({
             })}
             onClick={() => onChange(!checked)}
         >
-            {labelText && <label>{labelText}</label>}
             <div></div>
+            {labelText && <label>{labelText}</label>}
         </div>
     );
 };
