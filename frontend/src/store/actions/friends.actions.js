@@ -39,6 +39,7 @@ export const getStrangers = (pageIndex = 1, cb) => async (
                     ageBottom,
                     ageTop,
                     sex,
+                    anyAge,
                 },
             },
         },
@@ -49,8 +50,8 @@ export const getStrangers = (pageIndex = 1, cb) => async (
         {
             cities: cities && cities.length ? cities : null,
             interests: interests && interests.length ? interests : null,
-            ageBottom,
-            ageTop,
+            ageBottom: anyAge ? null : ageBottom,
+            ageTop: anyAge ? null : ageTop,
             sex,
         },
         pageIndex
