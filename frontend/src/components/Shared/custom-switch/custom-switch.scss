@@ -1,0 +1,51 @@
+@import "functions";
+@import "variables";
+
+div.custom-switch-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    > div {
+        position: relative;
+        width: calc-rem(50px);
+        height: calc-rem(20px);
+        border-radius: calc-rem(10px);
+        border: 1px solid $semi-heavy-mint-color;
+        background-color: $light-mint-color;
+        transition: all 0.3s ease-out;
+
+        &::after {
+            display: block;
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            left: 0;
+            height: calc-rem(16px);
+            width: calc-rem(16px);
+            background-color: $semi-heavy-mint-color;
+            border-radius: 50%;
+            transition: all 0.3s ease-out;
+        }
+    }
+
+    &.switchedOn {
+        > div {
+            background-color: $semi-heavy-mint-color;
+            border-color: $light-mint-color;
+
+            &::after {
+                left: calc(100% - #{calc-rem(16px)});
+                background-color: $light-mint-color;
+            }
+        }
+    }
+
+    >label{
+        cursor: pointer;
+        margin-right: calc-rem(6px);
+        margin-bottom: 0;
+    }
+}
