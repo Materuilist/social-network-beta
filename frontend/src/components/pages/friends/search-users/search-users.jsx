@@ -9,8 +9,14 @@ import { friendsActions } from "../../../../store/actions";
 
 import classNames from "./search-users.module.scss";
 
-const mapStateToProps = ({ friends: { strangers, filters } }) => ({
-    strangers,
+const mapStateToProps = ({
+    friends: {
+        strangers: { data, isLoading },
+        filters,
+    },
+}) => ({
+    strangers: data,
+    isLoading,
     filter: filters.strangers,
 });
 
@@ -21,11 +27,9 @@ const mapDispatchToProps = (dispatch) => ({
 export const SearchUsers = connect(
     mapStateToProps,
     mapDispatchToProps
-)(({ strangers, friendsActions, filter }) => {
-    const [isLoading, setIsLoading] = useState(true);
-
+)(({ strangers, friendsActions, filter, isLoading }) => {
     useEffect(() => {
-        friendsActions.getStrangers(1, () => setIsLoading(false));
+        friendsActions.getStrangers(1);
     }, []);
 
     return (

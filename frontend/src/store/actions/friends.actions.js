@@ -14,6 +14,11 @@ const setStrangers = (strangers = []) => ({
     payload: strangers,
 });
 
+const toggleStrangersLoading = (isLoading = true) => ({
+    type: friendsActionTypes.TOGGLE_STRANGERS_LOADING,
+    payload: isLoading,
+});
+
 export const getFriends = (cb) => async (dispatch) => {
     const res = await friendsService.getCurrentFriends();
     if (res && res.friends) {
@@ -24,10 +29,7 @@ export const getFriends = (cb) => async (dispatch) => {
     }
 };
 
-export const getStrangers = (pageIndex = 1, cb) => async (
-    dispatch,
-    getState
-) => {
+export const getStrangers = (pageIndex = 1) => async (dispatch, getState) => {
     const {
         friends: {
             filters: {
@@ -45,6 +47,7 @@ export const getStrangers = (pageIndex = 1, cb) => async (
         },
     } = getState();
 
+    dispatch(toggleStrangersLoading(true));
     const res = await friendsService.getStrangers(
         searchText,
         {
@@ -60,18 +63,22 @@ export const getStrangers = (pageIndex = 1, cb) => async (
     if (res && res.data) {
         dispatch(setStrangers(res.data));
     }
-    cb && typeof cb === "function" && cb();
+    dispatch(toggleStrangersLoading(false));
 };
 
-export const changeStrangersFilter = (filter, cb) => (dispatch) => {
+export const changeStrangersFilter = (filter) => (dispatch, getState) => {
+    const {
+        friends: { filters },
+    } = getState();
+
     dispatch({
         type: friendsActionTypes.SET_STRANGERS_FILTER,
-        payload: filter,
+        payload: { ...filters.strangers, ...filter },
     });
-    dispatch(getStrangers(1, cb));
+    dispatch(getStrangers(1));
 };
 
-export const changeStrangersSearchText = (searchText = "", cb) => (
+export const changeStrangersSearchText = (searchText = "") => (
     dispatch,
     getState
 ) => {
@@ -83,5 +90,5 @@ export const changeStrangersSearchText = (searchText = "", cb) => (
         type: friendsActionTypes.SET_STRANGERS_FILTER,
         payload: { ...filters.strangers, searchText },
     });
-    dispatch(getStrangers(1, cb));
+    dispatch(getStrangers(1));
 };

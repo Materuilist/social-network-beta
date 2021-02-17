@@ -31,7 +31,15 @@ export const StrangersFilter = connect(
         !dictionaries.interests.length
     );
 
-    const [filterState, setFilterState] = useState(filter);
+    const [filterState, setFilterState] = useState({
+        remember: filter.remember,
+        cities: filter.cities,
+        interests: filter.interests,
+        ageBottom: filter.ageBottom,
+        ageTop: filter.ageTop,
+        anyAge: filter.anyAge,
+        sex: filter.sex,
+    });
 
     const filterTimeoutRef = useRef();
     const isFirstRenderRef = useRef(true);
@@ -58,7 +66,7 @@ export const StrangersFilter = connect(
         }
 
         filterTimeoutRef.current = setTimeout(() => {
-            friendsActions.changeStrangersFilter(filterState)
+            friendsActions.changeStrangersFilter(filterState);
         }, FILTER_DELAY);
     }, [filterState]);
 

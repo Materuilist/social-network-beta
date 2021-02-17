@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Input } from "reactstrap";
 
 import MagnifierIMG from "images/magnifier.svg";
@@ -17,6 +17,8 @@ export const CustomSearch = ({
     const [searchTimeout, setSearchTimeout] = useState(null);
     const [searchText, setSearchText] = useState(defaultSearchText);
 
+    const isFirstTimeRef = useRef(true);
+
     const filteredOptions = useMemo(() => {
         if (!options || !options.length) return [];
 
@@ -26,6 +28,11 @@ export const CustomSearch = ({
     }, [searchText, options]);
 
     useEffect(() => {
+        if (isFirstTimeRef.current) {
+            isFirstTimeRef.current = false;
+            return;
+        }
+
         clearTimeout(searchTimeout);
         setSearchTimeout(
             setTimeout(() => {
