@@ -58,7 +58,7 @@ export const StrangersFilter = connect(
         }
 
         filterTimeoutRef.current = setTimeout(() => {
-            console.log(filterState);
+            friendsActions.changeStrangersFilter(filterState)
         }, FILTER_DELAY);
     }, [filterState]);
 

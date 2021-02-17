@@ -6,7 +6,7 @@ const findStrangers = async (req, res, next) => {
     const {
         user,
         searchText = "",
-        searchParams: { city, interests, ageBottom, ageTop, sex } = {},
+        searchParams: { cities, interests, ageBottom, ageTop, sex } = {},
         page: { index: pageIndex = 1, itemsCount = 20 } = {},
     } = req.body;
 
@@ -16,10 +16,10 @@ const findStrangers = async (req, res, next) => {
             $regex: new RegExp(searchText),
         },
     };
-    city && (query = { ...query, city });
+    cities && cities.length && (query = { ...query, city: { $in: cities } });
     interests &&
         interests.length &&
-        (query = { ...query, interests: { $all: interests } });
+        (query = { ...query, interests: { $elemMatch: { $in: interests } } });
     sex && (query = { ...query, sex });
     if (ageBottom || ageTop) {
         const today = new Date();

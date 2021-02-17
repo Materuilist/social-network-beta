@@ -62,3 +62,11 @@ export const getStrangers = (pageIndex = 1, cb) => async (
     }
     cb && typeof cb === "function" && cb();
 };
+
+export const changeStrangersFilter = (filter, cb) => (dispatch) => {
+    dispatch({
+        type: friendsActionTypes.SET_STRANGERS_FILTER,
+        payload: filter,
+    });
+    dispatch(getStrangers(1, cb));
+};

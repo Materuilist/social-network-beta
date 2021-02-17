@@ -20,7 +20,7 @@ const initialState = {
             interests: [],
             ageBottom: 0,
             ageTop: 140,
-            anyAge: false,
+            anyAge: true,
             sex: null,
         },
     },
@@ -40,10 +40,7 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 filters: {
                     ...state.filters,
-                    currentFriends: {
-                        ...state.filters.currentFriends,
-                        [payload.key]: payload.value,
-                    },
+                    currentFriends: { ...payload },
                 },
             };
         }
@@ -52,10 +49,7 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 filters: {
                     ...state.filters,
-                    strangers: {
-                        ...state.filters.strangers,
-                        [payload.key]: payload.value,
-                    },
+                    strangers: { ...payload },
                 },
             };
         }

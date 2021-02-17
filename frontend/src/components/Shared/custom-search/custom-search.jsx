@@ -10,8 +10,8 @@ export const CustomSearch = ({
     searchField = "name",
     onChange = () => {},
     placeholder = "Поиск",
+    delay = 700
 }) => {
-    const DELAY = 700;
 
     const [searchTimeout, setSearchTimeout] = useState(null);
     const [searchText, setSearchText] = useState("");
@@ -29,7 +29,7 @@ export const CustomSearch = ({
         setSearchTimeout(
             setTimeout(() => {
                 onChange(filteredOptions);
-            }, DELAY)
+            }, delay)
         );
     }, [searchText]);
 
