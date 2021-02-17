@@ -9,12 +9,13 @@ export const CustomSearch = ({
     options,
     searchField = "name",
     onChange = () => {},
+    onSearchTextChange = () => {},
     placeholder = "Поиск",
-    delay = 700
+    delay = 700,
+    defaultSearchText = "",
 }) => {
-
     const [searchTimeout, setSearchTimeout] = useState(null);
-    const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useState(defaultSearchText);
 
     const filteredOptions = useMemo(() => {
         if (!options || !options.length) return [];
@@ -28,6 +29,7 @@ export const CustomSearch = ({
         clearTimeout(searchTimeout);
         setSearchTimeout(
             setTimeout(() => {
+                onSearchTextChange(searchText);
                 onChange(filteredOptions);
             }, delay)
         );
@@ -43,6 +45,7 @@ export const CustomSearch = ({
                 type="text"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 placeholder={placeholder}
+                defaultValue={defaultSearchText}
             />
             <img src={MagnifierIMG} />
         </div>

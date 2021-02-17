@@ -70,3 +70,18 @@ export const changeStrangersFilter = (filter, cb) => (dispatch) => {
     });
     dispatch(getStrangers(1, cb));
 };
+
+export const changeStrangersSearchText = (searchText = "", cb) => (
+    dispatch,
+    getState
+) => {
+    const {
+        friends: { filters },
+    } = getState();
+
+    dispatch({
+        type: friendsActionTypes.SET_STRANGERS_FILTER,
+        payload: { ...filters.strangers, searchText },
+    });
+    dispatch(getStrangers(1, cb));
+};

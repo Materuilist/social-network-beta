@@ -9,8 +9,9 @@ import { friendsActions } from "../../../../store/actions";
 
 import classNames from "./search-users.module.scss";
 
-const mapStateToProps = ({ friends: { strangers } }) => ({
+const mapStateToProps = ({ friends: { strangers, filters } }) => ({
     strangers,
+    filter: filters.strangers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -20,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
 export const SearchUsers = connect(
     mapStateToProps,
     mapDispatchToProps
-)(({ strangers, friendsActions }) => {
+)(({ strangers, friendsActions, filter }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -30,7 +31,13 @@ export const SearchUsers = connect(
     return (
         <div className={classNames.strangersSearch}>
             <CustomLoader isLoading={isLoading} />
-            <CustomSearch placeholder="Поиск" />
+            <CustomSearch
+                placeholder="Поиск"
+                defaultSearchText={filter.searchText}
+                onSearchTextChange={(searchText) =>
+                    friendsActions.changeStrangersSearchText(searchText)
+                }
+            />
             {!isLoading && (
                 <>
                     {strangers.length ? (
@@ -38,7 +45,11 @@ export const SearchUsers = connect(
                             <h4>Поиск</h4>
                             <div className={classNames.strangersContainer}>
                                 {strangers.map(({ _id, login }) => (
-                                    <UserItem key={_id} id={_id} login={login} />
+                                    <UserItem
+                                        key={_id}
+                                        id={_id}
+                                        login={login}
+                                    />
                                 ))}
                             </div>
                         </div>
