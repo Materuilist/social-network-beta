@@ -1,3 +1,4 @@
+import { getFileBinary } from "../helpers";
 import { BaseService } from "./base.service";
 
 export class DictionariesService extends BaseService {
@@ -22,12 +23,14 @@ export class DictionariesService extends BaseService {
         if (res && res.data) {
             const images = await Promise.all(
                 res.data.map(({ imageName }) =>
-                    super.request(
-                        `images/friendsStatuses/${imageName}`,
-                        null,
-                        false,
-                        "blob"
-                    )
+                    super
+                        .request(
+                            `images/friendsStatuses/${imageName}`,
+                            null,
+                            false,
+                            "blob"
+                        )
+                        .then((blob) => getFileBinary(blob))
                 )
             );
             if (images && images.length) {

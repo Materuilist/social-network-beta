@@ -1,0 +1,64 @@
+@import "functions";
+@import "variables";
+
+div.custom-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    > input[type="checkbox"] {
+        position: relative;
+        visibility: hidden;
+        margin-right: calc-rem(8px);
+        height: calc-rem(20px) !important;
+        width: calc-rem(20px);
+        cursor: inherit;
+
+        &:after,
+        &:before {
+            visibility: visible;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            content: "";
+            display: block;
+            border-radius: calc-rem(5px);
+            border: 1px solid $semi-heavy-mint-color;
+            background-color: $light-mint-color;
+            height: 100%;
+            width: 100%;
+        }
+
+        &:before {
+            visibility: hidden;
+            z-index: 1;
+            border: none;
+            background-color: $heavy-mint-color;
+            height: 70%;
+            width: 70%;
+        }
+
+        &:checked {
+            &:before {
+                visibility: visible;
+            }
+        }
+    }
+
+    &:hover {
+        input[type="checkbox"]:not(:checked) {
+            &:before {
+                visibility: visible;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    > label {
+        margin-bottom: 0;
+        cursor: inherit;
+    }
+}

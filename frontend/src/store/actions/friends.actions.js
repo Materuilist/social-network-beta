@@ -34,6 +34,14 @@ export const getFriends = (cb) => async (dispatch) => {
     }
 };
 
+export const changeFriendsFilter = (key, value) => ({
+    type: friendsActionTypes.SET_FRIENDS_FILTER,
+    payload: {
+        key,
+        value,
+    },
+});
+
 export const getStrangers = (pageIndex = 1) => async (dispatch, getState) => {
     const {
         friends: {

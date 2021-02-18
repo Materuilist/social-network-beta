@@ -1,4 +1,3 @@
-import { sortDirections, sortTypes } from "../../constants";
 import { friendsActionTypes } from "../actionTypes";
 
 const initialState = {
@@ -13,7 +12,7 @@ const initialState = {
             searchText: "",
             remember: false,
             sortBy: null,
-            sortDirection: sortDirections.DECREASE,
+            sortUp: false,
             statuses: [],
             isOnline: false,
         },
@@ -58,7 +57,10 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 filters: {
                     ...state.filters,
-                    currentFriends: { ...payload },
+                    currentFriends: {
+                        ...state.filters.currentFriends,
+                        [payload.key]: payload.value,
+                    },
                 },
             };
         }

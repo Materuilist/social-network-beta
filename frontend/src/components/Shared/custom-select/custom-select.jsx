@@ -64,13 +64,13 @@ export const CustomSelect = ({
     };
 
     const checkAll = (event) => {
-        event.stopPropagation()
+        event.stopPropagation();
         onChange(options.map((option) => option[valueField]));
         onCheckAll && typeof onCheckAll === "function" && onCheckAll();
     };
 
     const dismissAll = (event) => {
-        event.stopPropagation()
+        event.stopPropagation();
         onChange(multiple ? [] : null);
         onDismissAll && typeof onDismissAll === "function" && onDismissAll();
     };
@@ -115,7 +115,13 @@ export const CustomSelect = ({
         return (
             <div className="options-container">
                 {selectedOptions.map((option) => renderOption(option, true))}
-                {searchedOptions.map((option) => renderOption(option, false))}
+                {search
+                    ? searchedOptions.map((option) =>
+                          renderOption(option, false)
+                      )
+                    : notSelectedOptions.map((option) =>
+                          renderOption(option, false)
+                      )}
             </div>
         );
     };
@@ -172,7 +178,15 @@ export const CustomSelect = ({
                                         styles: {
                                             ...data.styles,
                                             overflow: "hidden",
-                                            height: calcRem(200),
+                                            height: calcRem(
+                                                search || options.length > 3
+                                                    ? 200
+                                                    : 100
+                                            ),
+                                            paddingBottom:
+                                                !search || options.length < 3
+                                                    ? 0
+                                                    : null,
                                         },
                                     };
                                 },

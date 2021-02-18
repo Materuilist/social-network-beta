@@ -12,14 +12,10 @@ export const notificationDismissDelay = 5000;
 export const maxNotifications = 3;
 
 export const sortTypes = {
-    friends: {
-        IMPORTANCE: "IMPORTANCE",
-        AGE: "AGE",
-    },
-};
-export const sortDirections = {
-    DECREASE: "DECREASE",
-    INCREASE: "INCREASE",
+    friends: [
+        { id: "IMPORTANCE", name: "По важности" },
+        { id: "AGE", name: "По возрасту" },
+    ],
 };
 
 export const otherUserTypes = {
@@ -28,6 +24,3 @@ export const otherUserTypes = {
     OUTCOMING_REQUEST: "OUTCOMING_REQUEST",
     FRIEND: "FRIENDS",
 };
-export const friendsStatusesIcons = {
-    
-}

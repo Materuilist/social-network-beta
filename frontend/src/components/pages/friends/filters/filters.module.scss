@@ -1,12 +1,14 @@
 @import "functions";
 @import "variables";
 
-.strangersFilter {
+.strangersFilter,
+.friendsFilter {
     height: 100%;
     overflow: auto;
     padding-right: calc-rem(10px);
 
-    .interestsFormGroup, .citiesFormGroup {
+    .interestsFormGroup,
+    .citiesFormGroup {
         width: 70%;
     }
 
@@ -50,6 +52,47 @@
 
             > :global(.custom-rbn) {
                 margin-right: calc-rem(20px);
+            }
+        }
+    }
+
+    .sortByFormGroup {
+        width: 80%;
+
+        > div {
+            display: inline-block;
+            margin-right: calc-rem(16px);
+            width: 80%;
+        }
+
+        > img {
+            cursor: pointer;
+            transition: all 0.15s ease-out;
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .statusesFormGroup {
+        > div {
+            display: flex;
+            align-items: center;
+            margin-bottom: calc-rem(15px);
+            cursor: pointer;
+
+            > img {
+                height: calc-rem(25px);
+                width: calc-rem(25px);
+                margin-right: calc-rem(6px);
+            }
+
+            >span{
+                font-size: calc-rem(16px);
+                font-weight: 500;
+                line-height: calc-rem(20px);
+                color: $light-mint-color;
             }
         }
     }
