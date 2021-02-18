@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { otherUserTypes } from "../../../../constants";
 
 import { friendsActions } from "../../../../store/actions";
+import { CustomLoader } from "../../../shared/custom-loader/custom-loader";
 import { CustomSearch } from "../../../shared/custom-search/custom-search";
 import { CustomSwitch } from "../../../shared/custom-switch/custom-switch";
+import { UserItem } from "../user-item";
 
 import classNames from "./friends-requests.module.scss";
 
@@ -29,7 +32,12 @@ export const FriendRequests = connect(
 
     return (
         <div className={classNames.friendsRequests}>
-            <div>
+            <CustomLoader isLoading={isLoading} />
+            <div
+                className={
+                    incomingRequests.isVisible ? classNames.visible : ""
+                }
+            >
                 <div className={classNames.toggler}>
                     <span>Входящие заявки</span>
                     <CustomSwitch
@@ -46,9 +54,29 @@ export const FriendRequests = connect(
                         }
                     />
                 </div>
-                {incomingRequests.isVisible && <div>Входящие</div>}
+                {incomingRequests.isVisible && (
+                    <div>
+                        {!incomingRequests.data.length && <p>Нет заявок...</p>}
+                        {incomingRequests.data.map(
+                            ({ _id, login, isOnline, avatar }) => (
+                                <UserItem
+                                    key={_id}
+                                    id={_id}
+                                    isOnline={isOnline}
+                                    login={login}
+                                    avatar={avatar}
+                                    userType={otherUserTypes.INCOMING_REQUEST}
+                                />
+                            )
+                        )}
+                    </div>
+                )}
             </div>
-            <div>
+            <div
+                className={
+                    outcomingRequests.isVisible ? classNames.visible : ""
+                }
+            >
                 <div className={classNames.toggler}>
                     <span>Исходящие заявки</span>
                     <CustomSwitch
@@ -65,7 +93,23 @@ export const FriendRequests = connect(
                         }
                     />
                 </div>
-                {outcomingRequests.isVisible && <div>Исходящие</div>}
+                {outcomingRequests.isVisible && (
+                    <div>
+                        {!outcomingRequests.data.length && <p>Нет заявок...</p>}
+                        {outcomingRequests.data.map(
+                            ({ _id, login, isOnline, avatar }) => (
+                                <UserItem
+                                    key={_id}
+                                    id={_id}
+                                    isOnline={isOnline}
+                                    login={login}
+                                    avatar={avatar}
+                                    userType={otherUserTypes.OUTCOMING_REQUEST}
+                                />
+                            )
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -1,29 +1,55 @@
 @import "functions";
 @import "variables";
 
-.friendsRequests{
+.friendsRequests {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     background-color: $light-mint-color;
     border-radius: calc-rem(5px);
 
-    .toggler{
+    > div:not(:global(.loaderContainer)) {
+        flex: unset;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        &.visible {
+            flex: 1 1 50%;
+        }
+
+        &:last-of-type{
+            border-top: 1px solid $heavy-mint-color;
+        }
+
+        > div:not(.toggler) {
+            overflow: auto;
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $heavy-mint-color;
+            }
+        }
+    }
+
+    .toggler {
         display: flex;
         align-items: center;
         border-bottom: 1px solid $heavy-mint-color;
         padding: calc-rem(8px) calc-rem(14px) calc-rem(8px) calc-rem(10px);
 
-        >span{
+        > span {
             margin-right: calc-rem(16px);
             font-size: calc-rem(20px);
             line-height: calc-rem(25px);
             color: $heavy-mint-color;
         }
 
-        :global(.custom-switch-button){
+        :global(.custom-switch-button) {
             margin-top: calc-rem(6px);
         }
 
-        :global(.custom-search){
+        :global(.custom-search) {
             margin-left: auto;
         }
     }

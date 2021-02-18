@@ -3,7 +3,7 @@ import RingLoader from "react-spinners/RingLoader";
 
 import { calcRem } from "../../../helpers";
 
-import classNames from "./loader.module.scss";
+import "./loader.scss";
 
 export const CustomLoader = ({
     isLoading,
@@ -13,7 +13,7 @@ export const CustomLoader = ({
 }) =>
     isLoading ? (
         <div
-            className={classNames.loaderContainer}
+            className="loaderContainer"
             style={{ backgroundColor: backdropColor }}
         >
             <RingLoader

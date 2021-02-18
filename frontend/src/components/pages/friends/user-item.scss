@@ -11,7 +11,9 @@
 
     >img{
         &:first-of-type{
-            height: 100%;
+            height: calc-rem(62px);
+            width: calc-rem(62px);
+            object-fit: cover;
             border: calc-rem(2px) solid $heavy-mint-color;
             border-radius: 50%;
             padding: calc-rem(5px);

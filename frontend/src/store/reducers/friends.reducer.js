@@ -79,7 +79,7 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
                     ...state.requests,
                     [payload.type]: {
                         ...state.requests[payload.type],
-                        data: payload,
+                        data: payload.data,
                     },
                 },
             };

@@ -118,8 +118,8 @@ export const getRequests = (cb) => async (dispatch) => {
     const res = await friendsService.getRequests();
 
     if (res) {
-        res.incoming ?? dispatch(setRequests("incoming", res.incoming));
-        res.outcoming ?? dispatch(setRequests("outcoming", res.outcoming));
+        res.incoming && dispatch(setRequests("incoming", res.incoming));
+        res.outcoming && dispatch(setRequests("outcoming", res.outcoming));
     }
 
     cb && typeof cb === "function" && cb();
