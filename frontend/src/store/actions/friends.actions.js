@@ -101,3 +101,10 @@ export const changeStrangersSearchText = (searchText = "") => (
     });
     dispatch(getStrangers(1));
 };
+
+export const toggleRequestsVisibility = (type = "incoming") => ({
+    type: friendsActionTypes.TOGGLE_REQUESTS_VISIBILITY,
+    payload: {
+        type,
+    },
+});

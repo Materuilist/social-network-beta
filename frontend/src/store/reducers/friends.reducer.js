@@ -4,6 +4,10 @@ import { friendsActionTypes } from "../actionTypes";
 const initialState = {
     current: [],
     strangers: { data: [], isLoading: true, nextPageExists: true },
+    requests: {
+        incoming: { data: [], isLoading: true, isVisible: true },
+        outcoming: { data: [], isLoading: true, isVisible: true },
+    },
     filters: {
         currentFriends: {
             searchText: "",
@@ -31,6 +35,7 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
         case friendsActionTypes.SET_FRIENDS: {
             return { ...state, current: payload };
         }
+
         case friendsActionTypes.SET_STRANGERS: {
             return {
                 ...state,
@@ -41,7 +46,6 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
                 },
             };
         }
-
         case friendsActionTypes.TOGGLE_STRANGERS_LOADING: {
             return {
                 ...state,
@@ -67,6 +71,44 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
                 },
             };
         }
+
+        case friendsActionTypes.SET_REQUESTS: {
+            return {
+                ...state,
+                requests: {
+                    ...state.requests,
+                    [payload.type]: {
+                        ...state.requests[payload.type],
+                        data: payload,
+                    },
+                },
+            };
+        }
+        case friendsActionTypes.SET_REQUESTS_LOADING: {
+            return {
+                ...state,
+                requests: {
+                    ...state.requests,
+                    [payload.type]: {
+                        ...state.requests[payload.type],
+                        isLoading: payload,
+                    },
+                },
+            };
+        }
+        case friendsActionTypes.TOGGLE_REQUESTS_VISIBILITY: {
+            return {
+                ...state,
+                requests: {
+                    ...state.requests,
+                    [payload.type]: {
+                        ...state.requests[payload.type],
+                        isVisible: !state.requests[payload.type].isVisible,
+                    },
+                },
+            };
+        }
+
         default:
             return state;
     }
