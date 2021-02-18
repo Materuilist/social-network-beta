@@ -81,14 +81,20 @@ export const getStrangers = (pageIndex = 1) => async (dispatch, getState) => {
 export const changeStrangersFilter = (filter) => (dispatch, getState) => {
     const {
         friends: { filters },
+        router: {
+            location: { pathname },
+        },
     } = getState();
 
-    dispatch(setStrangers([])); //чтобы инфинит скролл сбросил страницу
     dispatch({
         type: friendsActionTypes.SET_STRANGERS_FILTER,
         payload: { ...filters.strangers, ...filter },
     });
-    dispatch(getStrangers(1));
+    
+    if (pathname.includes("friends/search")) {
+        dispatch(setStrangers([])); //чтобы инфинит скролл сбросил страницу
+        dispatch(getStrangers(1));
+    }
 };
 
 export const changeStrangersSearchText = (searchText = "") => (

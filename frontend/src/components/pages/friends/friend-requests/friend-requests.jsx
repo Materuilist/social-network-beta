@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { otherUserTypes } from "../../../../constants";
@@ -11,9 +11,10 @@ import { UserItem } from "../user-item";
 
 import classNames from "./friends-requests.module.scss";
 
-const mapStateToProps = ({ friends: { requests } }) => ({
+const mapStateToProps = ({ friends: { requests, filters } }) => ({
     incomingRequests: requests.incoming,
     outcomingRequests: requests.outcoming,
+    filter: filters.strangers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -23,8 +24,58 @@ const mapDispatchToProps = (dispatch) => ({
 export const FriendRequests = connect(
     mapStateToProps,
     mapDispatchToProps
-)(({ incomingRequests, outcomingRequests, friendsActions }) => {
+)(({ incomingRequests, outcomingRequests, friendsActions, filter }) => {
     const [isLoading, setIsLoading] = useState(true);
+    const [searchedIncomingRequests, setSearchedIncomingRequests] = useState(
+        []
+    );
+    const [searchedOutcomingRequests, setSearchedOutcomingRequests] = useState(
+        []
+    );
+
+    const filterRequests = (requests) =>
+        requests.data.filter(({ city, interests, birthDate, sex }) => {
+            const citySatisfies =
+                filter.cities.length === 0 ||
+                filter.cities.find((cityId) => city === cityId);
+            const interestsSatisfy =
+                filter.interests.length === 0 ||
+                filter.interests.find((interestId) =>
+                    interests.find(
+                        (userInterestId) => userInterestId === interestId
+                    )
+                );
+            let ageSatisfies = filter.anyAge;
+            if (!filter.anyAge) {
+                if (
+                    !birthDate ||
+                    new Date(birthDate).toString() === "Invalid Date"
+                ) {
+                    ageSatisfies = false;
+                } else {
+                    const userAge =
+                        new Date(Date.now() - new Date(birthDate)).getYear() -
+                        70;
+                    ageSatisfies =
+                        userAge >= filter.ageBottom && userAge <= filter.ageTop;
+                }
+            }
+            const sexSatisfies = !filter.sex || sex === filter.sex;
+            return (
+                citySatisfies &&
+                interestsSatisfy &&
+                ageSatisfies &&
+                sexSatisfies
+            );
+        });
+
+    const incomingRequestsFiltered = useMemo(() => {
+        return filterRequests(incomingRequests);
+    }, [filter, incomingRequests]);
+
+    const outcomingRequestsFiltered = useMemo(() => {
+        return filterRequests(outcomingRequests);
+    }, [filter, outcomingRequests]);
 
     useEffect(() => {
         friendsActions.getRequests(() => setIsLoading(false));
@@ -34,9 +85,7 @@ export const FriendRequests = connect(
         <div className={classNames.friendsRequests}>
             <CustomLoader isLoading={isLoading} />
             <div
-                className={
-                    incomingRequests.isVisible ? classNames.visible : ""
-                }
+                className={incomingRequests.isVisible ? classNames.visible : ""}
             >
                 <div className={classNames.toggler}>
                     <span>Входящие заявки</span>
@@ -52,12 +101,17 @@ export const FriendRequests = connect(
                             !incomingRequests.isVisible ||
                             !incomingRequests.data.length
                         }
+                        searchField='login'
+                        options={incomingRequestsFiltered}
+                        onChange={(searchedItems) =>
+                            setSearchedIncomingRequests(searchedItems)
+                        }
                     />
                 </div>
                 {incomingRequests.isVisible && (
                     <div>
-                        {!incomingRequests.data.length && <p>Нет заявок...</p>}
-                        {incomingRequests.data.map(
+                        {!searchedIncomingRequests.length && <p>Нет заявок...</p>}
+                        {searchedIncomingRequests.map(
                             ({ _id, login, isOnline, avatar }) => (
                                 <UserItem
                                     key={_id}
@@ -91,12 +145,17 @@ export const FriendRequests = connect(
                             !outcomingRequests.isVisible ||
                             !outcomingRequests.data.length
                         }
+                        searchField='login'
+                        options={outcomingRequestsFiltered}
+                        onChange={(searchedItems) =>
+                            setSearchedOutcomingRequests(searchedItems)
+                        }
                     />
                 </div>
                 {outcomingRequests.isVisible && (
                     <div>
-                        {!outcomingRequests.data.length && <p>Нет заявок...</p>}
-                        {outcomingRequests.data.map(
+                        {!searchedOutcomingRequests.length && <p>Нет заявок...</p>}
+                        {searchedOutcomingRequests.map(
                             ({ _id, login, isOnline, avatar }) => (
                                 <UserItem
                                     key={_id}
