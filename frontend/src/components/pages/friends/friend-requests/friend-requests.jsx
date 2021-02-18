@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -21,6 +21,12 @@ export const FriendRequests = connect(
     mapStateToProps,
     mapDispatchToProps
 )(({ incomingRequests, outcomingRequests, friendsActions }) => {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        friendsActions.getRequests(() => setIsLoading(false));
+    }, []);
+
     return (
         <div className={classNames.friendsRequests}>
             <div>
@@ -32,7 +38,13 @@ export const FriendRequests = connect(
                             friendsActions.toggleRequestsVisibility("incoming")
                         }
                     />
-                    <CustomSearch />
+                    <CustomSearch
+                        disabled={
+                            isLoading ||
+                            !incomingRequests.isVisible ||
+                            !incomingRequests.data.length
+                        }
+                    />
                 </div>
                 {incomingRequests.isVisible && <div>Входящие</div>}
             </div>
@@ -45,7 +57,13 @@ export const FriendRequests = connect(
                             friendsActions.toggleRequestsVisibility("outcoming")
                         }
                     />
-                    <CustomSearch />
+                    <CustomSearch
+                        disabled={
+                            isLoading ||
+                            !outcomingRequests.isVisible ||
+                            !outcomingRequests.data.length
+                        }
+                    />
                 </div>
                 {outcomingRequests.isVisible && <div>Исходящие</div>}
             </div>

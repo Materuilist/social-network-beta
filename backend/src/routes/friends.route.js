@@ -7,10 +7,13 @@ const {
     getFriends,
     toggleStatus,
     findStrangers,
+    getRequests,
 } = require("../controllers/friends.controller");
 const { parseUser } = require("../controllers/shared.controller");
 
 const router = express.Router();
+
+router.get("/requests", parseUser, getRequests);
 
 router.post("/search-strangers", parseUser, findStrangers);
 
@@ -23,5 +26,6 @@ router.get("/:userId", parseUser, getFriendsById);
 router.get("/", parseUser, getFriends);
 
 router.delete("/:userId", parseUser, deleteFriend);
+
 
 module.exports = router;

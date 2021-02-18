@@ -9,12 +9,17 @@ const setFriends = (friends = []) => ({
     payload: friends,
 });
 
-const setStrangers = (strangers = [], nextPageExists = true) => ({
+export const setStrangers = (strangers = [], nextPageExists = true) => ({
     type: friendsActionTypes.SET_STRANGERS,
     payload: { data: strangers, nextPageExists },
 });
 
-const toggleStrangersLoading = (isLoading = true) => ({
+const setRequests = (type = "incoming", requests = []) => ({
+    type: friendsActionTypes.SET_REQUESTS,
+    payload: { type, data: requests },
+});
+
+export const toggleStrangersLoading = (isLoading = true) => ({
     type: friendsActionTypes.TOGGLE_STRANGERS_LOADING,
     payload: isLoading,
 });
@@ -108,3 +113,21 @@ export const toggleRequestsVisibility = (type = "incoming") => ({
         type,
     },
 });
+
+export const getRequests = (cb) => async (dispatch) => {
+    const res = await friendsService.getRequests();
+
+    if (res) {
+        res.incoming ?? dispatch(setRequests("incoming", res.incoming));
+        res.outcoming ?? dispatch(setRequests("outcoming", res.outcoming));
+    }
+
+    cb && typeof cb === "function" && cb();
+};
+
+export const addFriend = (userId, cb) => async (dispatch, getState) => {
+    if (!userId) return cb && typeof cb === "function" && cb();
+
+    await friendsService.addFriend(userId);
+    cb && typeof cb === "function" && cb();
+};

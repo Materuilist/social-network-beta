@@ -5,8 +5,8 @@ const initialState = {
     current: [],
     strangers: { data: [], isLoading: true, nextPageExists: true },
     requests: {
-        incoming: { data: [], isLoading: true, isVisible: true },
-        outcoming: { data: [], isLoading: true, isVisible: true },
+        incoming: { data: [], isVisible: true },
+        outcoming: { data: [], isVisible: true },
     },
     filters: {
         currentFriends: {
@@ -80,18 +80,6 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
                     [payload.type]: {
                         ...state.requests[payload.type],
                         data: payload,
-                    },
-                },
-            };
-        }
-        case friendsActionTypes.SET_REQUESTS_LOADING: {
-            return {
-                ...state,
-                requests: {
-                    ...state.requests,
-                    [payload.type]: {
-                        ...state.requests[payload.type],
-                        isLoading: payload,
                     },
                 },
             };

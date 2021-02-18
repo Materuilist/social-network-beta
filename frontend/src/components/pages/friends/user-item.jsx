@@ -19,13 +19,19 @@ const UserItemComponent = ({
     avatar,
     login = "Аноним",
     id,
+    onAdd = () => {},
+    onDelete = () => {},
 }) => {
     //статус наличия в друзьях тоже здесь (добавление || удаление)
     const renderStatuses = () => {
         switch (userType) {
             case otherUserTypes.STRANGER: {
                 return (
-                    <img src={AddFriendIMG} title="Отправить запрос в друзья" />
+                    <img
+                        src={AddFriendIMG}
+                        title="Отправить запрос в друзья"
+                        onClick={() => onAdd(id)}
+                    />
                 );
             }
             case otherUserTypes.INCOMING_REQUEST: {
@@ -34,10 +40,12 @@ const UserItemComponent = ({
                         <img
                             src={AddFriendIMG}
                             title="Принять запрос в друзья"
+                            onClick={() => onAdd(id)}
                         />
                         <img
                             src={DeleteFriendIMG}
                             title="Отклонить запрос в друзья"
+                            onClick={() => onDelete(id)}
                         />
                     </>
                 );
@@ -47,6 +55,7 @@ const UserItemComponent = ({
                     <img
                         src={DeleteFriendIMG}
                         title="Отменить запрос в друзья"
+                        onClick={() => onDelete(id)}
                     />
                 );
             }

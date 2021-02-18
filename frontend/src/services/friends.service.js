@@ -32,4 +32,15 @@ export class FriendsService extends BaseService {
         });
         return res;
     }
+
+    async getRequests() {
+        const res = this.request("requests");
+        return res;
+    }
+
+    async addFriend(userId) {
+        if (!userId) return;
+        const res = await this.request(`add/${userId}`);
+        return res;
+    }
 }

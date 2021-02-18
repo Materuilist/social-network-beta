@@ -10,6 +10,7 @@ import { friendsActions } from "../../../../store/actions";
 import { adjustPixels } from "../../../../helpers";
 
 import classNames from "./search-users.module.scss";
+import { otherUserTypes } from "../../../../constants";
 
 const mapStateToProps = ({
     friends: {
@@ -34,6 +35,17 @@ export const SearchUsers = connect(
     useEffect(() => {
         friendsActions.getStrangers(1);
     }, []);
+
+    const addUser = (id) => {
+        if (!id) return;
+
+        friendsActions.toggleStrangersLoading(true);
+        friendsActions.addFriend(id, () => {
+            friendsActions.toggleStrangersLoading(false);
+            friendsActions.setStrangers([]);
+            friendsActions.getStrangers(1);
+        });
+    };
 
     return (
         <div className={classNames.strangersSearch}>
@@ -64,9 +76,19 @@ export const SearchUsers = connect(
                             }
                             threshold={1}
                         >
-                            {strangers.map(({ _id, login }) => (
-                                <UserItem key={_id} id={_id} login={login} />
-                            ))}
+                            {strangers.map(
+                                ({ _id, login, avatar, isOnline }) => (
+                                    <UserItem
+                                        key={_id}
+                                        id={_id}
+                                        login={login}
+                                        onAdd={addUser}
+                                        avatar={avatar}
+                                        isOnline={isOnline}
+                                        userType={otherUserTypes.STRANGER}
+                                    />
+                                )
+                            )}
                         </InfiniteScroll>
                     </div>
                 </div>

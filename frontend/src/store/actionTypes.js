@@ -20,7 +20,6 @@ export const friendsActionTypes = {
 
     SET_REQUESTS: 'SET_REQUESTS',
     TOGGLE_REQUESTS_VISIBILITY: 'TOGGLE_REQUESTS_VISIBILITY',
-    SET_REQUESTS_LOADING: 'SET_REQUESTS_LOADING',
 };
 
 export const notificationsActionTypes = {

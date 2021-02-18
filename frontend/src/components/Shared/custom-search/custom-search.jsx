@@ -13,6 +13,7 @@ export const CustomSearch = ({
     placeholder = "Поиск",
     delay = 700,
     defaultSearchText = "",
+    disabled = false,
 }) => {
     const [searchTimeout, setSearchTimeout] = useState(null);
     const [searchText, setSearchText] = useState(defaultSearchText);
@@ -53,6 +54,7 @@ export const CustomSearch = ({
                 onChange={({ target: { value } }) => setSearchText(value)}
                 placeholder={placeholder}
                 defaultValue={defaultSearchText}
+                disabled={disabled}
             />
             <img src={MagnifierIMG} />
         </div>

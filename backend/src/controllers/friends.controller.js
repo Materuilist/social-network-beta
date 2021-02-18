@@ -15,6 +15,29 @@ const findStrangers = async (req, res, next) => {
         login: {
             $regex: new RegExp(searchText),
         },
+        friends: {
+            $not: {
+                $elemMatch: {
+                    data: {
+                        $eq: user._id,
+                    },
+                },
+            },
+        },
+        incomingRequests: {
+            $not: {
+                $elemMatch: {
+                    $eq: user._id,
+                },
+            },
+        },
+        outcomingRequests: {
+            $not: {
+                $elemMatch: {
+                    $eq: user._id,
+                },
+            },
+        },
     };
     cities && cities.length && (query = { ...query, city: { $in: cities } });
     interests &&
@@ -172,6 +195,20 @@ const toggleStatus = async (req, res, next) => {
     res.status(200).json({ message: "Успешно изменено наличие статуса." });
 };
 
+const getRequests = async (req, res, next) => {
+    const { user } = req.body;
+
+    const { incomingRequests, outcomingRequests } = await user
+        .populate("incomingRequests")
+        .populate("outcomingRequests")
+        .execPopulate();
+
+    return res.status(200).json({
+        incoming: incomingRequests,
+        outcoming: outcomingRequests,
+    });
+};
+
 module.exports = {
     findStrangers,
     getFriendsById,
@@ -179,4 +216,5 @@ module.exports = {
     addFriend,
     deleteFriend,
     toggleStatus,
+    getRequests,
 };
