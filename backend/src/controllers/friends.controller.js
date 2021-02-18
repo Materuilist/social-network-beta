@@ -150,15 +150,50 @@ const deleteFriend = async (req, res, next) => {
         return next(new Error(404, "Пользователь не найден."));
     }
 
-    user.friends = user.friends.filter(
-        (friend) => friend.data.toString() !== userToDeleteId
-    );
-    user.incomingRequests.push(userToDeleteId);
+    //есть во входящих заявках
+    if (
+        user.incomingRequests.find(
+            (request) => request._id.toString() === userToDeleteId
+        )
+    ) {
+        user.incomingRequests = user.incomingRequests.filter(
+            (request) => request._id.toString() !== userToDeleteId
+        );
+        userToDelete.outcomingRequests = userToDelete.outcomingRequests.filter(
+            (request) => request._id.toString() !== user._id.toString()
+        );
+    } else if (
+        //есть в исходящих заявках
+        user.outcomingRequests.find(
+            (request) => request._id.toString() === userToDeleteId
+        )
+    ) {
+        user.outcomingRequests = user.outcomingRequests.filter(
+            (request) => request._id.toString() !== userToDeleteId
+        );
+        userToDelete.incomingRequests = userToDelete.incomingRequests.filter(
+            (request) => request._id.toString() !== user._id.toString()
+        );
+    } else {
+        //нет ни в друзьях, ни в заявках
+        if (
+            !user.friends.find(
+                (friend) => friend.data._id.toString() === userToDeleteId
+            )
+        ) {
+            return next(new Error(404, "Пользователя нет в друзьях..."));
+        }
+        //есть в друзьях
+        user.friends = user.friends.filter(
+            (friend) => friend.data.toString() !== userToDeleteId
+        );
+        user.incomingRequests.push(userToDeleteId);
 
-    userToDelete.friends = userToDelete.friends.filter(
-        (friend) => friend.data.toString() !== user._id.toString()
-    );
-    userToDelete.outcomingRequests.push(user._id);
+        userToDelete.friends = userToDelete.friends.filter(
+            (friend) => friend.data.toString() !== user._id.toString()
+        );
+        userToDelete.outcomingRequests.push(user._id);
+    }
 
     await Promise.all([user.save(), userToDelete.save()]);
     return res

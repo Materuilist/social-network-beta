@@ -43,4 +43,10 @@ export class FriendsService extends BaseService {
         const res = await this.request(`add/${userId}`);
         return res;
     }
+
+    async deleteFriend(userId) {
+        if (!userId) return;
+        const res = await this.request(`${userId}`, { method: "DELETE" });
+        return res;
+    }
 }

@@ -90,7 +90,7 @@ export const changeStrangersFilter = (filter) => (dispatch, getState) => {
         type: friendsActionTypes.SET_STRANGERS_FILTER,
         payload: { ...filters.strangers, ...filter },
     });
-    
+
     if (pathname.includes("friends/search")) {
         dispatch(setStrangers([])); //чтобы инфинит скролл сбросил страницу
         dispatch(getStrangers(1));
@@ -135,5 +135,12 @@ export const addFriend = (userId, cb) => async (dispatch, getState) => {
     if (!userId) return cb && typeof cb === "function" && cb();
 
     await friendsService.addFriend(userId);
+    cb && typeof cb === "function" && cb();
+};
+
+export const deleteFriend = (userId, cb) => async (dispatch) => {
+    if (!userId) return cb && typeof cb === "function" && cb();
+
+    await friendsService.deleteFriend(userId);
     cb && typeof cb === "function" && cb();
 };

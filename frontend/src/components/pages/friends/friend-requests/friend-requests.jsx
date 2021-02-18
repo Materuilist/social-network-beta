@@ -33,6 +33,10 @@ export const FriendRequests = connect(
         []
     );
 
+    useEffect(() => {
+        friendsActions.getRequests(() => setIsLoading(false));
+    }, []);
+
     const filterRequests = (requests) =>
         requests.data.filter(({ city, interests, birthDate, sex }) => {
             const citySatisfies =
@@ -77,9 +81,23 @@ export const FriendRequests = connect(
         return filterRequests(outcomingRequests);
     }, [filter, outcomingRequests]);
 
-    useEffect(() => {
-        friendsActions.getRequests(() => setIsLoading(false));
-    }, []);
+    const addFriend = (userId) => {
+        if (!userId) return;
+
+        setIsLoading(true);
+        friendsActions.addFriend(userId, () =>
+            friendsActions.getRequests(() => setIsLoading(false))
+        );
+    };
+
+    const deleteFriend = (userId) => {
+        if (!userId) return;
+
+        setIsLoading(true);
+        friendsActions.deleteFriend(userId, () =>
+            friendsActions.getRequests(() => setIsLoading(false))
+        );
+    };
 
     return (
         <div className={classNames.friendsRequests}>
@@ -101,7 +119,7 @@ export const FriendRequests = connect(
                             !incomingRequests.isVisible ||
                             !incomingRequests.data.length
                         }
-                        searchField='login'
+                        searchField="login"
                         options={incomingRequestsFiltered}
                         onChange={(searchedItems) =>
                             setSearchedIncomingRequests(searchedItems)
@@ -110,7 +128,9 @@ export const FriendRequests = connect(
                 </div>
                 {incomingRequests.isVisible && (
                     <div>
-                        {!searchedIncomingRequests.length && <p>Нет заявок...</p>}
+                        {!searchedIncomingRequests.length && (
+                            <p>Нет заявок...</p>
+                        )}
                         {searchedIncomingRequests.map(
                             ({ _id, login, isOnline, avatar }) => (
                                 <UserItem
@@ -120,6 +140,8 @@ export const FriendRequests = connect(
                                     login={login}
                                     avatar={avatar}
                                     userType={otherUserTypes.INCOMING_REQUEST}
+                                    onAdd={(userId) => addFriend(userId)}
+                                    onDelete={(userId) => deleteFriend(userId)}
                                 />
                             )
                         )}
@@ -145,7 +167,7 @@ export const FriendRequests = connect(
                             !outcomingRequests.isVisible ||
                             !outcomingRequests.data.length
                         }
-                        searchField='login'
+                        searchField="login"
                         options={outcomingRequestsFiltered}
                         onChange={(searchedItems) =>
                             setSearchedOutcomingRequests(searchedItems)
@@ -154,7 +176,9 @@ export const FriendRequests = connect(
                 </div>
                 {outcomingRequests.isVisible && (
                     <div>
-                        {!searchedOutcomingRequests.length && <p>Нет заявок...</p>}
+                        {!searchedOutcomingRequests.length && (
+                            <p>Нет заявок...</p>
+                        )}
                         {searchedOutcomingRequests.map(
                             ({ _id, login, isOnline, avatar }) => (
                                 <UserItem
@@ -164,6 +188,8 @@ export const FriendRequests = connect(
                                     login={login}
                                     avatar={avatar}
                                     userType={otherUserTypes.OUTCOMING_REQUEST}
+                                    onAdd={(userId) => addFriend(userId)}
+                                    onDelete={(userId) => deleteFriend(userId)}
                                 />
                             )
                         )}
