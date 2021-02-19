@@ -1,4 +1,4 @@
-import { friendsActionTypes } from "../actionTypes";
+import { friendsActionTypes, sharedActionTypes } from "../actionTypes";
 
 const initialState = {
     current: [],
@@ -99,6 +99,9 @@ export const friendsReducer = (state = initialState, { type, payload }) => {
             };
         }
 
+        case sharedActionTypes.REINITIALIZE: {
+            return initialState;
+        }
         default:
             return state;
     }

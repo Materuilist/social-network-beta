@@ -1,4 +1,4 @@
-import { notificationsActionTypes } from "../actionTypes";
+import { notificationsActionTypes, sharedActionTypes } from "../actionTypes";
 
 const initialState = {
     data: [], //{id, type, title, text, dismissTimeout} - id - timestamp
@@ -11,6 +11,9 @@ export const notificationsReducer = (
     switch (type) {
         case notificationsActionTypes.SET_NOTIFICATIONS:
             return { ...state, data: payload };
+        case sharedActionTypes.REINITIALIZE: {
+            return initialState;
+        }
         default:
             return state;
     }

@@ -1,4 +1,4 @@
-import { userInfoActions } from ".";
+import { sharedActions, userInfoActions } from ".";
 import { tokenId } from "../../constants";
 import { AuthService } from "../../services/auth.service";
 
@@ -24,5 +24,5 @@ export const register = (login, password, cb) => async (dispatch, getState) => {
 
 export const signOut = () => (dispatch) => {
     localStorage.removeItem(tokenId);
-    dispatch(userInfoActions.clearUserInfo());
+    dispatch(sharedActions.reinitialize());
 };

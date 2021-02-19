@@ -1,4 +1,4 @@
-import { dictionariesActionTypes } from "../actionTypes";
+import { dictionariesActionTypes, sharedActionTypes } from "../actionTypes";
 
 const initialState = {
     cities: [],
@@ -19,6 +19,9 @@ export const dictionariesReducer = (
         }
         case dictionariesActionTypes.SET_FRIENDS_STATUSES: {
             return { ...state, friendsStatuses: payload };
+        }
+        case sharedActionTypes.REINITIALIZE: {
+            return initialState;
         }
         default:
             return state;

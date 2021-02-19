@@ -1,4 +1,4 @@
-import { userInfoActionTypes } from "../actionTypes";
+import { userInfoActionTypes, sharedActionTypes } from "../actionTypes";
 
 const initialState = {
     login: null,
@@ -12,7 +12,7 @@ export const userInfoReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case userInfoActionTypes.SET_USER_INFO:
             return { ...state, ...payload };
-        case userInfoActionTypes.CLEAR_USER_INFO: {
+        case sharedActionTypes.REINITIALIZE: {
             return initialState;
         }
         default:

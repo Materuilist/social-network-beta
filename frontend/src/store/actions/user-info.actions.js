@@ -1,16 +1,13 @@
 import { userInfoActionTypes } from "../actionTypes";
 import { UserInfoService } from "../../services/user-info.service";
 import { tokenId } from "../../constants";
+import { sharedActions } from ".";
 
 const userInfoService = new UserInfoService();
 
 export const setUserInfo = (userInfo) => ({
     type: userInfoActionTypes.SET_USER_INFO,
     payload: userInfo,
-});
-
-export const clearUserInfo = () => ({
-    type: userInfoActionTypes.CLEAR_USER_INFO,
 });
 
 export const getInfo = (cb) => async (dispatch, getState) => {
@@ -20,7 +17,7 @@ export const getInfo = (cb) => async (dispatch, getState) => {
         dispatch(setUserInfo(info));
     } else {
         localStorage.removeItem(tokenId);
-        dispatch(clearUserInfo());
+        dispatch(sharedActions.reinitialize());
     }
 
     cb && typeof cb === "function" && cb();

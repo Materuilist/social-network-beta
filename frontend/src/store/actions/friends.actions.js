@@ -72,7 +72,7 @@ export const getStrangers = (pageIndex = 1) => async (dispatch, getState) => {
             sex,
         },
         pageIndex,
-        6
+        10
     );
 
     if (res && res.data) {
