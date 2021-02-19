@@ -34,9 +34,9 @@ export const CurrentFriends = connect(
             //все статусы должны свопадать
             const statusesSatisfy =
                 filter.statuses.length === 0 ||
-                statuses.filter((statusId) =>
+                statuses.filter((activeStatus) =>
                     filter.statuses.find(
-                        (neededStatusId) => neededStatusId === statusId
+                        (neededStatusId) => neededStatusId === activeStatus._id
                     )
                 ).length === filter.statuses.length;
             return isOnlineSatisfies && statusesSatisfy;
