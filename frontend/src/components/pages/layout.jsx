@@ -5,9 +5,10 @@ import { Profile } from "./profile/profile";
 import { Friends } from "./friends/friends";
 import { Chat } from "./chat/chat";
 import { Header } from "./header";
+import { SideNav } from "./side-nav";
+import { UserProfileModal } from "../shared/modals/user-profile/user-profile";
 
 import "./layout.scss";
-import { SideNav } from "./side-nav";
 
 export const Layout = () => {
     return (
@@ -30,6 +31,7 @@ export const Layout = () => {
                     </Switch>
                 </main>
             </div>
+            <UserProfileModal />
         </div>
     );
 };

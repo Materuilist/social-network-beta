@@ -4,6 +4,7 @@ const { Interest } = require("../models/interest.model");
 const filterBody = require("../utils/filterBody");
 
 const getUserInfoById = async (req, res, next) => {
+    const { user: currentUser } = req.body;
     const { userId } = req.params;
     const userInfo = await User.findById(userId)
         .populate("city", "_id name")
@@ -12,10 +13,27 @@ const getUserInfoById = async (req, res, next) => {
     if (!userInfo) {
         return next(new Error(400, "Такого пользователя нет!"));
     }
+
     const { login, avatar, birthDate, sex, city, isOnline } = userInfo;
-    return res
-        .status(200)
-        .json({ login, avatar, birthDate, sex, city, isOnline });
+
+    const userAsFriend = currentUser.friends.find(
+        (friend) => friend.data.toString() === userId
+    );
+
+    return res.status(200).json(
+        userAsFriend
+            ? {
+                  login,
+                  avatar,
+                  birthDate,
+                  sex,
+                  city,
+                  isOnline,
+                  isFriend: true,
+                  statuses: userAsFriend.statuses,
+              }
+            : { login, avatar, birthDate, sex, city, isOnline }
+    );
 };
 
 const getUserInfo = async (req, res, next) => {
@@ -26,16 +44,14 @@ const getUserInfo = async (req, res, next) => {
         return next(new Error(400, "Ошибка при получении пользователя!"));
     }
     const { avatar, sex, birthDate, city, isOnline } = userInfo;
-    return res
-        .status(200)
-        .json({
-            login,
-            avatar,
-            sex,
-            birthDate: birthDate && birthDate.toISOString().split("T")[0],
-            city,
-            isOnline,
-        });
+    return res.status(200).json({
+        login,
+        avatar,
+        sex,
+        birthDate: birthDate && birthDate.toISOString().split("T")[0],
+        city,
+        isOnline,
+    });
 };
 
 const checkOnline = async (req, res, next) => {

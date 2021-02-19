@@ -1,0 +1,18 @@
+@import "functions";
+@import "variables";
+
+.user-profile-modal.custom-modal.modal-dialog{
+    .modal-header{
+        height: calc-rem(67px);
+        padding: calc-rem(9px) calc-rem(27px);
+
+        .modal-title{
+            height: 100%;
+
+            .custom-modal-header{
+                height: 100%;
+                align-items: center;
+            }
+        }
+    }
+}

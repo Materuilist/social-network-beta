@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import concatClasses from "classnames";
 
 import { CustomLoader } from "../custom-loader/custom-loader";
 
@@ -13,15 +14,17 @@ export const CustomModal = ({
     isLoading = false,
     renderHeaderBtns,
     children,
-    vh = 60,
-    vw = 60,
+    height = "60vh",
+    width = "60vw",
+    className,
+    crossIcon = CrossIMG,
 }) => {
     return (
         <Modal
             isOpen={isOpen}
             onClosed={onClosed}
-            className="custom-modal"
-            style={{ height: `${vh}vh`, width: `${vw}vw` }}
+            className={concatClasses("custom-modal", className)}
+            style={{ height: height, width: width }}
         >
             <ModalHeader>
                 <div className="custom-modal-header">
@@ -31,7 +34,7 @@ export const CustomModal = ({
                             renderHeaderBtns()}
                     </div>
                     <div>
-                        <img src={CrossIMG} onClick={onClosed} />
+                        <img src={crossIcon} onClick={onClosed} />
                     </div>
                 </div>
             </ModalHeader>

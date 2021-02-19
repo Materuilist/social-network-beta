@@ -2,7 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { friendsActions } from "../../../store/actions";
+import {
+    friendsActions,
+    otherUserProfileModalActions,
+} from "../../../store/actions";
 import { otherUserTypes } from "../../../constants";
 
 import DefaultAvatarIMG from "images/default-avatar-dark.svg";
@@ -20,10 +23,15 @@ const UserItemComponent = ({
     login = "Аноним",
     id,
     statusesDictionary,
+    otherUserProfileModalActions,
     onAdd = (userId) => {},
     onDelete = (userId) => {},
     onStatusToggle = (userId, statusId) => {},
 }) => {
+    const openProfile = () => {
+        otherUserProfileModalActions.open(id);
+    };
+
     //статус наличия в друзьях тоже здесь (добавление || удаление)
     const renderStatuses = () => {
         switch (userType) {
@@ -104,10 +112,10 @@ const UserItemComponent = ({
 
     return (
         <div className="user-item">
-            <img src={avatar ?? DefaultAvatarIMG} />
+            <img src={avatar ?? DefaultAvatarIMG} onClick={openProfile} />
             <div>
                 <div>
-                    <span>{login}</span>
+                    <span onClick={openProfile}>{login}</span>
                     {renderStatuses()}
                 </div>
                 <p>{isOnline ? "online" : "offline"}</p>
@@ -127,6 +135,10 @@ const mapStateToProps = ({ dictionaries: { friendsStatuses } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     friendsActions: bindActionCreators(friendsActions, dispatch),
+    otherUserProfileModalActions: bindActionCreators(
+        otherUserProfileModalActions,
+        dispatch
+    ),
 });
 
 export const UserItem = connect(

@@ -10,6 +10,8 @@ import { dictionariesReducer } from "./dictionaries.reducer";
 
 import { friendsReducer } from "./friends.reducer";
 
+import { otherUserProfileModalReducer } from "./shared/other-user-profile-modal.reducer";
+
 const reducers = {
     dictionaries: dictionariesReducer,
     notifications: notificationsReducer,
@@ -19,6 +21,8 @@ const reducers = {
     photos: photosReducer,
 
     friends: friendsReducer,
+
+    otherUserProfileModal: otherUserProfileModalReducer,
 };
 
 export const createRootReducer = (history) =>

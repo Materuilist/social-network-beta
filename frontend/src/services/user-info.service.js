@@ -8,8 +8,8 @@ export class UserInfoService extends BaseService {
     }
 
     // ************************ common info ************************
-    async getInfo() {
-        const res = this.request();
+    async getInfo(userId = "") {
+        const res = this.request(userId);
         return res;
     }
 
@@ -67,8 +67,8 @@ export class UserInfoService extends BaseService {
     // ************************ end hobbies ************************
 
     // ************************ photos ************************
-    async getPhotos() {
-        const res = this.request("photos");
+    async getPhotos(userId = "") {
+        const res = this.request(`photos/${userId}`);
         return res;
     }
 
@@ -80,7 +80,7 @@ export class UserInfoService extends BaseService {
         });
         return res;
     }
-    
+
     async deletePhotos(photosIds = []) {
         const res = this.request("photos", {
             method: "DELETE",

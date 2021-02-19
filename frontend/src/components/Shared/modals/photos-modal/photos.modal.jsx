@@ -32,8 +32,8 @@ export const PhotosModal = ({
             isOpen={isOpen}
             onClosed={onClosed}
             renderHeaderBtns={renderBackToGridButton}
-            vh={80}
-            vw={70}
+            height='80vh'
+            width='70vw'
         >
             <div className="photos-grid">
                 {solelyShownPhoto ? (
