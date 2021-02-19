@@ -9,8 +9,8 @@
     background-color: $light-mint-color;
     border-bottom: calc-rem(1px) solid $heavy-mint-color;
 
-    >img{
-        &:first-of-type{
+    > img {
+        &:first-of-type {
             height: calc-rem(62px);
             width: calc-rem(62px);
             object-fit: cover;
@@ -20,21 +20,55 @@
             margin-right: calc-rem(5px);
         }
 
-        &:last-of-type{
+        &:last-of-type {
             height: 50%;
             margin-left: auto;
         }
     }
 
-    >div{
+    > div {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
         height: 100%;
 
-        >p{
+        > p {
             margin-bottom: calc-rem(5px);
         }
+
+        >div{
+            display: flex;
+
+            >span{
+                font-weight: 500;
+                font-size: calc-rem(16px);
+                line-height: calc-rem(20px);
+            }
+
+            img{
+                height: calc-rem(25px);
+                width: calc-rem(25px);
+                vertical-align: initial;
+                margin-left: calc-rem(10px);
+                cursor: pointer;
+            }
+
+            .user-item__statuses {
+                > img {
+                    opacity: 0.2;
+                    transition: opacity .15s linear;
+        
+                    &.active {
+                        opacity: 1;
+                    }
+
+                    &:hover{
+                        opacity: .8;
+                    }
+                }
+            }
+        }
     }
+
 }

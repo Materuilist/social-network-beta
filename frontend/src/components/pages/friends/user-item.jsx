@@ -19,8 +19,10 @@ const UserItemComponent = ({
     avatar,
     login = "Аноним",
     id,
-    onAdd = () => {},
-    onDelete = () => {},
+    statusesDictionary,
+    onAdd = (userId) => {},
+    onDelete = (userId) => {},
+    onStatusToggle = (userId, statusId) => {},
 }) => {
     //статус наличия в друзьях тоже здесь (добавление || удаление)
     const renderStatuses = () => {
@@ -64,9 +66,31 @@ const UserItemComponent = ({
                     <>
                         <img src={DeleteFriendIMG} title="Удалить из друзей" />
                         <div className="user-item__statuses">
-                            {statuses.map((status) => (
-                                <span>{status.id}</span>
-                            ))}
+                            {statusesDictionary.map(
+                                ({ id: statusId, name, icon }) => {
+                                    const isActive = Boolean(
+                                        statuses.find(
+                                            (activeStatus) =>
+                                                activeStatus._id === statusId
+                                        )
+                                    );
+                                    return (
+                                        <img
+                                            key={statusId}
+                                            src={icon}
+                                            onClick={() =>
+                                                onStatusToggle(id, statusId)
+                                            }
+                                            title={`${
+                                                isActive
+                                                    ? "Снять"
+                                                    : "Установить"
+                                            } для ${login} статус "${name}"`}
+                                            className={isActive ? "active" : ""}
+                                        />
+                                    );
+                                }
+                            )}
                         </div>
                     </>
                 );
@@ -84,13 +108,24 @@ const UserItemComponent = ({
                 </div>
                 <p>{isOnline ? "online" : "offline"}</p>
             </div>
-            <img src={MessageIMG} />
+            {userType === otherUserTypes.FRIEND ? (
+                <img src={MessageIMG} />
+            ) : (
+                <img />
+            )}
         </div>
     );
 };
+
+const mapStateToProps = ({ dictionaries: { friendsStatuses } }) => ({
+    statusesDictionary: friendsStatuses,
+});
 
 const mapDispatchToProps = (dispatch) => ({
     friendsActions: bindActionCreators(friendsActions, dispatch),
 });
 
-export const UserItem = connect(null, mapDispatchToProps)(UserItemComponent);
+export const UserItem = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(UserItemComponent);

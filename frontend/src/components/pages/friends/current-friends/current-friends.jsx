@@ -47,6 +47,15 @@ export const CurrentFriends = connect(
         friendsActions.getFriends(() => setIsLoading(false));
     }, []);
 
+    const toggleStatus = (userId, statusId) => {
+        if (!userId || !statusId) return;
+
+        setIsLoading(true);
+        friendsActions.toggleStatus(userId, statusId, () =>
+            setIsLoading(false)
+        );
+    };
+
     return (
         <div className={classNames.currentFriends}>
             <CustomLoader isLoading={isLoading} />
@@ -78,6 +87,7 @@ export const CurrentFriends = connect(
                                             isOnline={isOnline}
                                             statuses={statuses}
                                             userType={otherUserTypes.FRIEND}
+                                            onStatusToggle={toggleStatus}
                                         />
                                     )
                                 )}

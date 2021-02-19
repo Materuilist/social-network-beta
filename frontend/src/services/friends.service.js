@@ -40,13 +40,26 @@ export class FriendsService extends BaseService {
 
     async addFriend(userId) {
         if (!userId) return;
-        const res = await this.request(`add/${userId}`);
+        const res = this.request(`add/${userId}`);
         return res;
     }
 
     async deleteFriend(userId) {
         if (!userId) return;
-        const res = await this.request(`${userId}`, { method: "DELETE" });
+        const res = this.request(`${userId}`, { method: "DELETE" });
+        return res;
+    }
+
+    async toggleStatus(userId, statusId) {
+        if (!userId || !statusId) return;
+
+        const res = this.request("toggle-status", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ statusId, userId }),
+        });
         return res;
     }
 }
