@@ -18,6 +18,8 @@
 
                     >div:last-of-type{
                         img{
+                            height: calc-rem(45px);
+                            width: calc-rem(45px);
                             cursor: pointer;
                         }
                     }

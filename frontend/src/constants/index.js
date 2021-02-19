@@ -1,3 +1,10 @@
+import InfoIconIMG from "images/info-icon.svg";
+import InfoIconActiveIMG from "images/info-icon-active.svg";
+import CameraIMG from "images/camera.svg";
+import CameraActiveIMG from "images/camera-active.svg";
+import HobbiesIMG from "images/hobbies.svg";
+import HobbiesActiveIMG from "images/hobbies-active.svg";
+
 export const BASE_FONT_SIZE = 16;
 
 export const tokenId = "sn_jwt";
@@ -23,4 +30,21 @@ export const otherUserTypes = {
     INCOMING_REQUEST: "INCOMING_REQUEST",
     OUTCOMING_REQUEST: "OUTCOMING_REQUEST",
     FRIEND: "FRIENDS",
+};
+export const otherUserProfileModalTabs = {
+    PROFILE: {
+        name: "Профиль",
+        icon: InfoIconIMG,
+        iconActive: InfoIconActiveIMG,
+    },
+    PHOTOS: {
+        name: "Фото",
+        icon: CameraIMG,
+        iconActive: CameraActiveIMG,
+    },
+    HOBBIES: {
+        name: "Интересы",
+        icon: HobbiesIMG,
+        iconActive: HobbiesActiveIMG,
+    },
 };

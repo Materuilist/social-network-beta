@@ -1,17 +1,70 @@
 @import "functions";
 @import "variables";
 
-.user-profile-modal.custom-modal.modal-dialog{
-    .modal-header{
-        height: calc-rem(67px);
+.user-profile-modal.custom-modal.modal-dialog {
+    .modal-header {
+        flex-basis: calc-rem(67px);
         padding: calc-rem(9px) calc-rem(27px);
 
-        .modal-title{
+        .modal-title {
             height: 100%;
 
-            .custom-modal-header{
+            .custom-modal-header {
                 height: 100%;
                 align-items: center;
+
+                >div:last-of-type{
+                    img{
+                        height: calc-rem(30px);
+                        width: calc-rem(30px);
+                    }
+                }
+            }
+        }
+    }
+
+    .modal-footer{
+        flex-basis: calc-rem(73px);
+        padding: calc-rem(9px) calc-rem(27px);
+        background-color: $semi-heavy-mint-color;
+    }
+
+    .modal-content {
+        .user-profile-modal__content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background-color: $semi-heavy-mint-color;
+            padding: calc-rem(24px) 0 calc-rem(17px);
+
+            &__navs {
+                flex: 1 0 15%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                padding: calc-rem(5px) 0 calc-rem(14px);
+                border-left: calc-rem(1px) solid $light-mint-color;
+
+                >div{
+                    height: calc-rem(55px);
+                    width: calc-rem(55px);
+
+                    img{
+                        cursor: pointer;
+                        height: 100%;
+                        width: 100%;
+                        transition: opacity .15s linear;
+
+                        &:hover{
+                            opacity: .7;
+                        }
+                    }
+                }
+            }
+
+            &__tab {
+                flex: 1 0 85%;
             }
         }
     }

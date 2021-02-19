@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import concatClasses from "classnames";
 
 import { CustomLoader } from "../custom-loader/custom-loader";
@@ -18,6 +18,8 @@ export const CustomModal = ({
     width = "60vw",
     className,
     crossIcon = CrossIMG,
+    hasFooter = false,
+    renderFooterBtns,
 }) => {
     return (
         <Modal
@@ -42,6 +44,13 @@ export const CustomModal = ({
                 <CustomLoader isLoading={isLoading} />
                 {children}
             </ModalBody>
+            {hasFooter && (
+                <ModalFooter>
+                    {renderFooterBtns &&
+                        typeof renderFooterBtns === "function" &&
+                        renderFooterBtns()}
+                </ModalFooter>
+            )}
         </Modal>
     );
 };
