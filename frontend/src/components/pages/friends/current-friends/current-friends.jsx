@@ -52,7 +52,16 @@ export const CurrentFriends = connect(
 
         setIsLoading(true);
         friendsActions.toggleStatus(userId, statusId, () =>
-            setIsLoading(false)
+            friendsActions.getFriends(() => setIsLoading(false))
+        );
+    };
+
+    const deleteFriend = (userId) => {
+        if (!userId) return;
+
+        setIsLoading(true);
+        friendsActions.deleteFriend(userId, () =>
+            friendsActions.getFriends(() => setIsLoading(false))
         );
     };
 
@@ -88,6 +97,7 @@ export const CurrentFriends = connect(
                                             statuses={statuses}
                                             userType={otherUserTypes.FRIEND}
                                             onStatusToggle={toggleStatus}
+                                            onDelete={() => deleteFriend(id)}
                                         />
                                     )
                                 )}

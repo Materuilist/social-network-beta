@@ -64,7 +64,11 @@ const UserItemComponent = ({
             case otherUserTypes.FRIEND: {
                 return (
                     <>
-                        <img src={DeleteFriendIMG} title="Удалить из друзей" />
+                        <img
+                            src={DeleteFriendIMG}
+                            title="Удалить из друзей"
+                            onClick={() => onDelete(id)}
+                        />
                         <div className="user-item__statuses">
                             {statusesDictionary.map(
                                 ({ id: statusId, name, icon }) => {

@@ -156,6 +156,6 @@ export const deleteFriend = (userId, cb) => async (dispatch) => {
 export const toggleStatus = (userId, statusId, cb) => async (dispatch) => {
     if (!userId || !statusId) return;
 
-    const res = await friendsService.toggleStatus(userId, statusId);
-    dispatch(getFriends(cb));
+    await friendsService.toggleStatus(userId, statusId);
+    cb && typeof cb === "function" && cb();
 };
