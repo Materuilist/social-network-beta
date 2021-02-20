@@ -13,8 +13,8 @@
                 height: 100%;
                 align-items: center;
 
-                >div:last-of-type{
-                    img{
+                > div:last-of-type {
+                    img {
                         height: calc-rem(30px);
                         width: calc-rem(30px);
                     }
@@ -23,7 +23,7 @@
         }
     }
 
-    .modal-footer{
+    .modal-footer {
         flex-basis: calc-rem(73px);
         padding: calc-rem(9px) calc-rem(27px);
         background-color: $semi-heavy-mint-color;
@@ -46,18 +46,18 @@
                 padding: calc-rem(5px) 0 calc-rem(14px);
                 border-left: calc-rem(1px) solid $light-mint-color;
 
-                >div{
+                > div {
                     height: calc-rem(55px);
                     width: calc-rem(55px);
 
-                    img{
+                    img {
                         cursor: pointer;
                         height: 100%;
                         width: 100%;
-                        transition: opacity .15s linear;
+                        transition: opacity 0.15s linear;
 
-                        &:hover{
-                            opacity: .7;
+                        &:hover {
+                            opacity: 0.7;
                         }
                     }
                 }
@@ -65,6 +65,118 @@
 
             &__tab {
                 flex: 1 0 85%;
+                overflow: hidden;
+
+                > div {
+                    position: relative;
+
+                    &.other-user-profile__info-tab {
+                        display: flex;
+                        height: 100%;
+                        width: 100%;
+
+                        .info-tab__col {
+                            flex: 1 0;
+                            padding: 0 calc-rem(27px);
+                            
+                            &:first-of-type {
+                                overflow: hidden;
+                                display: flex;
+                                border-right: calc-rem(1px) solid
+                                    $light-mint-color;
+
+                                > div {
+                                    overflow: hidden;
+
+                                    &:first-of-type {
+                                        flex: 1 0 75%;
+                                        margin-right: 8%;
+
+                                        .avatar-container {
+                                            position: relative;
+                                            height: 80%;
+                                            width: 100%;
+                                            border-radius: calc-rem(10px);
+                                            overflow: hidden;
+
+                                            > img {
+                                                height: 100%;
+                                                width: 100%;
+                                                object-fit: cover;
+                                            }
+                                        }
+
+                                        .statuses-container{
+                                            display: flex;
+                                            justify-content: space-around;
+                                            margin-top: calc-rem(10px);
+
+                                            >img{
+                                                height: calc-rem(25px);
+                                                width: calc-rem(25px);
+                                                cursor: pointer;
+                                                opacity: .3;
+                                                transition: opacity .15s linear;
+
+                                                &:hover{
+                                                    opacity: .7;
+                                                }
+
+                                                &.active{
+                                                    opacity: 1;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    &:last-of-type {
+                                        flex: 1 0 17%;
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+
+                                        >img{
+                                            width: calc-rem(40px);
+                                            height: calc-rem(40px);
+
+                                            &:nth-of-type(2){
+                                                margin-top: calc-rem(10px);
+                                                height: calc-rem(35px);
+                                                width: calc-rem(35px);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            &:last-of-type{
+                                position: relative;
+                                
+                                p{
+                                    font-size: calc-rem(22px);
+                                    line-height: calc-rem(27px);
+                                    color: $heavy-mint-color;
+                                    text-align: center;
+                                    margin-bottom: calc-rem(17px);
+
+                                    &:first-of-type{
+                                        font-size: calc-rem(26px);
+                                        font-weight: 700;
+                                        line-height: calc-rem(32px);
+                                        text-transform: uppercase;
+                                        color: $light-mint-color;
+                                        margin-bottom: calc-rem(1px);
+                                    }
+                                    &:nth-of-type(2){
+                                        font-size: calc-rem(16px);
+                                        line-height: calc-rem(20px);
+                                        color: $light-mint-color;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

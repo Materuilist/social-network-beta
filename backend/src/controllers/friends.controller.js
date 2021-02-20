@@ -93,7 +93,7 @@ const getFriends = async (req, res, next) => {
     const { user } = req.body;
 
     const { friends } = await user
-        .populate("friends.data", "login isOnline")
+        .populate("friends.data", "login avatar isOnline")
         .populate("friends.statuses", "_id name")
         .execPopulate();
     res.status(200).json({

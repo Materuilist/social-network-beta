@@ -88,11 +88,18 @@ export const CurrentFriends = connect(
                             <h4>Мои друзья</h4>
                             <div className={classNames.friendsContainer}>
                                 {searchedOptions.map(
-                                    ({ id, login, isOnline, statuses }) => (
+                                    ({
+                                        id,
+                                        login,
+                                        isOnline,
+                                        statuses,
+                                        avatar,
+                                    }) => (
                                         <UserItem
                                             key={id}
                                             id={id}
                                             login={login}
+                                            avatar={avatar}
                                             isOnline={isOnline}
                                             statuses={statuses}
                                             userType={otherUserTypes.FRIEND}
