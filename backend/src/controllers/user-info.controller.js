@@ -112,6 +112,11 @@ const getPhotosById = async (req, res, next) => {
             data,
             likesCount:
                 likesFrom && likesFrom.length > 0 ? likesFrom.length : 0,
+            hasCurrentUserLike: Boolean(
+                likesFrom.find(
+                    (likerId) => likerId.toString() === user._id.toString()
+                )
+            ),
         }));
 
         res.status(200).json({ photos: mappedPhotos });
