@@ -129,3 +129,16 @@ button.btn {
 ::-webkit-scrollbar {
     width: calc-rem(8px);
 }
+
+*::selection {
+    background: $heavy-mint-color;
+    color: $light-mint-color;
+}
+*::-moz-selection {
+    background: $heavy-mint-color;
+    color: $light-mint-color;
+}
+*::-webkit-selection {
+    background: $heavy-mint-color;
+    color: $light-mint-color;
+}
