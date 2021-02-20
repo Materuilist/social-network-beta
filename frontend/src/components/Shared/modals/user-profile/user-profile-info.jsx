@@ -5,13 +5,11 @@ import moment from "moment";
 
 import {
     dictionariesActions,
+    friendsActions,
     otherUserProfileModalActions,
 } from "../../../../store/actions";
 import { CustomLoader } from "../../custom-loader/custom-loader";
 
-import MessageIMG from "images/message-light.svg";
-import DeleteFriendIMG from "images/delete-friend-light.svg";
-import AddFriendIMG from "images/add-friend-light.svg";
 import DefaultAvatarIMG from "images/default-avatar.svg";
 import MaleIMG from "images/male-icon.svg";
 import FemaleIMG from "images/female-icon.svg";
@@ -31,6 +29,7 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch
     ),
     dictionariesActions: bindActionCreators(dictionariesActions, dispatch),
+    friendsActions: bindActionCreators(friendsActions, dispatch),
 });
 
 export const UserProfileInfo = connect(
@@ -43,79 +42,80 @@ export const UserProfileInfo = connect(
         statusesDictionary,
         otherUserProfileModalActions,
         dictionariesActions,
+        friendsActions,
     }) => {
         const [isLoading, setIsLoading] = useState(true);
-        const [areDictionariesLoading, setAreDictionaryLoading] = useState(
+        const [areDictionariesLoading, setAreDictionariesLoading] = useState(
             true
         );
         useEffect(() => {
             otherUserProfileModalActions.getInfo(() => setIsLoading(false));
             dictionariesActions.getFriendsStatuses(() =>
-                setAreDictionaryLoading(false)
+                setAreDictionariesLoading(false)
             );
         }, [userId]);
+
+        const toggleStatus = (statusId) => {
+            if (!userId || !statusId) return;
+
+            setIsLoading(true);
+            setAreDictionariesLoading(true);
+            friendsActions.toggleStatus(userId, statusId, () => {
+                otherUserProfileModalActions.getInfo(() => {
+                    setAreDictionariesLoading(false);
+                    setIsLoading(false);
+                });
+                friendsActions.getFriends();
+            });
+        };
 
         return (
             <div className="other-user-profile__info-tab">
                 <div className="info-tab__col">
-                    <div>
-                        <div className="avatar-container">
+                    <div className="avatar-container">
+                        <CustomLoader
+                            isLoading={isLoading}
+                            isBackdropVisible={false}
+                            isLight={false}
+                        />
+                        <img
+                            src={info.avatar || DefaultAvatarIMG}
+                            isBackdropVisible={false}
+                        />
+                    </div>
+                    {info.isFriend && info.statuses && (
+                        <div className="statuses-container">
                             <CustomLoader
-                                isLoading={isLoading}
+                                isLoading={areDictionariesLoading}
                                 isBackdropVisible={false}
                                 isLight={false}
+                                size={30}
                             />
-                            <img
-                                src={info.avatar || DefaultAvatarIMG}
-                                isBackdropVisible={false}
-                            />
-                        </div>
-                        {info.isFriend && info.statuses && (
-                            <div className="statuses-container">
-                                <CustomLoader
-                                    isLoading={areDictionariesLoading}
-                                    isBackdropVisible={false}
-                                    isLight={false}
-                                />
-                                {statusesDictionary &&
-                                    statusesDictionary.map(
-                                        ({ id, name, icon }) => {
-                                            const isActive = info.statuses.find(
-                                                (activeStatusId) =>
-                                                    activeStatusId === id
-                                            );
+                            {statusesDictionary &&
+                                statusesDictionary.map(({ id, name, icon }) => {
+                                    const isActive = info.statuses.find(
+                                        (activeStatusId) =>
+                                            activeStatusId === id
+                                    );
 
-                                            return (
-                                                <img
-                                                    key={id}
-                                                    src={icon}
-                                                    title={`${
-                                                        isActive
-                                                            ? "Снять"
-                                                            : "Установить"
-                                                    } для ${
-                                                        info.login
-                                                    } статус "${name}"`}
-                                                    className={
-                                                        isActive ? "active" : ""
-                                                    }
-                                                />
-                                            );
-                                        }
-                                    )}
-                            </div>
-                        )}
-                    </div>
-                    <div>
-                        {info.isFriend ? (
-                            <>
-                                <img src={DeleteFriendIMG} />{" "}
-                                <img src={MessageIMG} />
-                            </>
-                        ) : (
-                            <img src={AddFriendIMG} />
-                        )}
-                    </div>
+                                    return (
+                                        <img
+                                            key={id}
+                                            onClick={() => toggleStatus(id)}
+                                            src={icon}
+                                            title={`${
+                                                isActive
+                                                    ? "Снять"
+                                                    : "Установить"
+                                            } для ${
+                                                info.login
+                                            } статус "${name}"`}
+                                            className={isActive ? "active" : ""}
+                                        />
+                                    );
+                                })}
+                        </div>
+                    )}
                 </div>
                 <div className="info-tab__col">
                     <CustomLoader
