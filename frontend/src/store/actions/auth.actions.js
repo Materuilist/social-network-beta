@@ -8,18 +8,20 @@ export const login = (login, password, cb) => async (dispatch, getState) => {
     const res = await authService.login(login, password);
     if (res && res.token) {
         localStorage.setItem(tokenId, res.token);
-        dispatch(userInfoActions.getInfo());
+        dispatch(userInfoActions.getInfo(cb));
+    } else {
+        cb && typeof cb === "function" && cb();
     }
-    cb && typeof cb === "function" && cb();
 };
 
 export const register = (login, password, cb) => async (dispatch, getState) => {
     const res = await authService.register(login, password);
     if (res && res.token) {
         localStorage.setItem(tokenId, res.token);
-        dispatch(userInfoActions.getInfo());
+        dispatch(userInfoActions.getInfo(cb));
+    } else {
+        cb && typeof cb === "function" && cb();
     }
-    cb && typeof cb === "function" && cb();
 };
 
 export const signOut = () => (dispatch) => {
