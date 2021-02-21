@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Input } from "reactstrap";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import { notificationsActions } from "../../../store/actions";
 
 import CrossIMG from "images/cross.svg";
 import TickIMG from "images/tick.svg";
 import EditIMG from "images/edit-pencil.svg";
+import MatchingIMG from "images/matching-icon.svg";
 
 import "./hobby.scss";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { notificationsActions } from "../../../store/actions";
 
 const HobbyComponent = ({
     isEditable = false,
@@ -19,6 +21,7 @@ const HobbyComponent = ({
     minLength = 3,
     maxLength = 20,
     notificationsActions,
+    isMatchingCurrentUser = false,
 }) => {
     const [isEditionMode, setIsEditionMode] = useState(false);
     const [customHobbyName, setCustomHobbyName] = useState("");
@@ -52,7 +55,7 @@ const HobbyComponent = ({
             ) : (
                 <span title={text}>{text}</span>
             )}
-            {(isDeleteable || isEditable) && (
+            {(isDeleteable || isEditable || isMatchingCurrentUser) && (
                 <div className="user-hobby__btn-group">
                     {isEditable &&
                         (isEditionMode ? (
@@ -75,6 +78,7 @@ const HobbyComponent = ({
                             onClick={onDeleteHobby}
                         />
                     )}
+                    {isMatchingCurrentUser && <img src={MatchingIMG} />}
                 </div>
             )}
         </div>

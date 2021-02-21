@@ -1,6 +1,8 @@
 @import "functions";
 @import "variables";
 
+$hobbiesPerLine: 3;
+
 .user-profile-modal.custom-modal.modal-dialog {
     .modal-header {
         flex-basis: calc-rem(67px);
@@ -173,7 +175,6 @@
                     }
 
                     &.other-user-profile__photos-tab {
-                        position: relative;
                         height: 100%;
                         width: 100%;
                         padding: 0 calc-rem(10px);
@@ -210,16 +211,16 @@
                                     opacity: 0;
                                     z-index: -1;
                                     background-color: rgba(0, 0, 0, 0.3);
-                                    transition: all .15s ease-out;
+                                    transition: all 0.15s ease-out;
 
-                                    >img{
+                                    > img {
                                         width: calc-rem(60px);
                                         height: calc-rem(60px);
                                         cursor: pointer;
                                         margin-right: calc-rem(10px);
                                     }
 
-                                    >span{
+                                    > span {
                                         font-size: calc-rem(36px);
                                         line-height: 1.15;
                                     }
@@ -231,6 +232,54 @@
                                         visibility: visible;
                                         opacity: 0.7;
                                     }
+                                }
+                            }
+                        }
+                    }
+
+                    &.other-user-profile__hobbies-tab {
+                        display: flex;
+                        flex-direction: column;
+                        height: 100%;
+                        width: 100%;
+                        padding: 0 calc-rem(32px);
+
+                        > div {
+                            &:first-of-type {
+                                display: flex;
+                                align-items: center;
+
+                                > span {
+                                    font-size: calc-rem(22px);
+                                    line-height: calc-rem(27px);
+                                    font-weight: 700;
+                                    margin-right: calc-rem(10px);
+                                }
+
+                                > .custom-switch-button {
+                                    margin-top: calc-rem(5px);
+                                }
+                            }
+
+                            &.hobbies-container {
+                                display: flex;
+                                flex-wrap: wrap;
+                                overflow: auto;
+                                padding: calc-rem(15px) calc-rem(10px) 0 0;
+
+                                > .user-hobby {
+                                    flex: 0 0 calc(90% / #{$hobbiesPerLine});
+                                    margin-bottom: calc-rem(15px);
+
+                                    &:not(:nth-of-type(#{$hobbiesPerLine}n)) {
+                                        margin-right: calc(
+                                            9% / #{$hobbiesPerLine - 1}
+                                        );
+                                    }
+                                }
+
+                                &::-webkit-scrollbar-thumb {
+                                    background-color: $heavy-mint-color;
                                 }
                             }
                         }

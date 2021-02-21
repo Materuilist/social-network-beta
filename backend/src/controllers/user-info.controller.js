@@ -115,7 +115,8 @@ const getPhotosById = async (req, res, next) => {
                 likesFrom && likesFrom.length > 0 ? likesFrom.length : 0,
             hasCurrentUserLike: Boolean(
                 likesFrom.find(
-                    (likerId) => likerId.toString() === currentUser._id.toString()
+                    (likerId) =>
+                        likerId.toString() === currentUser._id.toString()
                 )
             ),
         }));
@@ -186,6 +187,7 @@ const deletePhotos = async (req, res, next) => {
 };
 
 const getInterestsById = async (req, res, next) => {
+    const { user: currentUser } = req.body;
     const { userId } = req.params;
 
     const user = await User.findById(userId);
@@ -194,10 +196,26 @@ const getInterestsById = async (req, res, next) => {
         return next(new Error(404, "Такого пользователя нет!"));
     }
 
-    const { interests } = await user
-        .populate("interests", "_id naming")
-        .execPopulate();
-    res.status(200).json({ interests });
+    const [
+        { interests },
+        { interests: currentUserInterests },
+    ] = await Promise.all([
+        user.populate("interests", "_id naming").execPopulate(),
+        currentUser.populate("interests", "naming").execPopulate(),
+    ]);
+
+    res.status(200).json({
+        interests: interests.map(({ _id, naming }) => ({
+            _id,
+            naming,
+            isMatchingCurrentUser: Boolean(
+                currentUserInterests.find(
+                    (currentUserInterest) =>
+                        currentUserInterest.naming === naming
+                )
+            ),
+        })),
+    });
 };
 
 const getInterests = async (req, res, next) => {
