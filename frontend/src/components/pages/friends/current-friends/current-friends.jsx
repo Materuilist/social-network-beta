@@ -67,7 +67,12 @@ export const CurrentFriends = connect(
 
     return (
         <div className={classNames.currentFriends}>
-            <CustomLoader isLoading={isLoading} />
+            <CustomLoader
+                isLoading={isLoading}
+                isBackdropVisible={false}
+                loaderColor="#ebfcf7"
+                opacity='1'
+            />
             <CustomSearch
                 placeholder="Поиск"
                 searchField="login"

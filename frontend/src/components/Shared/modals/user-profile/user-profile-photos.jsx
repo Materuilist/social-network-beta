@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -26,10 +26,63 @@ export const UserProfilePhotos = connect(
     mapDispatchToProps
 )(({ userId, photos, otherUserProfileModalActions }) => {
     const [isLoading, setIsLoading] = useState(true);
+    const [photosState, setPhotosState] = useState([]);
+    //чтобы при демонтировании компонента эффект видел актуальные пропс и состояние фото
+    const photosRef = useRef([]);
+    const photosStateRef = useRef([]);
 
     useEffect(() => {
         otherUserProfileModalActions.getPhotos(() => setIsLoading(false));
     }, [userId]);
+
+    useEffect(() => {
+        setPhotosState(photos);
+        photosRef.current = photos;
+    }, [photos]);
+
+    useEffect(() => {
+        photosStateRef.current = photosState;
+    }, [photosState]);
+
+    useEffect(
+        () =>
+            function updateDatabaseLikes() {
+                console.log({ photosRef, photosStateRef });
+                const photosWithLikeChanged = photosStateRef.current
+                    .filter(({ _id, hasCurrentUserLike }) =>
+                        photosRef.current.find(
+                            (databasePhoto) =>
+                                databasePhoto._id === _id &&
+                                databasePhoto.hasCurrentUserLike !==
+                                    hasCurrentUserLike
+                        )
+                    )
+                    .map(({ _id }) => _id);
+                if (photosWithLikeChanged.length) {
+                    otherUserProfileModalActions.togglePhotosLikes(
+                        userId,
+                        photosWithLikeChanged
+                    );
+                }
+            },
+        []
+    );
+
+    const togglePhotoLike = (photoId) => {
+        setPhotosState(
+            photosState.map((photo) =>
+                photo._id === photoId
+                    ? {
+                          ...photo,
+                          likesCount: photo.hasCurrentUserLike
+                              ? photo.likesCount - 1
+                              : photo.likesCount + 1,
+                          hasCurrentUserLike: !photo.hasCurrentUserLike,
+                      }
+                    : photo
+            )
+        );
+    };
 
     return (
         <div className="other-user-profile__photos-tab">
@@ -39,10 +92,10 @@ export const UserProfilePhotos = connect(
                 isLight={false}
             />
             <div className="photos-tab__carousel-container">
-                {photos.length ? (
+                {photosState.length ? (
                     <CustomCarousel
                         visibleCount={2}
-                        items={photos.map(
+                        items={photosState.map(
                             ({
                                 _id,
                                 data,
@@ -64,6 +117,9 @@ export const UserProfilePhotos = connect(
                                                     hasCurrentUserLike
                                                         ? "Снять лайк"
                                                         : "Поставить лайк"
+                                                }
+                                                onClick={() =>
+                                                    togglePhotoLike(_id)
                                                 }
                                             />
                                             <span>{likesCount}</span>

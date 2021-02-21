@@ -5,7 +5,7 @@ const togglePhotosLikes = async (req, res, next) => {
     const {
         user: { _id: senderId },
         userId,
-        photosIds = [],//фото, лайк на которых нужно cнять/поставить
+        photosIds = [], //фото, лайк на которых нужно cнять/поставить
     } = req.body;
 
     if (!userId || !senderId || !photosIds || !photosIds.length) {
@@ -28,7 +28,7 @@ const togglePhotosLikes = async (req, res, next) => {
                     )
                 );
                 return {
-                    _id: photoId,
+                    _id: photo._id,
                     data: photo.data,
                     likesFrom: isLiked
                         ? photo.likesFrom.filter(
@@ -40,12 +40,12 @@ const togglePhotosLikes = async (req, res, next) => {
             }
             return photo;
         });
-        // console.log(newPhotos);
         photoOwner.photos = newPhotos;
         await photoOwner.save();
-        return res.status(200).json();
+        return res
+            .status(200)
+            .json({ message: "Лайки успешно сняты/поставлены" });
     } catch (ex) {
-        // console.log(ex);
         return next(new Error(500, "Что-то пошло не так..."));
     }
 };

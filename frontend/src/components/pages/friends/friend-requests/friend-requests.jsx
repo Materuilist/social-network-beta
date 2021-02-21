@@ -101,7 +101,12 @@ export const FriendRequests = connect(
 
     return (
         <div className={classNames.friendsRequests}>
-            <CustomLoader isLoading={isLoading} />
+            <CustomLoader
+                isLoading={isLoading}
+                isBackdropVisible={false}
+                isLight={false}
+                opacity=".8"
+            />
             <div
                 className={incomingRequests.isVisible ? classNames.visible : ""}
             >

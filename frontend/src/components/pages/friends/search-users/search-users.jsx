@@ -49,6 +49,7 @@ export const SearchUsers = connect(
 
     return (
         <div className={classNames.strangersSearch}>
+            <CustomLoader isLoading={isLoading} isBackdropVisible={false} isLight={false} opacity={'.8'} />
             <CustomSearch
                 placeholder="Поиск"
                 defaultSearchText={filter.searchText}
@@ -71,9 +72,6 @@ export const SearchUsers = connect(
                             useWindow={false}
                             pageStart={1}
                             initialLoad={false}
-                            loader={
-                                <CustomLoader key={0} isLoading={isLoading} />
-                            }
                             threshold={1}
                         >
                             {strangers.map(

@@ -80,7 +80,6 @@ export const UserProfileInfo = connect(
                         />
                         <img
                             src={info.avatar || DefaultAvatarIMG}
-                            isBackdropVisible={false}
                         />
                     </div>
                     {info.isFriend && info.statuses && (

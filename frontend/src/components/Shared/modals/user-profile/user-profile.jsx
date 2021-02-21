@@ -30,9 +30,15 @@ export const UserProfileModal = connect(
     mapStateToProps,
     mapDispatchToProps
 )(({ show, otherUserProfileModalActions }) => {
-    const [activeTab, setActiveTab] = useState(
-        otherUserProfileModalTabs.PROFILE
-    );
+    const [activeTab, setActiveTab] = useState(null);
+
+    useEffect(() => {
+        if (show) {
+            setActiveTab(otherUserProfileModalTabs.PROFILE);
+        } else {
+            setActiveTab(null);
+        }
+    }, [show]);
 
     const tabsArray = useMemo(() => {
         const result = [];
@@ -51,6 +57,8 @@ export const UserProfileModal = connect(
                 return <UserProfilePhotos />;
             case otherUserProfileModalTabs.HOBBIES:
                 return <UserProfileHobbies />;
+            default:
+                return null;
         }
     };
 
@@ -58,7 +66,9 @@ export const UserProfileModal = connect(
         return tabsArray.map(({ key, name, icon, iconActive }) => (
             <div key={key}>
                 <img
-                    src={name === activeTab.name ? iconActive : icon}
+                    src={
+                        activeTab && name === activeTab.name ? iconActive : icon
+                    }
                     title={name}
                     onClick={() => setActiveTab(otherUserProfileModalTabs[key])}
                 />

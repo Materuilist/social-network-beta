@@ -1,7 +1,9 @@
+import { LikesService } from "../../../services/likes.service";
 import { UserInfoService } from "../../../services/user-info.service";
 import { otherUserProfileModalActionTypes } from "../../actionTypes";
 
 const userInfoService = new UserInfoService();
+const likesService = new LikesService();
 
 const toggleVisibility = (show = true) => ({
     type: otherUserProfileModalActionTypes.SET_VISIBILITY,
@@ -81,4 +83,10 @@ export const getInterests = (cb) => async (dispatch, getState) => {
     }
 
     return cb && typeof cb === "function" && cb();
+};
+
+export const togglePhotosLikes = (userId, photosIds) => async (dispatch) => {
+    if (!userId || !photosIds || !photosIds.length) return;
+
+    await likesService.togglePhotosLikes(userId, photosIds);
 };

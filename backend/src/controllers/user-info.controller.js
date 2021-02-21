@@ -100,6 +100,7 @@ const updateUserInfo = async (req, res, next) => {
 };
 
 const getPhotosById = async (req, res, next) => {
+    const { user: currentUser } = req.body;
     const { userId } = req.params;
 
     try {
@@ -114,7 +115,7 @@ const getPhotosById = async (req, res, next) => {
                 likesFrom && likesFrom.length > 0 ? likesFrom.length : 0,
             hasCurrentUserLike: Boolean(
                 likesFrom.find(
-                    (likerId) => likerId.toString() === user._id.toString()
+                    (likerId) => likerId.toString() === currentUser._id.toString()
                 )
             ),
         }));
