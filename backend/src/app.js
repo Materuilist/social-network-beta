@@ -1,4 +1,6 @@
 const express = require("express");
+const WebSocket = require("ws");
+const http = require("http");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
@@ -12,6 +14,7 @@ const dictionariesRouter = require("./routes/dictionaries.route");
 const likeRouter = require("./routes/like.route");
 
 const app = express();
+const server = http.createServer(app);
 const dbConnectionString = getConfig().database;
 
 app.use("/", (req, res, next) => {
@@ -44,7 +47,15 @@ mongoose.connect(dbConnectionString, async (err) => {
         return;
     }
 
-    app.listen(8000, () => {
+    const wss = new WebSocket.Server({ server });
+
+    wss.on("connection", (websocket, request) => {
+        websocket.on('message', message=>{
+            console.log(message)
+        })
+    });
+    
+    server.listen(8000, () => {
         console.log("server started successfully!");
     });
 });
