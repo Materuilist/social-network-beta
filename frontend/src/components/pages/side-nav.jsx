@@ -10,7 +10,7 @@ export const SideNav = connect(mapStateToProps)(({ userInfo }) => {
     const renderChatNavItem = () => {
         return (
             <>
-                <NavLink to="/chat">Чат</NavLink>
+                <NavLink to="/chat-list">Чат</NavLink>
                 <div className='brief-statistics-row'>Здесь будет краткая инфа</div>
             </>
         );

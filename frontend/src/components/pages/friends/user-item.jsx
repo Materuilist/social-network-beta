@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { push } from "connected-react-router";
 
 import {
     friendsActions,
@@ -14,6 +15,7 @@ import DeleteFriendIMG from "images/delete-friend.svg";
 import AddFriendIMG from "images/add-friend.svg";
 
 import "./user-item.scss";
+import { store } from "../../../store";
 
 const UserItemComponent = ({
     userType = otherUserTypes.STRANGER,
@@ -121,7 +123,11 @@ const UserItemComponent = ({
                 <p>{isOnline ? "online" : "offline"}</p>
             </div>
             {userType === otherUserTypes.FRIEND ? (
-                <img src={MessageIMG} />
+                <img
+                    src={MessageIMG}
+                    title={`Начать общение с ${login}`}
+                    onClick={() => store.dispatch(push(`/chat?userId=${id}`))}
+                />
             ) : (
                 <img />
             )}

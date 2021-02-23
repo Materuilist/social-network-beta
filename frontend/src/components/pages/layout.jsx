@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import { Profile } from "./profile/profile";
 import { Friends } from "./friends/friends";
+import { ChatList } from "./chat-list/chat-list";
 import { Chat } from "./chat/chat";
 import { Header } from "./header";
 import { SideNav } from "./side-nav";
@@ -23,6 +24,9 @@ export const Layout = () => {
                         </Route>
                         <Route path="/friends">
                             <Friends />
+                        </Route>
+                        <Route path="/chat-list">
+                            <ChatList />
                         </Route>
                         <Route path="/chat">
                             <Chat />
