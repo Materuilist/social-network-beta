@@ -12,6 +12,8 @@ const friendsRouter = require("./routes/friends.route");
 const userInfoRouter = require("./routes/user-info.route");
 const dictionariesRouter = require("./routes/dictionaries.route");
 const likeRouter = require("./routes/like.route");
+const { User } = require("./models/user.model");
+const TokenProcessor = require("./services/tokenProcessor");
 
 const app = express();
 const server = http.createServer(app);
@@ -49,12 +51,54 @@ mongoose.connect(dbConnectionString, async (err) => {
 
     const wss = new WebSocket.Server({ server });
 
-    wss.on("connection", (websocket, request) => {
-        websocket.on('message', message=>{
-            console.log(message)
-        })
+    wss.on("connection", (websocket) => {
+        websocket.on("message", async (message) => {
+            const { event, payload, token } = JSON.parse(message);
+
+            if (!token) {
+                return websocket.close(4001, "Пользователь не найден");
+            }
+
+            const { login } = await TokenProcessor.decodeToken(token);
+            if (!login) {
+                return websocket.close(4001, "Действие токена истекло");
+            }
+
+            switch (event) {
+                case "enter": {
+                    const user = await User.findOne({ login });
+                    if (!user) {
+                        return websocket.close(4001, "Пользователь не найден");
+                    }
+                    websocket.user = {
+                        id: user._id.toString(),
+                        login: user.login,
+                    };
+                    return websocket.send(JSON.stringify({ event: "enter" }));
+                }
+                case "chat-message": {
+                    const { receiverId, message } = payload;
+
+                    if (!receiverId || !message) {
+                        return;
+                    }
+
+                    wss.clients.forEach((client) => {
+                        if (client.user?.id === receiverId) {
+                            client.send(
+                                JSON.stringify({
+                                    event: "incoming message",
+                                    payload: { message },
+                                })
+                            );
+                        }
+                    });
+                    return;
+                }
+            }
+        });
     });
-    
+
     server.listen(8000, () => {
         console.log("server started successfully!");
     });

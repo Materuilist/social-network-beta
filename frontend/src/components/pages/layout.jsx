@@ -11,10 +11,6 @@ import { UserProfileModal } from "../shared/modals/user-profile/user-profile";
 import "./layout.scss";
 
 export const Layout = () => {
-    useEffect(() => {
-        import("../../services/ws.service")
-    }, []);
-
     return (
         <div className="layout">
             <Header />

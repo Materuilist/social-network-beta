@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { wsService } from "../../services/ws.service";
 
 import { userInfoActions } from "../../store/actions";
 import { CustomLoader } from "../shared/custom-loader/custom-loader";
@@ -20,7 +21,14 @@ export const CheckUser = connect(
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        userInfoActions.getInfo(() => setIsLoading(false));
+        wsService.connect().then(
+            () => {
+                userInfoActions.getInfo(() => setIsLoading(false));
+            },
+            () => {
+                setIsLoading(false);
+            }
+        );
     }, []);
 
     return isLoading ? (
