@@ -10,14 +10,7 @@ const messageSchema = new Schema({
         type: String,
         required: true,
     },
-    pics: [String], //base64
-    isRead: Boolean,
-    replyTo: [
-        {
-            type: Types.ObjectId,
-            ref: "Message",
-        },
-    ],
+    timestamp: Date,
 });
 
 module.exports = { Message: model("Message", messageSchema) };

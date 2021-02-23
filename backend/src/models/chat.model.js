@@ -1,15 +1,6 @@
 const { Schema, model, Types } = require("mongoose");
-const { chatTypes } = require("../constants");
 
 const chatSchema = new Schema({
-    naming: {
-        type: String,
-        required: true,
-    },
-    type: {
-        type: Types.string,
-        enum: chatTypes,
-    },
     members: [
         {
             user: {
@@ -20,7 +11,6 @@ const chatSchema = new Schema({
             needsNotification: Boolean,
         },
     ],
-    admins: [{ type: Types.ObjectId, ref: "User" }],
     messages: [{ type: Types.ObjectId, ref: "Message" }],
 });
 

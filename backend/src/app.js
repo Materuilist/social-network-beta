@@ -14,6 +14,8 @@ const dictionariesRouter = require("./routes/dictionaries.route");
 const likeRouter = require("./routes/like.route");
 const { User } = require("./models/user.model");
 const TokenProcessor = require("./services/tokenProcessor");
+const { Chat } = require("./models/chat.model");
+const { Message } = require("./models/message.model");
 
 const app = express();
 const server = http.createServer(app);
@@ -70,25 +72,59 @@ mongoose.connect(dbConnectionString, async (err) => {
                     if (!user) {
                         return websocket.close(4001, "Пользователь не найден");
                     }
-                    websocket.user = {
-                        id: user._id.toString(),
-                        login: user.login,
-                    };
+                    websocket.user = user;
                     return websocket.send(JSON.stringify({ event: "enter" }));
                 }
                 case "chat-message": {
-                    const { receiverId, message } = payload;
+                    const {
+                        receiverId,
+                        text,
+                        timestamp = new Date(),
+                        chatId,
+                    } = payload;
 
-                    if (!receiverId || !message) {
+                    if (!receiverId || !text) {
                         return;
                     }
 
-                    wss.clients.forEach((client) => {
+                    wss.clients.forEach(async (client) => {
                         if (client.user?.id === receiverId) {
-                            client.send(
+                            const { user: receiver } = client;
+                            const { user: sender } = websocket;
+                            let chat;
+
+                            if (chatId) {
+                                chat = await Chat.findById(chatId);
+                            }
+                            if (!chat) {
+                                chat = await Chat.create({
+                                    members: [
+                                        {
+                                            user: receiverId,
+                                            needsNotification: true,
+                                        },
+                                        {
+                                            user: sender._id,
+                                            needsNotification: true,
+                                        },
+                                    ],
+                                    messages: [],
+                                });
+                            }
+
+                            const message = await Message.create({
+                                sender: sender._id,
+                                content: text,
+                                timestamp,
+                            });
+
+                            chat.messages.push(message._id);
+                            await chat.save();
+
+                            return client.send(
                                 JSON.stringify({
                                     event: "incoming message",
-                                    payload: { message },
+                                    payload: { chat, message },
                                 })
                             );
                         }

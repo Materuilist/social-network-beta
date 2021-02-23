@@ -59,8 +59,8 @@ class WsService {
                     return;
                 }
                 case "incoming message": {
-                    const { message } = payload;
-                    console.log(message);
+                    const { chat, message } = payload;
+                    console.log({ chat, message });
                     return;
                 }
             }
@@ -101,8 +101,8 @@ class WsService {
         );
     }
 
-    sendMessage(receiverId, message) {
-        this.send("chat-message", { receiverId, message });
+    sendMessage(receiverId, text) {
+        this.send("chat-message", { receiverId, text });
     }
 }
 
