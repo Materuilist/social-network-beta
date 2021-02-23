@@ -1,25 +1,55 @@
-import React, { useEffect, useState } from "react";
-import { Input } from "reactstrap";
-import { wsService } from "../../../services/ws.service";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-export const Chat = () => {
-    const [receiverId, setReceiverId] = useState("");
-    const [text, setText] = useState("");
-    useEffect(() => {}, []);
+import { CustomSearch } from "../../shared/custom-search/custom-search";
+import { CustomLoader } from "../../shared/custom-loader/custom-loader";
+import { chatsActions } from "../../../store/actions";
+
+import classNames from "./chat.module.scss";
+import { NavLink } from "react-router-dom";
+
+const mapStateToProps = ({ chats }) => ({ chats });
+
+const mapDispatchToProps = (dispatch) => ({
+    chatsActions: bindActionCreators(chatsActions, dispatch),
+});
+
+export const Chat = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(({ chats, chatsActions }) => {
+    useEffect(() => {
+        chatsActions.getChats();
+    }, []);
+
+    const renderChatItem = (item) => {
+        return (
+            <div className={classNames.chatItem}>{JSON.stringify(item)}</div>
+        );
+    };
 
     return (
-        <div style={{ backgroundColor: "green" }}>
-            <Input
-                value={receiverId}
-                onChange={({ target: { value } }) => setReceiverId(value)}
-            />
-            <Input
-                value={text}
-                onChange={({ target: { value } }) => setText(value)}
-            />
-            <button onClick={() => wsService.sendMessage(receiverId, text)}>
-                send
-            </button>
+        <div className={classNames.chat}>
+            <div className={classNames.content}>
+                <div>
+                    <CustomSearch />
+                    <div className={classNames.chatsContainer}>
+                        <CustomLoader isLoading={chats.isLoading} />
+                        {chats.data.length ? (
+                            chats.data.map((chatItem) =>
+                                renderChatItem(chatItem)
+                            )
+                        ) : (
+                            <p>
+                                Вы пока ни с кем не переписывались. Можете
+                                выбрать друга для начала переписки{" "}
+                                <NavLink to="/friends/current">здесь</NavLink>.
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
-};
+});

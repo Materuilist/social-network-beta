@@ -60,6 +60,12 @@ class WsService {
                 }
                 case "incoming message": {
                     const { chat, message } = payload;
+                    store.dispatch(
+                        notificationsActions.notifyError(
+                            chat._id,
+                            message.content
+                        )
+                    );
                     console.log({ chat, message });
                     return;
                 }

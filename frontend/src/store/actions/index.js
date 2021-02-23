@@ -6,6 +6,8 @@ export * as photosActions from "./photos.actions";
 
 export * as friendsActions from "./friends.actions";
 
+export * as chatsActions from "./chats.actions";
+
 export * as authActions from "./auth.actions";
 
 export * as dictionariesActions from "./dictionaries.actions";

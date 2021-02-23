@@ -10,6 +10,8 @@ import { dictionariesReducer } from "./dictionaries.reducer";
 
 import { friendsReducer } from "./friends.reducer";
 
+import { chatsReducer } from "./chats.reducer";
+
 import { otherUserProfileModalReducer } from "./shared/other-user-profile-modal.reducer";
 
 const reducers = {
@@ -21,6 +23,8 @@ const reducers = {
     photos: photosReducer,
 
     friends: friendsReducer,
+
+    chats: chatsReducer,
 
     otherUserProfileModal: otherUserProfileModalReducer,
 };

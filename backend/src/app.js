@@ -12,6 +12,7 @@ const friendsRouter = require("./routes/friends.route");
 const userInfoRouter = require("./routes/user-info.route");
 const dictionariesRouter = require("./routes/dictionaries.route");
 const likeRouter = require("./routes/like.route");
+const chatRouter = require("./routes/chat.route");
 const { User } = require("./models/user.model");
 const TokenProcessor = require("./services/tokenProcessor");
 const { Chat } = require("./models/chat.model");
@@ -37,6 +38,7 @@ app.use("/friends", friendsRouter);
 app.use("/userinfo", userInfoRouter);
 app.use("/dictionaries", dictionariesRouter);
 app.use("/like", likeRouter);
+app.use("/chats", chatRouter);
 
 app.use("/", (error, req, res, next) => {
     if (error) {
@@ -94,7 +96,12 @@ mongoose.connect(dbConnectionString, async (err) => {
                             let chat;
 
                             if (chatId) {
-                                chat = await Chat.findById(chatId);
+                                chat = await Chat.find({
+                                    _id: chatId,
+                                    members: {
+                                        user: { $in: [receiverId, sender._id] },
+                                    },
+                                });
                             }
                             if (!chat) {
                                 chat = await Chat.create({

@@ -33,6 +33,11 @@ export const friendsActionTypes = {
     TOGGLE_REQUESTS_VISIBILITY: "TOGGLE_REQUESTS_VISIBILITY",
 };
 
+export const chatsActionTypes = {
+    SET_CHATS: "SET_CHATS",
+    TOGGLE_LOADING: "TOGGLE_CHATS_LOADING",
+};
+
 export const notificationsActionTypes = {
     SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
 };
