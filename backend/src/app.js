@@ -96,7 +96,6 @@ mongoose.connect(dbConnectionString, async (err) => {
                             { "members._id": sender._id },
                         ],
                     });
-                    console.log(chat);
 
                     if (!chat) {
                         chat = await Chat.create({
@@ -126,7 +125,7 @@ mongoose.connect(dbConnectionString, async (err) => {
                         timestamp,
                     });
 
-                    chat.messages.push(message._id);
+                    chat.messages.unshift(message._id);
                     await chat.save();
 
                     wss.clients.forEach(async (client) => {
