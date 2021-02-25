@@ -38,6 +38,12 @@ export const chatsActionTypes = {
     TOGGLE_LOADING: "TOGGLE_CHATS_LOADING",
 };
 
+export const chatActionTypes = {
+    SET_MEMBERS: "SET_CHAT_MEMBERS",
+    SET_CHAT_ID: "SET_CHAT_ID",
+    SET_MESSAGES: "SET_CHAT_MESSAGES",
+};
+
 export const notificationsActionTypes = {
     SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
 };

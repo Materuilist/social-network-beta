@@ -108,7 +108,7 @@ class WsService {
     }
 
     sendMessage(receiverId, text) {
-        this.send("chat-message", { receiverId, text });
+        this.send("dialogue-message", { receiverId, text });
     }
 }
 

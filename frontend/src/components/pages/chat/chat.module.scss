@@ -1,0 +1,26 @@
+@import "functions";
+@import "variables";
+
+.chat {
+    background-color: $semi-heavy-mint-color;
+    border-radius: calc-rem(10px);
+    width: 75%;
+    height: 90%;
+    padding: calc-rem(20px);
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: auto;
+        border-radius: inherit;
+        background-color: $light-mint-color;
+        color: $heavy-mint-color;
+
+        > .messagesContainer {
+        }
+
+        > .messageInputContainer {
+        }
+    }
+}

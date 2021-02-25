@@ -77,57 +77,60 @@ mongoose.connect(dbConnectionString, async (err) => {
                     websocket.user = user;
                     return websocket.send(JSON.stringify({ event: "enter" }));
                 }
-                case "chat-message": {
+                case "dialogue-message": {
                     const {
                         receiverId,
                         text,
                         timestamp = new Date(),
-                        chatId,
                     } = payload;
 
                     if (!receiverId || !text) {
                         return;
                     }
 
+                    const { user: sender } = websocket;
+
+                    let chat = await Chat.findOne({
+                        $and: [
+                            { "members._id": receiverId },
+                            { "members._id": sender._id },
+                        ],
+                    });
+                    console.log(chat);
+
+                    if (!chat) {
+                        chat = await Chat.create({
+                            members: [
+                                {
+                                    _id: receiverId,
+                                    needsNotification: true,
+                                },
+                                {
+                                    _id: sender._id,
+                                    needsNotification: true,
+                                },
+                            ],
+                            messages: [],
+                        });
+                        User.findById(receiverId).then((receiver) => {
+                            sender.chats.push(chat._id);
+                            receiver.chats.push(chat._id);
+                            receiver.save();
+                            sender.save();
+                        });
+                    }
+
+                    const message = await Message.create({
+                        sender: sender._id,
+                        content: text,
+                        timestamp,
+                    });
+
+                    chat.messages.push(message._id);
+                    await chat.save();
+
                     wss.clients.forEach(async (client) => {
                         if (client.user?.id === receiverId) {
-                            const { user: receiver } = client;
-                            const { user: sender } = websocket;
-                            let chat;
-
-                            if (chatId) {
-                                chat = await Chat.find({
-                                    _id: chatId,
-                                    members: {
-                                        user: { $in: [receiverId, sender._id] },
-                                    },
-                                });
-                            }
-                            if (!chat) {
-                                chat = await Chat.create({
-                                    members: [
-                                        {
-                                            user: receiverId,
-                                            needsNotification: true,
-                                        },
-                                        {
-                                            user: sender._id,
-                                            needsNotification: true,
-                                        },
-                                    ],
-                                    messages: [],
-                                });
-                            }
-
-                            const message = await Message.create({
-                                sender: sender._id,
-                                content: text,
-                                timestamp,
-                            });
-
-                            chat.messages.push(message._id);
-                            await chat.save();
-
                             return client.send(
                                 JSON.stringify({
                                     event: "incoming message",
