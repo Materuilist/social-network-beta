@@ -13,11 +13,12 @@ const toggleLoading = (isLoading = true) => ({
     payload: isLoading,
 });
 
-export const getChats = () => async (dispatch) => {
+export const getChats = (cb) => async (dispatch) => {
     dispatch(toggleLoading(true));
     const res = await chatsService.getChats();
     if (res && res.chats) {
         dispatch(setChats(res.chats));
         dispatch(toggleLoading(false));
     }
+    cb?.();
 };

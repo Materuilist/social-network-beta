@@ -11,20 +11,20 @@
         border-radius: calc-rem(10px);
         padding: calc-rem(28px);
 
-        >div{
+        > div {
             display: flex;
             flex-direction: column;
+            position: relative;
             height: 100%;
 
-            >.chatsContainer{
+            > .chatsContainer {
                 flex: 1 0;
-                position: relative;
                 overflow: auto;
                 margin-top: calc-rem(23px);
                 background-color: $light-mint-color;
                 border-radius: calc-rem(10px);
 
-                >p{
+                > p {
                     width: 90%;
                     margin: calc-rem(16px) auto;
                     color: $heavy-mint-color;
@@ -34,7 +34,69 @@
                     text-indent: calc-rem(20px);
                 }
 
-                &::-webkit-scrollbar-thumb{
+                > .chatItem {
+                    display: flex;
+                    align-items: center;
+                    height: calc-rem(86px);
+                    padding: calc-rem(14px) calc-rem(9px);
+                    color: $heavy-mint-color;
+                    background-color: $light-mint-color;
+                    border-bottom: calc-rem(1px) solid $heavy-mint-color;
+                    cursor: pointer;
+                    transition: all 0.15s ease-out;
+
+                    > img {
+                        height: calc-rem(62px);
+                        width: calc-rem(62px);
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+
+                    > div {
+                        &:first-of-type {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            height: 100%;
+                            margin: 0 calc-rem(40px) 0 calc-rem(15px);
+
+                            > p {
+                                margin-bottom: 0;
+                                font-size: calc-rem(16px);
+                                line-height: calc-rem(20px);
+
+                                &:first-of-type {
+                                    font-size: calc-rem(20px);
+                                    line-height: calc-rem(25px);
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+
+                        &:nth-of-type(2) {
+                            display: flex;
+
+                            > span {
+                                font-size: calc-rem(20px);
+                                line-height: calc-rem(25px);
+                                font-weight: 700;
+                                margin-right: calc-rem(10px);
+
+                                &:last-of-type {
+                                    font-weight: normal;
+                                    font-weight: 500;
+                                }
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        opacity: 0.7;
+                        background-color: #d3ebe4;
+                    }
+                }
+
+                &::-webkit-scrollbar-thumb {
                     background-color: $heavy-mint-color;
                 }
             }

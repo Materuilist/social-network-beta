@@ -119,6 +119,7 @@
 
     main{
         flex: 1 0 75.5%;
+        overflow: hidden;
         padding-left: $content-side-margin;
         height: 100%;
     }

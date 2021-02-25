@@ -43,8 +43,9 @@ const getUserInfo = async (req, res, next) => {
     if (!userInfo) {
         return next(new Error(400, "Ошибка при получении пользователя!"));
     }
-    const { avatar, sex, birthDate, city, isOnline } = userInfo;
+    const { _id, avatar, sex, birthDate, city, isOnline } = userInfo;
     return res.status(200).json({
+        id: _id,
         login,
         avatar,
         sex,
