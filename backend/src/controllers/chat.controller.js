@@ -1,3 +1,4 @@
+const { Chat } = require("../models/chat.model");
 const { Error } = require("../models/shared/error.class");
 
 const getChats = async (req, res, next) => {
@@ -41,14 +42,73 @@ const getChats = async (req, res, next) => {
 const getDialogue = async (req, res, next) => {
     const { user: currentUser } = req.body;
     const { userId } = req.params;
+    let { page = 1, itemsCount = 10 } = req.query;
+    page = +page;
+    itemsCount = +itemsCount;
 
     if (!userId) {
         return next(new Error(404, "Не указан собеседник"));
     }
 
-    const result = await currentUser.populate("chats").execPopulate();
+    const [dialogueInfo, nextPageExists] = await Promise.all([
+        Chat.findOne({
+            $and: [
+                { "members._id": currentUser._id },
+                { "members._id": userId },
+            ],
+        })
+            .populate([
+                {
+                    path: "members._id",
+                    select: "login avatar isOnline",
+                    populate: [
+                        {
+                            path: "messages",
+                            select: "content timestamp sender",
+                            options: { sort: { timestamp: -1 } },
+                            perDocumentLimit: 1,
+                        },
+                        {
+                            path: "members._id",
+                            select: "login avatar isOnline",
+                        },
+                    ],
+                },
+                {
+                    path: "messages",
+                    select: "content timestamp sender",
+                    options: { sort: { timestamp: -1 } },
+                    skip: (page - 1) * itemsCount,
+                    perDocumentLimit: itemsCount,
+                },
+            ])
+            .exec()
+            .then((rawInfo) =>
+                rawInfo
+                    ? {
+                          id: rawInfo.id,
+                          otherUser: rawInfo.members
+                              .filter(
+                                  ({ _id: user }) =>
+                                      user._id.toString() !==
+                                      currentUser._id.toString()
+                              )
+                              .map(({ _id }) => ({
+                                  login: _id.login,
+                                  avatar: _id.avatar,
+                                  isOnline: _id.isOnline,
+                                  id: _id._id,
+                              }))[0],
+                          messages: rawInfo.messages,
+                      }
+                    : null
+            ),
+        Chat.countDocuments().then(
+            (totalCount) => totalCount > (page - 1) * itemsCount + itemsCount
+        ),
+    ]);
 
-    return res.status(200).json({ data: result });
+    return res.status(200).json({ data: dialogueInfo, nextPageExists });
 };
 
 module.exports = {

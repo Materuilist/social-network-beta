@@ -2,40 +2,40 @@ import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { NavLink } from "react-router-dom";
+import { push } from "connected-react-router";
 
 import { CustomSearch } from "../../shared/custom-search/custom-search";
 import { CustomLoader } from "../../shared/custom-loader/custom-loader";
-import { chatsActions } from "../../../store/actions";
+import { chatListActions } from "../../../store/actions";
+import { store } from "../../../store";
 
 import DefaultAvatarIMG from "images/default-avatar-dark.svg";
 
 import classNames from "./chat-list.module.scss";
-import { store } from "../../../store";
-import { push } from "connected-react-router";
 
-const mapStateToProps = ({ chats, userInfo }) => ({ chats, userInfo });
+const mapStateToProps = ({ chatList, userInfo }) => ({ chatList, userInfo });
 
 const mapDispatchToProps = (dispatch) => ({
-    chatsActions: bindActionCreators(chatsActions, dispatch),
+    chatListActions: bindActionCreators(chatListActions, dispatch),
 });
 
 export const ChatList = connect(
     mapStateToProps,
     mapDispatchToProps
-)(({ userInfo, chats, chatsActions }) => {
+)(({ userInfo, chatList, chatListActions }) => {
     const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
-        chatsActions.getChats();
+        chatListActions.getChats();
     }, []);
 
     const filteredChats = useMemo(() => {
-        if (!chats.data.length) return [];
+        if (!chatList.data.length) return [];
 
-        return chats.data.filter(({ otherUser: { login } }) =>
+        return chatList.data.filter(({ otherUser: { login } }) =>
             login.toLowerCase().includes(searchText.toLowerCase())
         );
-    }, [searchText, chats.data]);
+    }, [searchText, chatList.data]);
 
     const renderChatItem = ({ id, otherUser, lastMessage }) => {
         return (
@@ -66,7 +66,7 @@ export const ChatList = connect(
             <div className={classNames.content}>
                 <div>
                     <CustomLoader
-                        isLoading={chats.isLoading}
+                        isLoading={chatList.isLoading}
                         isBackdropVisible={false}
                         opacity=".8"
                         isLight={false}

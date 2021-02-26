@@ -1,15 +1,15 @@
 import { ChatsService } from "../../services/chats.service";
-import { chatsActionTypes } from "../actionTypes";
+import { chatListActionTypes } from "../actionTypes";
 
 const chatsService = new ChatsService();
 
 const setChats = (chats = []) => ({
-    type: chatsActionTypes.SET_CHATS,
+    type: chatListActionTypes.SET_CHAT_LIST,
     payload: chats,
 });
 
 const toggleLoading = (isLoading = true) => ({
-    type: chatsActionTypes.TOGGLE_LOADING,
+    type: chatListActionTypes.TOGGLE_LOADING,
     payload: isLoading,
 });
 

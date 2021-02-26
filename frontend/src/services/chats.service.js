@@ -11,4 +11,13 @@ export class ChatsService extends BaseService {
         const res = this.request("");
         return res;
     }
+
+    getDialogue(otherUserId, page = 1, itemsCount = 10) {
+        if (!otherUserId) return;
+
+        const res = this.request(
+            `dialogue/${otherUserId}?page=${page}&itemsCount=${itemsCount}`
+        );
+        return res;
+    }
 }

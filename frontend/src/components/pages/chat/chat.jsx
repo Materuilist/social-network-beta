@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
+import { bindActionCreators } from "redux";
 
 import { wsService } from "../../../services/ws.service";
+import { chatActions } from "../../../store/actions";
 
 import DefaultAvatarIMG from "images/default-avatar.svg";
 import SendIMG from "images/send.svg";
@@ -11,6 +13,10 @@ import SendIMG from "images/send.svg";
 import classNames from "./chat.module.scss";
 
 const mapStateToProps = ({ chat, userInfo }) => ({ chat, userInfo });
+
+const mapDispatchToProps = (dispatch) => ({
+    chatActions: bindActionCreators(chatActions, dispatch),
+});
 
 const messages = [
     {
@@ -38,10 +44,16 @@ const messages = [
     },
 ];
 
-export const Chat = connect(mapStateToProps)(({ chat, userInfo }) => {
+export const Chat = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(({ chat, userInfo, chatActions }) => {
     const query = new URLSearchParams(useLocation().search);
     const userId = query.get("userId");
-    const chatId = query.get("chatId");
+
+    useEffect(() => {
+        chatActions.getDialogue(userId);
+    }, []);
 
     const [messageText, setMessageText] = useState("");
 

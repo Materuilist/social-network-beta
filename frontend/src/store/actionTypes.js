@@ -33,9 +33,9 @@ export const friendsActionTypes = {
     TOGGLE_REQUESTS_VISIBILITY: "TOGGLE_REQUESTS_VISIBILITY",
 };
 
-export const chatsActionTypes = {
-    SET_CHATS: "SET_CHATS",
-    TOGGLE_LOADING: "TOGGLE_CHATS_LOADING",
+export const chatListActionTypes = {
+    SET_CHAT_LIST: "SET_CHAT_LIST",
+    TOGGLE_LOADING: "TOGGLE_CHAT_LIST_LOADING",
 };
 
 export const chatActionTypes = {
