@@ -53,7 +53,7 @@ export const Chat = connect(
 
     useEffect(() => {
         chatActions.getDialogue(userId);
-    }, []);
+    }, [userId]);
 
     const [messageText, setMessageText] = useState("");
 

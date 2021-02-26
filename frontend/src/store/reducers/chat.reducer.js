@@ -1,9 +1,12 @@
 import { chatActionTypes, sharedActionTypes } from "../actionTypes";
 
 const initialState = {
-    members: [],
+    otherUser: null,
     chatId: null,
-    messages: [],
+    messages: {
+        data: [],
+        nextPageExists: true,
+    },
 };
 
 export const chatReducer = (state = initialState, { type, payload }) => {
@@ -11,11 +14,11 @@ export const chatReducer = (state = initialState, { type, payload }) => {
         case chatActionTypes.SET_CHAT_ID:
             return { ...state, chatId: payload };
 
-        case chatActionTypes.SET_MEMBERS:
-            return { ...state, members: [...payload] };
+        case chatActionTypes.SET_OTHER_USER:
+            return { ...state, otherUser: payload };
 
         case chatActionTypes.SET_MESSAGES:
-            return { ...state, messages: [...payload] };
+            return { ...state, messages: { ...payload } };
 
         case sharedActionTypes.REINITIALIZE:
             return initialState;

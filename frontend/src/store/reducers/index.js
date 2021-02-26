@@ -11,6 +11,7 @@ import { dictionariesReducer } from "./dictionaries.reducer";
 import { friendsReducer } from "./friends.reducer";
 
 import { chatListReducer } from "./chat-list.reducer";
+import { chatReducer } from "./chat.reducer";
 
 import { otherUserProfileModalReducer } from "./shared/other-user-profile-modal.reducer";
 
@@ -25,6 +26,7 @@ const reducers = {
     friends: friendsReducer,
 
     chatList: chatListReducer,
+    chat: chatReducer,
 
     otherUserProfileModal: otherUserProfileModalReducer,
 };

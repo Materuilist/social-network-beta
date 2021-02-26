@@ -50,13 +50,15 @@ const getDialogue = async (req, res, next) => {
         return next(new Error(404, "Не указан собеседник"));
     }
 
-    const [dialogueInfo, nextPageExists] = await Promise.all([
-        Chat.findOne({
-            $and: [
-                { "members._id": currentUser._id },
-                { "members._id": userId },
-            ],
-        })
+    const chat = await Chat.findOne({
+        $and: [{ "members._id": currentUser._id }, { "members._id": userId }],
+    });
+    let dialogueInfo = null;
+    const nextPageExists =
+        chat.messages.length > (page - 1) * itemsCount + itemsCount;
+
+    if (chat) {
+        dialogueInfo = await chat
             .populate([
                 {
                     path: "members._id",
@@ -82,33 +84,28 @@ const getDialogue = async (req, res, next) => {
                     perDocumentLimit: itemsCount,
                 },
             ])
-            .exec()
-            .then((rawInfo) =>
-                rawInfo
-                    ? {
-                          id: rawInfo.id,
-                          otherUser: rawInfo.members
-                              .filter(
-                                  ({ _id: user }) =>
-                                      user._id.toString() !==
-                                      currentUser._id.toString()
-                              )
-                              .map(({ _id }) => ({
-                                  login: _id.login,
-                                  avatar: _id.avatar,
-                                  isOnline: _id.isOnline,
-                                  id: _id._id,
-                              }))[0],
-                          messages: rawInfo.messages,
-                      }
-                    : null
-            ),
-        Chat.countDocuments().then(
-            (totalCount) => totalCount > (page - 1) * itemsCount + itemsCount
-        ),
-    ]);
+            .execPopulate()
+            .then((rawInfo) => ({
+                id: rawInfo.id,
+                otherUser: rawInfo.members
+                    .filter(
+                        ({ _id: user }) =>
+                            user._id.toString() !== currentUser._id.toString()
+                    )
+                    .map(({ _id }) => ({
+                        login: _id.login,
+                        avatar: _id.avatar,
+                        isOnline: _id.isOnline,
+                        id: _id._id,
+                    }))[0],
+                messages: {
+                    data: rawInfo.messages,
+                },
+            }));
+        dialogueInfo.messages.nextPageExists = nextPageExists;
+    }
 
-    return res.status(200).json({ data: dialogueInfo, nextPageExists });
+    return res.status(200).json({ data: dialogueInfo });
 };
 
 module.exports = {
