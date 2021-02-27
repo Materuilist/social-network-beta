@@ -63,8 +63,8 @@ class WsService {
                     return;
                 }
                 case "incoming message": {
-                    const { chat, message } = payload;
-                    store.dispatch(chatActions.onReceiveMessage(chat, message));
+                    const { chat, message, senderDetails } = payload;
+                    store.dispatch(chatActions.onReceiveMessage(chat, message, senderDetails));
                     return;
                 }
                 case "message delivered": {

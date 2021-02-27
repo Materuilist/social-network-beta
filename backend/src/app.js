@@ -140,7 +140,15 @@ mongoose.connect(dbConnectionString, async (err) => {
                             client.send(
                                 JSON.stringify({
                                     event: "incoming message",
-                                    payload: { chat, message },
+                                    payload: {
+                                        chat,
+                                        message,
+                                        senderDetails: {
+                                            id: sender._id,
+                                            avatar: sender.avatar,
+                                            login: sender.login,
+                                        },
+                                    },
                                 })
                             );
                         }

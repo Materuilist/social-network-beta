@@ -1,7 +1,7 @@
 import { notificationsActionTypes, sharedActionTypes } from "../actionTypes";
 
 const initialState = {
-    data: [], //{id, type, title, text, dismissTimeout} - id - timestamp
+    data: [], //{id, type, title, text, dismissTimeout, details} - id - timestamp
 };
 
 export const notificationsReducer = (

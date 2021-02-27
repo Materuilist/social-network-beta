@@ -9,7 +9,8 @@ const setNotifications = (notifications = []) => ({
 const notify = (
     type = notificationTypes.warning,
     title = 'Внимание!',
-    text
+    text,
+    details
 ) => (dispatch, getState) => {
     const { notifications } = getState();
 
@@ -27,6 +28,7 @@ const notify = (
                 title,
                 text,
                 dismissTimeout,
+                details
             },
         ])
     );
@@ -51,6 +53,6 @@ export const notifyWarning = (title, text) => (dispatch) => {
 export const notifySuccess = (title, text) => (dispatch) => {
     dispatch(notify(notificationTypes.success, title || 'Отлично!', text));
 };
-export const notifyMessage = (title, text) => (dispatch) => {
-    dispatch(notify(notificationTypes.message, title || 'Сообщение!', text));
+export const notifyMessage = (title, text, details) => (dispatch) => {
+    dispatch(notify(notificationTypes.message, title || 'Сообщение!', text, details));
 };

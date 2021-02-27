@@ -15,7 +15,7 @@ export const notificationTypes = {
     success: "success",
     message: "message",
 };
-export const notificationDismissDelay = 5000;
+export const notificationDismissDelay = 200000;
 export const maxNotifications = 3;
 
 export const sortTypes = {

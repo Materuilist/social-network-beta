@@ -1,14 +1,15 @@
 @import "variables";
+@import "functions";
 
 @keyframes appear-sign {
     0% {
         transform: translateX(-100%);
-        width: 54px;
+        width: calc-rem(60px);
     }
 
     50% {
         transform: translateX(0);
-        width: 54px;
+        width: calc-rem(60px);
     }
 
     100% {
@@ -25,10 +26,10 @@
     padding-bottom: 3rem;
 
     .notification {
-        border-radius: 25px;
-        padding-top: 8px;
-        padding-bottom: 8px;
-        max-width: 300px;
+        border-radius: calc-rem(25px);
+        padding-top: calc-rem(8px);
+        padding-bottom: calc-rem(8px);
+        max-width: calc-rem(300px);
         margin-top: 1.5rem;
         overflow: hidden;
         animation: 0.8s appear-sign;
@@ -46,55 +47,69 @@
         }
         &.message {
             background-color: $blue;
+            color: $heavy-mint-color;
         }
 
         .title {
             display: flex;
             align-items: center;
-            padding-left: 8px;
-            padding-right: 19px;
+            padding-left: calc-rem(8px);
+            padding-right: calc-rem(19px);
 
             > span {
                 display: block;
                 flex-basis: 100%;
-                padding-left: 19px;
-                padding-right: 9px;
+                padding-left: calc-rem(19px);
+                padding-right: calc-rem(9px);
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 font-style: normal;
                 font-weight: bold;
-                font-size: 14px;
-                line-height: 17px;
+                font-size: calc-rem(14px);
+                line-height: calc-rem(17px);
             }
 
-            > img:last-of-type {
-                cursor: pointer;
-                transition: all 0.1s linear;
-                &:hover {
-                    opacity: 0.7;
+            > img {
+                height: calc-rem(42px);
+                width: calc-rem(42px);
+
+                &:first-of-type {
+                    width: calc-rem(60px);
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                &:last-of-type {
+                    cursor: pointer;
+                    transition: all 0.1s linear;
+
+                    &:hover {
+                        opacity: 0.7;
+                    }
                 }
             }
         }
 
         .details {
-            max-height: 0px;
+            max-height: calc-rem(0px);
             overflow: hidden;
             text-align: left;
-            padding-right: 10px;
+            padding-right: calc-rem(10px);
             transition: all 0.3s ease-out;
         }
 
         &.open {
             .title {
-                padding-bottom: 8px;
-                border-bottom: 1px solid $semi-heavy-mint-color;
+                padding-bottom: calc-rem(8px);
+                border-bottom: calc-rem(1px) solid $semi-heavy-mint-color;
             }
 
             .details {
-                max-height: 140px;
+                max-height: calc-rem(140px);
                 overflow-y: auto;
-                margin: 8px 19px 15px 18px;
+                margin: calc-rem(8px) calc-rem(19px) calc-rem(15px)
+                    calc-rem(18px);
             }
         }
     }

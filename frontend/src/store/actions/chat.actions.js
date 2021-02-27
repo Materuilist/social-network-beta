@@ -1,3 +1,4 @@
+import { notificationsActions } from ".";
 import { ChatsService } from "../../services/chats.service";
 import { wsService } from "../../services/ws.service";
 import { chatActionTypes } from "../actionTypes";
@@ -73,13 +74,24 @@ export const sendMessage = (content, userId) => (dispatch) => {
     wsService.sendMessage(userId, content);
 };
 
-export const onReceiveMessage = (chat, newMessage) => (dispatch, getState) => {
+export const onReceiveMessage = (chat, newMessage, senderDetails) => (
+    dispatch,
+    getState
+) => {
     const {
         chat: {
             messages: { data: oldMessages, nextPageExists, newCount },
             otherUserId,
         },
     } = getState();
+
+    dispatch(
+        notificationsActions.notifyMessage(
+            senderDetails.login,
+            newMessage.content,
+            senderDetails
+        )
+    );
 
     if (newMessage.sender === otherUserId) {
         dispatch(

@@ -8,8 +8,11 @@ import { notificationTypes } from "../../../constants";
 
 import ErrorSVG from "images/error.svg";
 import TogglerSVG from "images/toggler.svg";
+import DefaultAvatarIMG from "images/default-avatar.svg";
 
 import classNames from "./notifications.module.scss";
+import { store } from "../../../store";
+import { push } from "connected-react-router";
 
 const mapDispatchToProps = (dispatch) => ({
     notificationsActions: bindActionCreators(notificationsActions, dispatch),
@@ -24,6 +27,7 @@ export const Notification = connect(
         type,
         title,
         text,
+        details,
         dismissTimeout,
         showDetails = false,
         toggleDetails,
@@ -33,6 +37,8 @@ export const Notification = connect(
             switch (type) {
                 case notificationTypes.error:
                     return ErrorSVG;
+                case notificationTypes.message:
+                    return details?.avatar || DefaultAvatarIMG;
                 default:
                     return null;
             }
@@ -47,7 +53,13 @@ export const Notification = connect(
                         [classNames.open]: showDetails,
                     }
                 )}
-                onClick={() => notificationsActions.dismissNotification(id)}
+                onClick={() => {
+                    type === notificationTypes.message &&
+                        details?.id &&
+                        store.dispatch(push(`/chat?userId=${details.id}`));
+
+                    notificationsActions.dismissNotification(id);
+                }}
             >
                 <div className={classNames.title}>
                     <img src={getIcon()} />
