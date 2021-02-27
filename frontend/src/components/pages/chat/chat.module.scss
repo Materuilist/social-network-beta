@@ -28,6 +28,108 @@
         > .messagesContainer {
             overflow: auto;
             flex: 1 0 70%;
+            display: flex;
+            flex-direction: column;
+            padding: calc-rem(23px);
+
+            > .message {
+                display: flex;
+                width: 70%;
+                flex: 1 0 calc-rem(94px);
+                margin-bottom: calc-rem(40px);
+
+                > img {
+                    height: calc-rem(75px);
+                    width: calc-rem(75px);
+                    object-fit: cover;
+                    border-radius: 50%;
+                    margin-top: auto;
+                }
+
+                > .messageContent {
+                    flex: 1;
+                    position: relative;
+                    border: calc-rem(1px) solid $heavy-mint-color;
+                    border-radius: calc-rem(10px);
+                    margin-left: calc-rem(30px);
+                    padding: calc-rem(8px) calc-rem(20px);
+
+                    &::before,
+                    &::after {
+                        background-color: $heavy-mint-color;
+                        height: calc-rem(1px);
+                        display: block;
+                        content: "";
+                        position: absolute;
+                    }
+
+                    &::before {
+                        left: calc-rem(-30px);
+                        bottom: calc-rem(37px);
+                        width: calc-rem(30px);
+                    }
+
+                    &::after {
+                        left: calc-rem(-35px);
+                        bottom: calc-rem(52px);
+                        width: calc-rem(40px);
+                        transform: rotate(-45deg);
+                    }
+
+                    > p {
+                        font-size: calc-rem(20px);
+                        line-height: calc-rem(25px);
+
+                        &:first-of-type {
+                            font-weight: 700;
+                        }
+
+                        &:last-of-type {
+                            font-weight: 500;
+                            overflow-wrap: break-word;
+                            word-break: break-word;
+                        }
+                    }
+                }
+
+                > span:last-of-type {
+                    margin-left: calc-rem(20px);
+                }
+
+                &.ownMessage {
+                    margin-left: auto;
+                    flex-direction: row-reverse;
+
+                    > .messageContent {
+                        margin-left: initial;
+                        margin-right: calc-rem(30px);
+
+                        &::before {
+                            left: unset;
+                            right: calc-rem(-30px);
+                            bottom: calc-rem(37px);
+                            width: calc-rem(30px);
+                        }
+
+                        &::after {
+                            left: unset;
+                            right: calc-rem(-35px);
+                            bottom: calc-rem(52px);
+                            width: calc-rem(40px);
+                            transform: rotate(45deg);
+                        }
+
+                        > p {
+                            text-align: right;
+                        }
+                    }
+
+                    > span:last-of-type {
+                        margin-left: unset;
+                        margin-right: calc-rem(20px);
+                    }
+                }
+            }
         }
 
         > .messageInputContainer {
@@ -80,7 +182,7 @@
                         height: calc-rem(27.5px);
                         width: calc-rem(2px);
                         background-color: $heavy-mint-color;
-                        animation: cursor-blink .8s infinite;
+                        animation: cursor-blink 0.8s infinite;
                     }
                 }
             }
@@ -88,10 +190,10 @@
             > img {
                 width: 5%;
                 cursor: pointer;
-                transition: opacity .15s ease-out;
+                transition: opacity 0.15s ease-out;
 
-                &:hover{
-                    opacity: .7;
+                &:hover {
+                    opacity: 0.7;
                 }
             }
         }

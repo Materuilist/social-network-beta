@@ -36,7 +36,7 @@ export const getDialogue = (otherUserId, pageIndex = 1, cb) => async (
         dispatch(
             setMessages(
                 pageIndex === 1
-                    ? messages
+                    ? messages.data
                     : [...currentMessages, ...messages.data],
                 messages.nextPageExists
             )

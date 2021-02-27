@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { bindActionCreators } from "redux";
+import concatClasses from "classnames";
 
 import { wsService } from "../../../services/ws.service";
 import { chatActions } from "../../../store/actions";
 
-import DefaultAvatarIMG from "images/default-avatar.svg";
+import DefaultAvatarIMG from "images/default-avatar-dark.svg";
 import SendIMG from "images/send.svg";
 
 import classNames from "./chat.module.scss";
@@ -17,32 +18,6 @@ const mapStateToProps = ({ chat, userInfo }) => ({ chat, userInfo });
 const mapDispatchToProps = (dispatch) => ({
     chatActions: bindActionCreators(chatActions, dispatch),
 });
-
-const messages = [
-    {
-        sender: { id: 1, login: "borow", avatar: null },
-        content: "Кабан",
-        timestamp: new Date(),
-    },
-    {
-        sender: { id: 2, login: "borow", avatar: null },
-        content: "Кабан",
-        timestamp: new Date(),
-    },
-    {
-        content: "Кабан",
-        timestamp: new Date(),
-    },
-    {
-        sender: { id: 3, login: "borow", avatar: null },
-        content: "Кабан",
-        timestamp: new Date(),
-    },
-    {
-        content: "Кабан",
-        timestamp: new Date(),
-    },
-];
 
 export const Chat = connect(
     mapStateToProps,
@@ -63,17 +38,29 @@ export const Chat = connect(
         setMessageText("");
     };
 
-    const renderMessage = ({ sender, content, timestamp }) => {
+    const renderMessage = ({ _id, sender: senderId, content, timestamp }) => {
+        const isFromOtherUser = senderId !== userInfo.id;
+
         return (
-            <div className={classNames.message}>
+            <div
+                key={_id}
+                className={concatClasses(classNames.message, {
+                    [classNames.ownMessage]: !isFromOtherUser,
+                })}
+            >
                 <img
                     src={
-                        (sender ? sender.avatar : userInfo.avatar) ||
-                        DefaultAvatarIMG
+                        (isFromOtherUser
+                            ? chat.otherUser?.avatar
+                            : userInfo.avatar) || DefaultAvatarIMG
                     }
                 />
-                <div>
-                    <p>{sender ? sender.login : userInfo.login}</p>
+                <div className={classNames.messageContent}>
+                    <p>
+                        {isFromOtherUser
+                            ? chat.otherUser?.login
+                            : userInfo.login}
+                    </p>
                     <p>{content}</p>
                 </div>
                 <span>{moment(timestamp).format("hh:mm DD.MM.YYYY")}</span>
@@ -85,7 +72,14 @@ export const Chat = connect(
         <div className={classNames.chat}>
             <div>
                 <div className={classNames.messagesContainer}>
-                    {messages.map((message) => renderMessage(message))}
+                    {chat.messages.data
+                        .sort(
+                            (
+                                { timestamp: timestampA },
+                                { timestamp: timestampB }
+                            ) => new Date(timestampA) - new Date(timestampB)
+                        )
+                        .map((message) => renderMessage(message))}
                 </div>
                 <div className={classNames.messageInputContainer}>
                     <div
