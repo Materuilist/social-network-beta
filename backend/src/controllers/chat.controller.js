@@ -54,8 +54,9 @@ const getDialogue = async (req, res, next) => {
         $and: [{ "members._id": currentUser._id }, { "members._id": userId }],
     });
     let dialogueInfo = null;
-    const nextPageExists =
-        chat.messages.length > (page - 1) * itemsCount + itemsCount;
+    const nextPageExists = chat
+        ? chat.messages.length > (page - 1) * itemsCount + itemsCount
+        : false;
 
     if (chat) {
         dialogueInfo = await chat

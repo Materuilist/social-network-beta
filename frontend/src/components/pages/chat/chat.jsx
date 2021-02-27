@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { bindActionCreators } from "redux";
 import concatClasses from "classnames";
 
+import { CustomLoader } from "../../shared/custom-loader/custom-loader";
 import { wsService } from "../../../services/ws.service";
 import { chatActions } from "../../../store/actions";
 
@@ -25,10 +26,61 @@ export const Chat = connect(
 )(({ chat, userInfo, chatActions }) => {
     const query = new URLSearchParams(useLocation().search);
     const userId = query.get("userId");
+
     const [messageText, setMessageText] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [pageIndex, setPageIndex] = useState(0);
+
+    const messagesContainerRef = useRef();
 
     useEffect(() => {
-        chatActions.getDialogue(userId);
+        messagesContainerRef.current.onscroll = loadMoreCallback;
+    }, loadMoreCallback);
+
+    const loadMoreCallback = useCallback(
+        ({ target }) => {
+            if (chat.messages.nextPageExists && target.scrollTop === 0) {
+                console.log({ pageIndex });
+                setPageIndex(pageIndex + 1);
+            }
+        },
+        [pageIndex, chat.messages.nextPageExists]
+    );
+
+    const getMessages = (page = 1, cb) => {
+        console.log(page);
+        setIsLoading(true);
+        chatActions.getDialogue(userId, page, () => {
+            cb?.();
+            setIsLoading(false);
+        });
+    };
+
+    useEffect(() => {
+        if (pageIndex === 0) return;
+
+        if (pageIndex === 1) {
+            getMessages(1, () => {
+                messagesContainerRef.current.scrollTo(
+                    0,
+                    messagesContainerRef.current.scrollHeight
+                );
+            });
+        } else {
+            const previousScrollHeight =
+                messagesContainerRef.current.scrollHeight;
+            getMessages(pageIndex, () =>
+                messagesContainerRef.current.scrollBy(
+                    0,
+                    messagesContainerRef.current.scrollHeight -
+                        previousScrollHeight
+                )
+            );
+        }
+    }, [pageIndex]);
+
+    useEffect(() => {
+        setPageIndex(1);
     }, [userId]);
 
     const sendMessage = () => {
@@ -71,7 +123,16 @@ export const Chat = connect(
     return (
         <div className={classNames.chat}>
             <div>
-                <div className={classNames.messagesContainer}>
+                <CustomLoader
+                    isLoading={isLoading}
+                    isBackdropVisible={false}
+                    opacity=".8"
+                    isLight={false}
+                />
+                <div
+                    className={classNames.messagesContainer}
+                    ref={messagesContainerRef}
+                >
                     {chat.messages.data
                         .sort(
                             (
