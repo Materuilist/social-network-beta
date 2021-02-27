@@ -2,7 +2,11 @@ import { store } from "../store";
 
 import Config from "Config";
 import { tokenId } from "../constants";
-import { authActions, notificationsActions } from "../store/actions";
+import {
+    authActions,
+    chatActions,
+    notificationsActions,
+} from "../store/actions";
 
 const wsStates = {
     EMPTY: "EMPTY",
@@ -60,13 +64,12 @@ class WsService {
                 }
                 case "incoming message": {
                     const { chat, message } = payload;
-                    store.dispatch(
-                        notificationsActions.notifyError(
-                            chat._id,
-                            message.content
-                        )
-                    );
-                    console.log({ chat, message });
+                    store.dispatch(chatActions.onReceiveMessage(chat, message));
+                    return;
+                }
+                case "message delivered": {
+                    const { chat, message } = payload;
+                    store.dispatch(chatActions.onMessageDelivered(chat, message));
                     return;
                 }
             }

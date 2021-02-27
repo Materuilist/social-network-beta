@@ -39,9 +39,11 @@ export const chatListActionTypes = {
 };
 
 export const chatActionTypes = {
+    SET_OTHER_USER_ID: "SET_OTHER_DIALOGUE_MEMBER_ID", //для websocket
     SET_OTHER_USER: "SET_OTHER_DIALOGUE_MEMBER",
     SET_CHAT_ID: "SET_CHAT_ID",
     SET_MESSAGES: "SET_CHAT_MESSAGES",
+    SET_IS_SENDING: "SET_IS_SENDING_MESSAGE",
     CLEAR: "CLEAR_CHAT",
 };
 

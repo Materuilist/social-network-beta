@@ -42,9 +42,10 @@ const getChats = async (req, res, next) => {
 const getDialogue = async (req, res, next) => {
     const { user: currentUser } = req.body;
     const { userId } = req.params;
-    let { page = 1, itemsCount = 10 } = req.query;
+    let { page = 1, itemsCount = 10, skip = 0 } = req.query;
     page = +page;
     itemsCount = +itemsCount;
+    skip = +skip;
 
     if (!userId) {
         return next(new Error(404, "Не указан собеседник"));
@@ -55,7 +56,7 @@ const getDialogue = async (req, res, next) => {
     });
     let dialogueInfo = null;
     const nextPageExists = chat
-        ? chat.messages.length > (page - 1) * itemsCount + itemsCount
+        ? chat.messages.length > (page - 1) * itemsCount + itemsCount + skip
         : false;
 
     if (chat) {
@@ -81,7 +82,7 @@ const getDialogue = async (req, res, next) => {
                     path: "messages",
                     select: "content timestamp sender",
                     options: { sort: { timestamp: -1 } },
-                    skip: (page - 1) * itemsCount,
+                    skip: (page - 1) * itemsCount + skip,
                     perDocumentLimit: itemsCount,
                 },
             ])

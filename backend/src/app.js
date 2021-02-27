@@ -128,9 +128,16 @@ mongoose.connect(dbConnectionString, async (err) => {
                     chat.messages.unshift(message._id);
                     await chat.save();
 
+                    websocket.send(
+                        JSON.stringify({
+                            event: "message delivered",
+                            payload: { chat, message },
+                        })
+                    );
+
                     wss.clients.forEach(async (client) => {
                         if (client.user?.id === receiverId) {
-                            return client.send(
+                            client.send(
                                 JSON.stringify({
                                     event: "incoming message",
                                     payload: { chat, message },

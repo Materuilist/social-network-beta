@@ -32,6 +32,7 @@ export const Chat = connect(
     const [pageIndex, setPageIndex] = useState(0);
 
     const messagesContainerRef = useRef();
+    const messageInputRef = useRef();
 
     useEffect(() => {
         messagesContainerRef.current.onscroll = loadMoreCallback;
@@ -90,8 +91,9 @@ export const Chat = connect(
     const sendMessage = () => {
         if (!messageText) return;
 
-        wsService.sendMessage(userId, messageText);
+        chatActions.sendMessage(messageText, userId);
         setMessageText("");
+        messageInputRef.current.innerText = '';
     };
 
     const renderMessage = ({ _id, sender: senderId, content, timestamp }) => {
@@ -148,13 +150,31 @@ export const Chat = connect(
                 </div>
                 <div className={classNames.messageInputContainer}>
                     <div
+                        ref={messageInputRef}
                         contentEditable
                         onInput={({ target }) =>
                             setMessageText(target.innerText)
                         }
                         placeholder={messageText ? "false" : "true"}
                     ></div>
-                    <img src={SendIMG} onClick={sendMessage} />
+                    <div className={classNames.messageSendButtonContainer}>
+                        <CustomLoader
+                            isLoading={chat.isSending}
+                            isBackdropVisible={false}
+                            opacity=".8"
+                            isLight={false}
+                            size={35}
+                        />
+                        <img
+                            style={{
+                                visibility: chat.isSending
+                                    ? "hidden"
+                                    : "visible",
+                            }}
+                            src={SendIMG}
+                            onClick={sendMessage}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
