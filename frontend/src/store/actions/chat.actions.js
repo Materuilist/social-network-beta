@@ -3,6 +3,10 @@ import { chatActionTypes } from "../actionTypes";
 
 const chatsService = new ChatsService();
 
+export const clear = () => ({
+    type: chatActionTypes.CLEAR,
+});
+
 const setChatId = (chatId = null) => ({
     type: chatActionTypes.SET_CHAT_ID,
     payload: chatId,

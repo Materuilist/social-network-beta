@@ -20,6 +20,7 @@ export const chatReducer = (state = initialState, { type, payload }) => {
         case chatActionTypes.SET_MESSAGES:
             return { ...state, messages: { ...payload } };
 
+        case chatActionTypes.CLEAR:
         case sharedActionTypes.REINITIALIZE:
             return initialState;
 

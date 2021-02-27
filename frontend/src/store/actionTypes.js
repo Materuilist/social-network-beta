@@ -42,6 +42,7 @@ export const chatActionTypes = {
     SET_OTHER_USER: "SET_OTHER_DIALOGUE_MEMBER",
     SET_CHAT_ID: "SET_CHAT_ID",
     SET_MESSAGES: "SET_CHAT_MESSAGES",
+    CLEAR: "CLEAR_CHAT",
 };
 
 export const notificationsActionTypes = {

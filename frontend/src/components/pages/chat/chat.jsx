@@ -81,6 +81,10 @@ export const Chat = connect(
 
     useEffect(() => {
         setPageIndex(1);
+
+        return () => {
+            chatActions.clear();
+        };
     }, [userId]);
 
     const sendMessage = () => {
