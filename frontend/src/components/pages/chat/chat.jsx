@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
@@ -50,12 +50,11 @@ export const Chat = connect(
 )(({ chat, userInfo, chatActions }) => {
     const query = new URLSearchParams(useLocation().search);
     const userId = query.get("userId");
+    const [messageText, setMessageText] = useState("");
 
     useEffect(() => {
         chatActions.getDialogue(userId);
     }, [userId]);
-
-    const [messageText, setMessageText] = useState("");
 
     const sendMessage = () => {
         if (!messageText) return;
@@ -89,13 +88,13 @@ export const Chat = connect(
                     {messages.map((message) => renderMessage(message))}
                 </div>
                 <div className={classNames.messageInputContainer}>
-                    <textarea
-                        placeholder="Сообщение"
-                        value={messageText}
-                        onChange={({ target: { value } }) =>
-                            setMessageText(value)
+                    <div
+                        contentEditable
+                        onInput={({ target }) =>
+                            setMessageText(target.innerText)
                         }
-                    />
+                        placeholder={messageText ? "false" : "true"}
+                    ></div>
                     <img src={SendIMG} onClick={sendMessage} />
                 </div>
             </div>
