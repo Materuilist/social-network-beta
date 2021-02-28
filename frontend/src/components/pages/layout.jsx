@@ -8,6 +8,7 @@ import { Chat } from "./chat/chat";
 import { Header } from "./header";
 import { SideNav } from "./side-nav";
 import { UserProfileModal } from "../shared/modals/user-profile/user-profile";
+import { NonUpdatableHOC } from "../shared/non-updatable-hoc/non-updatable-hoc";
 
 import "./layout.scss";
 
@@ -29,7 +30,10 @@ export const Layout = () => {
                             <ChatList />
                         </Route>
                         <Route path="/chat">
-                            <Chat />
+                            {/* избавиться от этого костыля */}
+                            <NonUpdatableHOC>
+                                <Chat />
+                            </NonUpdatableHOC>
                         </Route>
                         <Redirect to="/profile" />
                     </Switch>
