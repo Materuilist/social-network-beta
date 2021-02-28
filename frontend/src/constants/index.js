@@ -8,6 +8,7 @@ import HobbiesActiveIMG from "images/hobbies-active.svg";
 export const BASE_FONT_SIZE = 16;
 
 export const tokenId = "sn_jwt";
+export const notificationPlayerAudioId = "notificationPlayerAudio";
 
 export const notificationTypes = {
     warning: "warning",
@@ -15,7 +16,7 @@ export const notificationTypes = {
     success: "success",
     message: "message",
 };
-export const notificationDismissDelay = 200000;
+export const notificationDismissDelay = 20000;
 export const maxNotifications = 3;
 
 export const sortTypes = {

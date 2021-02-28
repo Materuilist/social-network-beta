@@ -1,4 +1,4 @@
-import { BASE_FONT_SIZE } from "../constants";
+import { BASE_FONT_SIZE, notificationPlayerAudioId } from "../constants";
 
 export const calcRem = (pixels = 16) => `${pixels / BASE_FONT_SIZE}rem`;
 
@@ -20,4 +20,8 @@ export const adjustPixels = (pixels) => {
 
     //текущий fs отличается от базового fs, используемого до просчета пропорций элементов в функции calcRem
     return pixelsInRems * fs;
+};
+
+export const playNotificationSound = () => {
+    document.querySelector(`#${notificationPlayerAudioId}`).play();
 };

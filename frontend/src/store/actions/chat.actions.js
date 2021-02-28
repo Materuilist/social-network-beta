@@ -1,4 +1,5 @@
 import { notificationsActions } from ".";
+import { NotificationPlayer, playNotificationSound } from "../../helpers";
 import { ChatsService } from "../../services/chats.service";
 import { wsService } from "../../services/ws.service";
 import { chatActionTypes } from "../actionTypes";
@@ -85,6 +86,7 @@ export const onReceiveMessage = (chat, newMessage, senderDetails) => (
         },
     } = getState();
 
+    playNotificationSound();
     dispatch(
         notificationsActions.notifyMessage(
             senderDetails.login,

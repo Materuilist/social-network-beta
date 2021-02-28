@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 
 import { Notification } from "./notification";
-import { maxNotifications } from "../../../constants";
+import {
+    maxNotifications,
+    notificationPlayerAudioId,
+} from "../../../constants";
+
+import NotificationSoundAndroid from "../../../static/sounds/notification.mp3";
+import NotificationSoundIOS from "../../../static/sounds/notification.m4r";
+import NotificationSoundUniversal from "../../../static/sounds/notification.ogg";
 
 import classNames from "./notifications.module.scss";
 
@@ -15,6 +22,11 @@ export const Notifications = connect(mapStateToProps)(({ notifications }) => {
 
     return (
         <div className={classNames.notifications}>
+            <audio hidden id={notificationPlayerAudioId}>
+                <source src={NotificationSoundAndroid}></source>
+                <source src={NotificationSoundIOS}></source>
+                <source src={NotificationSoundUniversal}></source>
+            </audio>
             {notifications.data
                 .sort(
                     ({ id: timestampA }, { id: timestampB }) =>

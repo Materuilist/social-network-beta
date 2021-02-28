@@ -65,6 +65,10 @@ module.exports = (env = {}) => {
                         limit: 15000,
                     },
                 },
+                {
+                    test: /\.(mp3|ogg|m4r)$/,
+                    loader: 'file-loader'
+                }
             ],
         },
         plugins: [
