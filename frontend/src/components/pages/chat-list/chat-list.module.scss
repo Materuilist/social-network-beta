@@ -46,6 +46,7 @@
                     transition: all 0.15s ease-out;
 
                     > img {
+                        flex-shrink: 0;
                         height: calc-rem(62px);
                         width: calc-rem(62px);
                         object-fit: cover;
@@ -75,14 +76,19 @@
 
                         &:nth-of-type(2) {
                             display: flex;
+                            overflow: hidden;
 
                             > span {
+                                flex-shrink: 0;
                                 font-size: calc-rem(20px);
                                 line-height: calc-rem(25px);
                                 font-weight: 700;
                                 margin-right: calc-rem(10px);
+                                text-overflow: ellipsis;
+                                overflow: hidden;
 
                                 &:last-of-type {
+                                    flex-shrink: unset;
                                     font-weight: normal;
                                     font-weight: 500;
                                 }

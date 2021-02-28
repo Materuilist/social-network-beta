@@ -111,11 +111,10 @@ mongoose.connect(dbConnectionString, async (err) => {
                             ],
                             messages: [],
                         });
-                        User.findById(receiverId).then((receiver) => {
+                        await User.findById(receiverId).then((receiver) => {
                             sender.chats.push(chat._id);
                             receiver.chats.push(chat._id);
-                            receiver.save();
-                            sender.save();
+                            return Promise.all([receiver.save(), sender.save()])
                         });
                     }
 

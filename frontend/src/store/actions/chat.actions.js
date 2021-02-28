@@ -1,5 +1,5 @@
-import { notificationsActions } from ".";
-import { NotificationPlayer, playNotificationSound } from "../../helpers";
+import { notificationsActions, chatListActions } from ".";
+import { playNotificationSound } from "../../helpers";
 import { ChatsService } from "../../services/chats.service";
 import { wsService } from "../../services/ws.service";
 import { chatActionTypes } from "../actionTypes";
@@ -86,6 +86,8 @@ export const onReceiveMessage = (chat, newMessage, senderDetails) => (
         },
     } = getState();
 
+    dispatch(chatListActions.getChats(null, false));
+
     playNotificationSound();
     dispatch(
         notificationsActions.notifyMessage(
@@ -116,6 +118,8 @@ export const onMessageDelivered = (chat, newMessage) => (
             otherUserId,
         },
     } = getState();
+
+    dispatch(chatListActions.getChats(null, false));
 
     if (chat.members.find((member) => member._id === otherUserId)) {
         dispatch(
