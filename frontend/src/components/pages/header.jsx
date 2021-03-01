@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import { store } from "../../store";
 import { authActions } from "actions";
 
-import LogoIMG from "images/logo.svg";
+import LogoIMG from "images/sn-logo.png";
 import defaultAvatarIMG from "images/default-avatar.svg";
 import SignOutIMG from "images/sign-out.svg";
 
