@@ -7,9 +7,9 @@ import {
     notificationPlayerAudioId,
 } from "../../../constants";
 
-import NotificationSoundAndroid from "../../../static/sounds/notification.mp3";
-import NotificationSoundIOS from "../../../static/sounds/notification.m4r";
-import NotificationSoundUniversal from "../../../static/sounds/notification.ogg";
+import NotificationSoundAndroid from "sounds/notification.mp3";
+import NotificationSoundIOS from "sounds/notification.m4r";
+import NotificationSoundUniversal from "sounds/notification.ogg";
 
 import classNames from "./notifications.module.scss";
 

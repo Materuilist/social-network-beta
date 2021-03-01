@@ -131,6 +131,10 @@
                     }
                 }
             }
+
+            &::-webkit-scrollbar-thumb{
+                background-color: $heavy-mint-color;
+            }
         }
 
         > .messageInputContainer {

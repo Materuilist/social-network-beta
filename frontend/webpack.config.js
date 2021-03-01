@@ -23,6 +23,7 @@ module.exports = (env = {}) => {
                 functions: path.resolve(__dirname + "/src/_functions.scss"),
                 actions: path.resolve(__dirname + "/src/store/actions/"),
                 images: path.resolve(__dirname + "/src/static/images/"),
+                sounds: path.resolve(__dirname + "/src/static/sounds/"),
             },
         },
         module: {
@@ -67,8 +68,8 @@ module.exports = (env = {}) => {
                 },
                 {
                     test: /\.(mp3|ogg|m4r)$/,
-                    loader: 'file-loader'
-                }
+                    loader: "file-loader",
+                },
             ],
         },
         plugins: [
