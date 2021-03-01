@@ -50,6 +50,9 @@ export const chatActionTypes = {
 export const notificationsActionTypes = {
     SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
 };
+export const onlineDataActionTypes = {
+    SET_ONLINE_STATUSES: "SET_ONLINE_DATA_ONLINE_STATUSES",
+};
 
 export const dictionariesActionTypes = {
     SET_CITIES: "SET_CITIES_DICTIONARY",

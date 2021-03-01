@@ -13,7 +13,11 @@ import DefaultAvatarIMG from "images/default-avatar-dark.svg";
 
 import classNames from "./chat-list.module.scss";
 
-const mapStateToProps = ({ chatList, userInfo }) => ({ chatList, userInfo });
+const mapStateToProps = ({
+    chatList,
+    userInfo,
+    onlineData: { onlineStatuses },
+}) => ({ chatList, userInfo, onlineStatuses });
 
 const mapDispatchToProps = (dispatch) => ({
     chatListActions: bindActionCreators(chatListActions, dispatch),
@@ -22,7 +26,7 @@ const mapDispatchToProps = (dispatch) => ({
 export const ChatList = connect(
     mapStateToProps,
     mapDispatchToProps
-)(({ userInfo, chatList, chatListActions }) => {
+)(({ userInfo, chatList, onlineStatuses, chatListActions }) => {
     const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
@@ -38,18 +42,23 @@ export const ChatList = connect(
     }, [searchText, chatList.data]);
 
     const renderChatItem = ({ id, otherUser, lastMessage }) => {
+        const isUserActuallyOnline =
+            otherUser?.id === userInfo.id ||
+            (onlineStatuses.find(({ userId }) => userId === otherUser?.id)?.isOnline ??
+                otherUser?.isOnline);
+
         return (
             <div
                 key={id}
                 className={classNames.chatItem}
                 onClick={() =>
-                    store.dispatch(push(`/chat?userId=${otherUser.id}`))
+                    store.dispatch(push(`/chat?userId=${otherUser?.id}`))
                 }
             >
                 <img src={otherUser?.avatar || DefaultAvatarIMG} />
                 <div>
                     <p>{otherUser?.login}</p>
-                    <p>{otherUser?.isOnline ? "online" : "offline"}</p>
+                    <p>{isUserActuallyOnline ? "online" : "offline"}</p>
                 </div>
                 <div>
                     {lastMessage?.sender === userInfo.id ? (

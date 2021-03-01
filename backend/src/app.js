@@ -56,6 +56,22 @@ mongoose.connect(dbConnectionString, async (err) => {
     const wss = new WebSocket.Server({ server });
 
     wss.on("connection", (websocket) => {
+        websocket.on("close", () => {
+            if (!websocket.user) return;
+            
+            User.findByIdAndUpdate(websocket.user._id, { isOnline: false });
+            wss.clients.forEach((client) =>
+                client.send(
+                    JSON.stringify({
+                        event: "toggle-status",
+                        payload: {
+                            userId: websocket.user?._id,
+                            isOnline: false,
+                        },
+                    })
+                )
+            );
+        });
         websocket.on("message", async (message) => {
             const { event, payload, token } = JSON.parse(message);
 
@@ -74,7 +90,22 @@ mongoose.connect(dbConnectionString, async (err) => {
                     if (!user) {
                         return websocket.close(4001, "Пользователь не найден");
                     }
+                    user.isOnline = true;
+                    user.save();
                     websocket.user = user;
+                    wss.clients.forEach(
+                        (client) =>
+                            client.user?._id !== websocket.user._id &&
+                            client.send(
+                                JSON.stringify({
+                                    event: "toggle-status",
+                                    payload: {
+                                        userId: websocket.user?._id,
+                                        isOnline: true,
+                                    },
+                                })
+                            )
+                    );
                     return websocket.send(JSON.stringify({ event: "enter" }));
                 }
                 case "dialogue-message": {
@@ -114,7 +145,10 @@ mongoose.connect(dbConnectionString, async (err) => {
                         await User.findById(receiverId).then((receiver) => {
                             sender.chats.push(chat._id);
                             receiver.chats.push(chat._id);
-                            return Promise.all([receiver.save(), sender.save()])
+                            return Promise.all([
+                                receiver.save(),
+                                sender.save(),
+                            ]);
                         });
                     }
 

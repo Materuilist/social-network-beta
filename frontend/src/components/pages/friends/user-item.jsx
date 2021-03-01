@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { push } from "connected-react-router";
@@ -25,11 +25,19 @@ const UserItemComponent = ({
     login = "Аноним",
     id,
     statusesDictionary,
+    onlineStatuses,
     otherUserProfileModalActions,
     onAdd = (userId) => {},
     onDelete = (userId) => {},
     onStatusToggle = (userId, statusId) => {},
 }) => {
+    const actualIsOnline = useMemo(() => {
+        const userOnlineStatus = onlineStatuses.find(
+            ({ userId }) => userId === id
+        );
+        return userOnlineStatus?.isOnline ?? isOnline;
+    }, [id, isOnline, onlineStatuses]);
+
     const openProfile = () => {
         otherUserProfileModalActions.open(id);
     };
@@ -120,7 +128,7 @@ const UserItemComponent = ({
                     <span onClick={openProfile}>{login}</span>
                     {renderStatuses()}
                 </div>
-                <p>{isOnline ? "online" : "offline"}</p>
+                <p>{actualIsOnline ? "online" : "offline"}</p>
             </div>
             {userType === otherUserTypes.FRIEND ? (
                 <img
@@ -135,8 +143,12 @@ const UserItemComponent = ({
     );
 };
 
-const mapStateToProps = ({ dictionaries: { friendsStatuses } }) => ({
+const mapStateToProps = ({
+    dictionaries: { friendsStatuses },
+    onlineData: { onlineStatuses },
+}) => ({
     statusesDictionary: friendsStatuses,
+    onlineStatuses,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -11,9 +11,13 @@ import classNames from "./current-friends.module.scss";
 import { UserItem } from "../user-item";
 import { otherUserTypes } from "../../../../constants";
 
-const mapStateToProps = ({ friends: { current, filters } }) => ({
+const mapStateToProps = ({
+    friends: { current, filters },
+    onlineData: { onlineStatuses },
+}) => ({
     friends: current,
     filter: filters.currentFriends,
+    onlineStatuses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -23,14 +27,17 @@ const mapDispatchToProps = (dispatch) => ({
 export const CurrentFriends = connect(
     mapStateToProps,
     mapDispatchToProps
-)(({ friends, friendsActions, filter }) => {
+)(({ friends, friendsActions, filter, onlineStatuses }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [searchedOptions, setSearchedOptions] = useState([]);
 
     const filteredFriends = useMemo(() => {
-        return friends.filter(({ isOnline, statuses }) => {
+        return friends.filter(({ id, isOnline, statuses }) => {
+            const isUserActuallyOnline =
+                onlineStatuses.find(({ userId }) => userId === id)?.isOnline ??
+                isOnline;
             const isOnlineSatisfies =
-                !filter.isOnline || filter.isOnline === isOnline;
+                !filter.isOnline || filter.isOnline === isUserActuallyOnline;
             //все статусы должны свопадать
             const statusesSatisfy =
                 filter.statuses.length === 0 ||
@@ -41,7 +48,7 @@ export const CurrentFriends = connect(
                 ).length === filter.statuses.length;
             return isOnlineSatisfies && statusesSatisfy;
         });
-    }, [friends, filter]);
+    }, [friends, filter, onlineStatuses]);
 
     useEffect(() => {
         friendsActions.getFriends(() => setIsLoading(false));
@@ -71,7 +78,7 @@ export const CurrentFriends = connect(
                 isLoading={isLoading}
                 isBackdropVisible={false}
                 loaderColor="#ebfcf7"
-                opacity='1'
+                opacity="1"
             />
             <CustomSearch
                 placeholder="Поиск"

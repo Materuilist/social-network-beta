@@ -13,6 +13,7 @@ export * as authActions from "./auth.actions";
 
 export * as dictionariesActions from "./dictionaries.actions";
 export * as notificationsActions from "./notifications.actions";
+export * as onlineDataActions from "./shared/online-data.actions";
 
 export * as otherUserProfileModalActions from "./shared/other-user-profile-modal.actions";
 

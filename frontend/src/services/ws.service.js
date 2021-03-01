@@ -6,6 +6,7 @@ import {
     authActions,
     chatActions,
     notificationsActions,
+    onlineDataActions,
 } from "../store/actions";
 
 const wsStates = {
@@ -62,14 +63,33 @@ class WsService {
                     this._state = wsStates.AUTHORIZED;
                     return;
                 }
+                case "toggle-status": {
+                    const { userId, isOnline } = payload;
+
+                    store.dispatch(
+                        onlineDataActions.toggleUserOnlineStatus(
+                            userId,
+                            isOnline
+                        )
+                    );
+                    return;
+                }
                 case "incoming message": {
                     const { chat, message, senderDetails } = payload;
-                    store.dispatch(chatActions.onReceiveMessage(chat, message, senderDetails));
+                    store.dispatch(
+                        chatActions.onReceiveMessage(
+                            chat,
+                            message,
+                            senderDetails
+                        )
+                    );
                     return;
                 }
                 case "message delivered": {
                     const { chat, message } = payload;
-                    store.dispatch(chatActions.onMessageDelivered(chat, message));
+                    store.dispatch(
+                        chatActions.onMessageDelivered(chat, message)
+                    );
                     return;
                 }
             }

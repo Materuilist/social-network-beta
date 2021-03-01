@@ -1,6 +1,6 @@
 module.exports = {
     database:
-        "mongodb+srv://materuilist:borow123@social-network-beta.ygait.mongodb.net/social-network-beta?retryWrites=true&w=majority",
+        "mongodb://localhost:27017/sn-beta?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
     salt: 12,
     token: {
         duration: "2h",

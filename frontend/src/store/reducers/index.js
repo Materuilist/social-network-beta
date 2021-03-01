@@ -7,6 +7,7 @@ import { photosReducer } from "./photos.reducer";
 
 import { notificationsReducer } from "./notifications.reducer";
 import { dictionariesReducer } from "./dictionaries.reducer";
+import { onlineDataReducer } from "./shared/online-data.reducer";
 
 import { friendsReducer } from "./friends.reducer";
 
@@ -18,6 +19,7 @@ import { otherUserProfileModalReducer } from "./shared/other-user-profile-modal.
 const reducers = {
     dictionaries: dictionariesReducer,
     notifications: notificationsReducer,
+    onlineData: onlineDataReducer,
 
     userInfo: userInfoReducer,
     hobbies: hobbiesReducer,
