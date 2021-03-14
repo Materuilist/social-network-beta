@@ -5,7 +5,6 @@ const postcssPresetEnv = require("postcss-preset-env");
 module.exports = (env = {}) => {
     const { mode = "development" } = env;
 
-    const isDev = mode === "development";
     const isProd = mode === "production";
 
     return {

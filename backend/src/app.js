@@ -3,6 +3,8 @@ const WebSocket = require("ws");
 const http = require("http");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const path = require("path");
+const { env } = require("process");
 
 const getConfig = require("./utils/getConfig");
 
@@ -29,16 +31,23 @@ app.use("/", (req, res, next) => {
     next();
 });
 
-app.use(express.static("src/static/"));
+app.use(
+    express.static("src/static/"),
+    express.static(path.join(__dirname, "../dist"))
+);
 app.use("/", bodyParser.json({ limit: "5mb" }));
 
-app.use("/auth", authRouter);
-app.use("/admin", adminRouter);
-app.use("/friends", friendsRouter);
-app.use("/userinfo", userInfoRouter);
-app.use("/dictionaries", dictionariesRouter);
-app.use("/like", likeRouter);
-app.use("/chats", chatRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/friends", friendsRouter);
+app.use("/api/userinfo", userInfoRouter);
+app.use("/api/dictionaries", dictionariesRouter);
+app.use("/api/like", likeRouter);
+app.use("/api/chats", chatRouter);
+
+app.use("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../dist/index.html"));
+});
 
 app.use("/", (error, req, res, next) => {
     if (error) {
@@ -58,7 +67,7 @@ mongoose.connect(dbConnectionString, async (err) => {
     wss.on("connection", (websocket) => {
         websocket.on("close", () => {
             if (!websocket.user) return;
-            
+
             User.findByIdAndUpdate(websocket.user._id, { isOnline: false });
             wss.clients.forEach((client) =>
                 client.send(
@@ -192,7 +201,7 @@ mongoose.connect(dbConnectionString, async (err) => {
         });
     });
 
-    server.listen(8000, () => {
+    server.listen(env.PORT || 8000, () => {
         console.log("server started successfully!");
     });
 });

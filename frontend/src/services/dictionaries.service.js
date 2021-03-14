@@ -28,7 +28,8 @@ export class DictionariesService extends BaseService {
                             `images/friendsStatuses/${imageName}`,
                             null,
                             false,
-                            "blob"
+                            "blob",
+                            true
                         )
                         .then((blob) => getFileBinary(blob))
                 )

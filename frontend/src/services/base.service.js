@@ -1,15 +1,14 @@
-import { push } from "connected-react-router";
-
 import { store } from "../store";
 import { tokenId } from "../constants";
 import { notificationsActions } from "../store/actions";
+import Config from "Config";
 
 export class BaseService {
     constructor() {
-        this.baseUrl = "http://localhost:8000/";
+        this.baseUrl = Config.serverUrl;
     }
 
-    async request(url = "", init, needsAuth = true, resType = "json") {
+    async request(url = "", init, needsAuth = true, resType = "json", isStatic = false) {
         const authToken = localStorage.getItem(tokenId);
         if (needsAuth && (!authToken || authToken === "undefined")) {
             // store.dispatch(push("/auth"));
@@ -28,7 +27,7 @@ export class BaseService {
         let res,
             parsedRes = null;
         try {
-            res = await fetch(`${this.baseUrl}${url}`, init);
+            res = await fetch(`${this.baseUrl}${isStatic?'':'api/'}${url}`, init);
             parsedRes = await res[resType]();
         } catch {
         } finally {
