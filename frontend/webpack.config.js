@@ -2,10 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const postcssPresetEnv = require("postcss-preset-env");
 
-module.exports = (env = {}) => {
-    const { mode = "development" } = env;
-
-    const isProd = mode === "production";
+module.exports = (env = {}, argv) => {
+    const isProd = argv.mode === "production";
 
     return {
         entry: "./src/index.jsx",

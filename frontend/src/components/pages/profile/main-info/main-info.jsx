@@ -29,7 +29,7 @@ export const MainInfo = connect(
     mapDispatchToProps
 )(
     ({
-        userInfo: { login, avatar, sex, birthDate, city },
+        userInfo: { login, avatar, sex, birthDate, city, career },
         dictionaries,
         userInfoActions,
         dictionariesActions,
@@ -41,6 +41,8 @@ export const MainInfo = connect(
             sex,
             birthDate,
             city,
+            education: career?.education || "",
+            occupation: career?.occupation || "",
         });
 
         const avatarInputRef = useRef();
@@ -59,11 +61,21 @@ export const MainInfo = connect(
         const saveChanges = (event) => {
             event.preventDefault();
             setIsLoading(true);
-            userInfoActions.updateInfo(data, () => setIsLoading(false));
+            userInfoActions.updateInfo(
+                {
+                    sex: data.sex,
+                    birthDate: data.birthDate,
+                    city: data.city,
+                    career: {
+                        education: data.education,
+                        occupation: data.occupation,
+                    },
+                },
+                () => setIsLoading(false)
+            );
         };
 
         const updateInfoField = (name, value) => {
-            console.log(name, value);
             setData({ ...data, [name]: value });
         };
 
@@ -156,6 +168,30 @@ export const MainInfo = connect(
                                     value={data.city}
                                     onChange={(value) =>
                                         updateInfoField("city", value)
+                                    }
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Образование</Label>
+                                <Input
+                                    type="text"
+                                    name="education"
+                                    placeholder="Последнее оконченное образовательное учреждение"
+                                    value={data.education}
+                                    onChange={({ target: { value } }) =>
+                                        updateInfoField("education", value)
+                                    }
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Место работы</Label>
+                                <Input
+                                    type="text"
+                                    name="occupation"
+                                    placeholder="Ваше текущее место работы"
+                                    value={data.occupation}
+                                    onChange={({ target: { value } }) =>
+                                        updateInfoField("occupation", value)
                                     }
                                 />
                             </FormGroup>

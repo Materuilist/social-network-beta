@@ -1,5 +1,4 @@
 const { Schema, model, Types } = require("mongoose");
-const { genders, statuses } = require("../constants");
 
 const userSchema = new Schema({
     //user-info
@@ -14,13 +13,16 @@ const userSchema = new Schema({
     avatar: String,
     sex: {
         type: String,
-        enum: genders,
     },
     birthDate: {
         type: Date,
     },
     isOnline: Boolean,
     city: { type: Types.ObjectId, ref: "City" },
+    career: {
+        education: String,
+        occupation: String,
+    },
     photos: [
         {
             id: Number,
@@ -40,7 +42,7 @@ const userSchema = new Schema({
             statuses: [
                 {
                     type: Types.ObjectId,
-                    ref: 'Status',
+                    ref: "Status",
                 },
             ],
         },

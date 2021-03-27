@@ -143,7 +143,9 @@ export const UserProfileInfo = connect(
                             moment(info.birthDate).format("DD.MM.YYYY")) ??
                             "-"}
                     </p>
-                    <p>Город: {(info.city && info.city.name) ?? "-"}</p>
+                    <p>Город: {info.city?.name ?? "-"}</p>
+                    <p>Образование: {(info.career?.education) ?? "-"}</p>
+                    <p>Место работы: {(info.career?.occupation) ?? "-"}</p>
                 </div>
             </div>
         );

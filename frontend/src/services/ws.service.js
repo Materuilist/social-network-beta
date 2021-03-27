@@ -19,7 +19,11 @@ const wsStates = {
 
 class WsService {
     constructor() {
-        this._baseUrl = Config.wsUrl;
+        this._baseUrl = `${
+            location.hostname === "localhost"
+                ? ""
+                : location.origin.replace('http', "ws")
+        }${Config.wsUrl}`;
         this._ws = null;
         this._state = wsStates.EMPTY;
     }

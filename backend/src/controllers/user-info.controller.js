@@ -14,7 +14,7 @@ const getUserInfoById = async (req, res, next) => {
         return next(new Error(400, "Такого пользователя нет!"));
     }
 
-    const { login, avatar, birthDate, sex, city, isOnline } = userInfo;
+    const { login, avatar, birthDate, sex, city, career, isOnline } = userInfo;
 
     const userAsFriend = currentUser.friends.find(
         (friend) => friend.data.toString() === userId
@@ -28,11 +28,12 @@ const getUserInfoById = async (req, res, next) => {
                   birthDate,
                   sex,
                   city,
+                  career,
                   isOnline,
                   isFriend: true,
                   statuses: userAsFriend.statuses,
               }
-            : { login, avatar, birthDate, sex, city, isOnline }
+            : { login, avatar, birthDate, sex, city, career, isOnline }
     );
 };
 
@@ -43,7 +44,7 @@ const getUserInfo = async (req, res, next) => {
     if (!userInfo) {
         return next(new Error(400, "Ошибка при получении пользователя!"));
     }
-    const { _id, avatar, sex, birthDate, city, isOnline } = userInfo;
+    const { _id, avatar, sex, birthDate, city, career, isOnline } = userInfo;
     return res.status(200).json({
         id: _id,
         login,
@@ -51,6 +52,7 @@ const getUserInfo = async (req, res, next) => {
         sex,
         birthDate: birthDate && birthDate.toISOString().split("T")[0],
         city,
+        career,
         isOnline,
     });
 };
@@ -87,9 +89,9 @@ const setOnline = async (req, res, next) => {
 };
 
 const updateUserInfo = async (req, res, next) => {
-    const { user, sex, city, birthDate, avatar } = req.body;
+    const { user, sex, city, birthDate, avatar, career } = req.body;
 
-    const filteredInfo = filterBody({ sex, city, birthDate, avatar });
+    const filteredInfo = filterBody({ sex, city, birthDate, avatar, career });
 
     try {
         await user.updateOne(filteredInfo);

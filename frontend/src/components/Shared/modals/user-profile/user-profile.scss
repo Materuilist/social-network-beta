@@ -133,6 +133,7 @@ $hobbiesPerLine: 3;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
+                                overflow-y: auto;
 
                                 > img {
                                     width: calc-rem(40px);
@@ -143,6 +144,10 @@ $hobbiesPerLine: 3;
                                         height: calc-rem(35px);
                                         width: calc-rem(35px);
                                     }
+                                }
+
+                                &::-webkit-scrollbar-thumb{
+                                    background-color: $heavy-mint-color;
                                 }
                             }
 
