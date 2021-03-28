@@ -34,6 +34,28 @@ export const Chat = connect(
     const messagesContainerRef = useRef();
     const messageInputRef = useRef();
 
+    // навешиваем обработчик по прокрутке диалога вниз при отправке сообщения
+    useEffect(() => {
+        const scrollToBottomOnMessageDelivered = () => {
+            setTimeout(() => {
+                messagesContainerRef.current.scrollTo(
+                    0,
+                    messagesContainerRef.current.scrollHeight
+                );
+            });
+        };
+        wsService.addCustomEventListener(
+            "message delivered",
+            scrollToBottomOnMessageDelivered
+        );
+
+        return () =>
+            wsService.removeCustomHandler(
+                "message delivered",
+                scrollToBottomOnMessageDelivered
+            );
+    }, []);
+
     useEffect(() => {
         messagesContainerRef.current.onscroll = loadMoreCallback;
     }, loadMoreCallback);

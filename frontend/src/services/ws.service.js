@@ -22,10 +22,12 @@ class WsService {
         this._baseUrl = `${
             location.hostname === "localhost"
                 ? ""
-                : location.origin.replace('http', "ws")
+                : location.origin.replace("http", "ws")
         }${Config.wsUrl}`;
         this._ws = null;
         this._state = wsStates.EMPTY;
+        // словарь тип события : массив обработчиков
+        this._customHandlers = {}; // при потере соединения реконнект должен восстанавливать обработчики событий
     }
 
     _addWsHandlers() {
@@ -65,7 +67,7 @@ class WsService {
             switch (event) {
                 case "enter": {
                     this._state = wsStates.AUTHORIZED;
-                    return;
+                    break;
                 }
                 case "toggle-status": {
                     const { userId, isOnline } = payload;
@@ -76,7 +78,7 @@ class WsService {
                             isOnline
                         )
                     );
-                    return;
+                    break;
                 }
                 case "incoming message": {
                     const { chat, message, senderDetails } = payload;
@@ -87,16 +89,18 @@ class WsService {
                             senderDetails
                         )
                     );
-                    return;
+                    break;
                 }
                 case "message delivered": {
                     const { chat, message } = payload;
                     store.dispatch(
                         chatActions.onMessageDelivered(chat, message)
                     );
-                    return;
+                    break;
                 }
             }
+
+            this._customHandlers[event]?.forEach((handler) => handler(payload));
         };
     }
 
@@ -136,6 +140,19 @@ class WsService {
 
     sendMessage(receiverId, text) {
         this.send("dialogue-message", { receiverId, text });
+    }
+
+    addCustomEventListener(type, customHandler) {
+        this._customHandlers[type] = [
+            ...(this._customHandlers[type] ?? []),
+            customHandler,
+        ];
+    }
+
+    removeCustomHandler(type, customHandlerRef) {
+        this._customHandlers[type] = this._customHandlers[type]?.filter(
+            (customHandler) => customHandler !== customHandlerRef
+        );
     }
 }
 
