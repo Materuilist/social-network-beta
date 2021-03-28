@@ -15,6 +15,7 @@ export const notificationTypes = {
     error: "error",
     success: "success",
     message: "message",
+    connectionLost: "connectionLost",
 };
 export const notificationDismissDelay = 20000;
 export const maxNotifications = 3;

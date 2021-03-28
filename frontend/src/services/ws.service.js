@@ -53,6 +53,14 @@ class WsService {
                     );
                     return;
                 }
+                default: {
+                    store.dispatch(
+                        notificationsActions.notifyConnectionLost(
+                            "Соединение потеряно.",
+                            "Соединение с сервером разорвано."
+                        )
+                    );
+                }
             }
         };
 

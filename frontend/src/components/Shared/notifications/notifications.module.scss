@@ -44,9 +44,14 @@
         }
         &.success {
             background-color: $green;
+            color: $heavy-mint-color;
         }
         &.message {
             background-color: $blue;
+            color: $heavy-mint-color;
+        }
+        &.connectionLost {
+            background-color: $yellow;
             color: $heavy-mint-color;
         }
 
