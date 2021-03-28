@@ -93,7 +93,7 @@ export const Chat = connect(
 
         chatActions.sendMessage(messageText, userId);
         setMessageText("");
-        messageInputRef.current.innerText = '';
+        messageInputRef.current.innerText = "";
     };
 
     const renderMessage = ({ _id, sender: senderId, content, timestamp }) => {
@@ -155,6 +155,12 @@ export const Chat = connect(
                         onInput={({ target }) =>
                             setMessageText(target.innerText)
                         }
+                        onKeyDown={(event) => {
+                            if (!event.shiftKey && event.key === "Enter") {
+                                event.preventDefault();
+                                sendMessage();
+                            }
+                        }}
                         placeholder={messageText ? "false" : "true"}
                     ></div>
                     <div className={classNames.messageSendButtonContainer}>
