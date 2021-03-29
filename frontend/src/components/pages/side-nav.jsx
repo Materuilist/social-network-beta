@@ -8,35 +8,22 @@ const mapStateToProps = ({ userInfo }) => ({
 
 export const SideNav = connect(mapStateToProps)(({ userInfo }) => {
     const renderChatNavItem = () => {
-        return (
-            <>
-                <NavLink to="/chat-list">Чат</NavLink>
-                <div className='brief-statistics-row'>Здесь будет краткая инфа</div>
-            </>
-        );
+        return <NavLink to="/chat-list">Чат</NavLink>;
     };
 
     const renderFriendsNavItem = () => {
-        return (
-            <>
-                <NavLink to="/friends" >Друзья</NavLink>
-                <div className='brief-statistics-row'>Здесь будет краткая инфа</div>
-            </>
-        );
+        return <NavLink to="/friends">Друзья</NavLink>;
     };
 
     const renderProfileNavItem = () => {
-        return (
-            <>
-                <NavLink to="/profile" >Профиль</NavLink>
-                <div className='brief-statistics-row'>Здесь будет краткая инфа</div>
-            </>
-        );
+        return <NavLink to="/profile">Профиль</NavLink>;
     };
 
-    return <div className="side-nav">
-        {renderProfileNavItem()}
-        {renderFriendsNavItem()}
-        {renderChatNavItem()}
-    </div>;
+    return (
+        <div className="side-nav">
+            {renderProfileNavItem()}
+            {renderFriendsNavItem()}
+            {renderChatNavItem()}
+        </div>
+    );
 });

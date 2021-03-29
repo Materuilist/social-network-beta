@@ -37,6 +37,7 @@
     }
 
     p.resetPassword {
+        visibility: hidden;
         margin-top: calc-rem(10px);
         margin-bottom: calc-rem(35px);
         font-weight: 500;
