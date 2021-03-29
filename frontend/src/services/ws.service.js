@@ -53,6 +53,10 @@ class WsService {
                     );
                     return;
                 }
+                // клиент самостоятельно выполнил логаут
+                case 1005:{
+                    return;
+                }
                 default: {
                     store.dispatch(
                         notificationsActions.notifyConnectionLost(
